@@ -48,4 +48,13 @@ RSpec.describe User, type: :model do
     expect(duplicate_user.valid?).to(eq(false))
   end
 
+  it("treats uppercase and lowercase characters the same when checking for "+
+  "uniqueness") do
+    user.email = "sample@email.com"
+    duplicate_user = user.dup
+    user.save
+    duplicate_user.email = "SAMPLE@email.com"
+    expect(duplicate_user.valid?).to(eq(false))
+  end
+
 end
