@@ -8,5 +8,4 @@ RSpec.describe "Users", type: :request do
       expect(request.path).to(eq('/signup'))
     end
   end
-
 end
