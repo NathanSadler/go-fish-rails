@@ -2,7 +2,8 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
   #pending "add some examples to (or delete) #{__FILE__}"
-  let(:user) {User.new(name: "Test user", email: "user@example.com")}
+  let(:user) {User.new(name: "Test user", email: "user@example.com",
+    password: "foobar", password_confirmation: "foobar")}
 
   it("requires a name to be present") do
     user.name = " "
@@ -63,5 +64,18 @@ RSpec.describe User, type: :model do
     user.save
     expect(user.email).to(eq(test_email.downcase))
   end
+
+  it("has a password present") do
+    user.password = user.password_confirmation = " " * 6
+    expect(user.valid?).to(eq(false))
+  end
+
+  it("has a password that is at least 6 characters long") do
+    user.password = user.password_confirmation = "a" * 5
+    expect(user.valid?).to(eq(false))
+    user.password = user.password_confirmation = "a" * 6
+    expect(user.valid?).to(eq(true))
+  end
+
 
 end
