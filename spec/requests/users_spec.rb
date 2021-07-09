@@ -5,8 +5,7 @@ RSpec.describe "Users", type: :request do
   describe "GET /new" do
     it "returns the signup page" do
       get signup_path
-      binding.pry
-      expect(response).to have_http_status(:success)
+      expect(request.path).to(eq('/signup'))
     end
   end
 
