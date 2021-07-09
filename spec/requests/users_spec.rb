@@ -1,9 +1,11 @@
 require 'rails_helper'
+require 'pry'
 
 RSpec.describe "Users", type: :request do
   describe "GET /new" do
-    it "returns http success" do
-      get "/users/new"
+    it "returns the signup page" do
+      get signup_path
+      binding.pry
       expect(response).to have_http_status(:success)
     end
   end
