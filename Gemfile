@@ -72,3 +72,4 @@ group :test do
 end
 gem 'slim'
 gem 'simple_form'
+gem 'simple_form'
