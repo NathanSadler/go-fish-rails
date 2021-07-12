@@ -1,2 +1,7 @@
 h1 Users#new
-p Find me at app/views/users/new.html.slim
+= simple_form_for @user do |f|
+  = f.input :name, label: "Name"
+  = f.input :email, label: "Email"
+  = f.input :password, label: "Password"
+  = f.input :password_confirmation, label: "Confirm Password"
+  = f.submit 'Submit'

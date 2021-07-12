@@ -9,3 +9,26 @@ RSpec.describe "Users", type: :request do
     end
   end
 end
+
+RSpec.describe "Users", type: :feature do
+  let!(:test_user) {User.create(name: "Test User", email: "michael@example.com",
+    password: "foobar", password_confirmation: "foobar")}
+
+  describe "logging in" do
+    it('directs users to their info page when logging in') do
+      visit login_path
+      fill_in 'session_email', with: 'michael@example.com'
+      fill_in 'session_password', with: 'foobar'
+      click_on "Submit"
+      expect(current_path).to(eq("users/1"))
+    end
+    
+    it('redirects users to the login page if they enter invalid info') do
+      visit login_path
+      fill_in 'session_email', with: 'bob@example.com'
+      fill_in 'session_password', with: 'c'
+      click_on "Submit"
+      expect(current_path).to(eq("/login"))
+    end
+  end
+end
