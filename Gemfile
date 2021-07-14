@@ -8,6 +8,8 @@ gem 'rails', '~> 6.1.4'
 
 gem 'bcrypt'
 
+gem 'pg'
+
 # Use sqlite3 as the database for Active Record
 gem 'sqlite3', '~> 1.4'
 # Use Puma as the app server

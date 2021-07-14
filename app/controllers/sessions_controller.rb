@@ -7,11 +7,12 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:session][:password])
       reset_session
       session[:user_id] = user.id
-      #log_in user
       redirect_to user
     end
   end
 
   def destroy
+    log_out
+    redirect_to root_url
   end
 end

@@ -20,7 +20,7 @@ RSpec.describe "Users", type: :feature do
       fill_in 'session_email', with: 'michael@example.com'
       fill_in 'session_password', with: 'foobar'
       click_on "Submit"
-      expect(current_path).to(eq("/users/1"))
+      expect(current_path).to(eq("/users/#{User.last.id}"))
     end
 
     it('redirects users to the login page if they enter invalid info') do

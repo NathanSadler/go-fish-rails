@@ -10,7 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_09_170537) do
+ActiveRecord::Schema.define(version: 2021_07_13_185912) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
+  create_table "game_users", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "games", force: :cascade do |t|
+    t.jsonb "go_fish"
+    t.datetime "finished_at"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "started_at"
+    t.integer "player_count"
+    t.bigint "winner_id"
+    t.string "title"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"

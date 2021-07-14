@@ -1,14 +1,6 @@
-#require 'rails_helper'
-#require_relative 'helpers/sessions_helper'
-
 class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
-  end
-
-  # Figure out why it doesn't see this in sessions_helper later
-  def log_in(user)
-    session[:user_id] = user.id
   end
 
   def new

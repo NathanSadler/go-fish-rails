@@ -1,4 +1,7 @@
-.flex.flex-row.justify-end.margin-right-sm
-  .margin-right-sm
-    = link_to "Home", root_path
-  = link_to "Log in", login_path
+.header
+  = link_to "Home", root_path
+  - if !logged_in?
+    = link_to "Log in", login_path
+  - else
+    = link_to "Log Out", logout_path, method: :delete
+  = link_to "Create Game", '/games/new'

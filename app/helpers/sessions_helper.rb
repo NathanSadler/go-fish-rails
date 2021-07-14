@@ -1,4 +1,3 @@
-# TODO: get other files to see these methods properly
 module SessionsHelper
   def log_in(user)
     session[:user_id] = user.id
@@ -9,6 +8,12 @@ module SessionsHelper
     if session[:user_id]
       @current_user ||= User.find_by(id: session[:user_id])
     end
+  end
+
+  # Logs out the current user
+  def log_out
+    reset_session
+    @current_user = nil
   end
 
   # Returns true if the user is logged in, false otherwise.
