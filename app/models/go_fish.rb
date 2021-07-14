@@ -6,5 +6,5 @@ class GoFish
     @current_player_index = current_player_index
   end
 
-  #NOTE: start with a basic thing that doesn't change at all
+  
 end
