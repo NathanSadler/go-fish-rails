@@ -5,6 +5,4 @@ class GoFish
     @deck = deck
     @current_player_index = current_player_index
   end
-
-  
 end
