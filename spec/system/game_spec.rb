@@ -43,6 +43,15 @@ RSpec.describe "Game", type: :system do
     end
   end
 
+  describe("starting a game") do
+    it("creates a timestamp for when the game was started") do
+      login(session)
+      create_game(session, "Who cares?", 1)
+      session.click_on("Join Game")
+      expect(Game.last.started_at.nil?).to(be(false))
+    end
+  end
+
   describe("joining a game") do
     it("creates a GameUser object for this game and user if one doesn't " +
     "already exist") do

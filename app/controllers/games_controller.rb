@@ -1,3 +1,4 @@
+require 'date'
 class GamesController < ApplicationController
   def index
   end
@@ -5,9 +6,10 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @game_user = GameUser.new
-    #binding.pry
     render_show_page(@game)
-
+    if (GameUser.where(game_id: @game.id).length == @game.minimum_player_count)
+      @game.update(started_at: DateTime.now)
+    end
   end
 
   def new
