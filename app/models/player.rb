@@ -25,6 +25,11 @@ class Player
     end
   end
 
+  def remove_cards_with_rank(rank)
+    cards_to_remove = hand.select {|card| card.rank == rank}
+    set_hand(hand - cards_to_remove)
+    cards_to_remove
+  end
 
   def set_hand(new_hand)
     @hand = new_hand
