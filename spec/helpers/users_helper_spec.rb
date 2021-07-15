@@ -10,9 +10,10 @@ require 'rails_helper'
 #     end
 #   end
 # end
-RSpec.describe UsersHelper, type: :helper do
-  pending "add some examples to (or delete) #{__FILE__}"
-end
+
+# RSpec.describe UsersHelper, type: :helper do
+#   pending "add some examples to (or delete) #{__FILE__}"
+# end
 
 def is_logged_in?
   !session[:user_id].nil?

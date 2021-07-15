@@ -41,15 +41,6 @@ RSpec.describe 'Game#show', type: :system do
   after(:each) do
     User.destroy_all
   end
-  
-  it("shows a waiting_room page when there aren't enough players "+
-  "in the game") do
-    login
-    visit new_game_path
-    fill_in 'Title', with: "Automated Test Game"
-    click_on "Submit"
-    expect(page)
-  end
 end
 
 RSpec.describe 'Game#new', type: :system do
@@ -66,5 +57,17 @@ RSpec.describe 'Game#new', type: :system do
     login
     create_game
     expect(current_path).to(eq("/games/#{Game.last.id}"))
+  end
+end
+
+RSpec.describe "joining a game", type: :system do
+  it("shows a waiting_room page when there aren't enough players "+
+  "in the game") do
+    login
+    visit new_game_path
+    fill_in 'Title', with: "Automated Test Game"
+    click_on "Submit"
+    click_on "Join Game"
+    expect(page).to(have_content("Waiting for game to start"))
   end
 end
