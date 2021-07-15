@@ -33,6 +33,15 @@ RSpec.describe "Game", type: :system do
 end
 
 RSpec.describe 'Game#show', type: :system do
+  before(:each) do
+    User.create(name:"foobar", email:"foo@bar.com", password:"foobar",
+      password_confirmation:"foobar")
+  end
+
+  after(:each) do
+    User.destroy_all
+  end
+  
   it("shows a waiting_room page when there aren't enough players "+
   "in the game") do
     login
@@ -40,5 +49,22 @@ RSpec.describe 'Game#show', type: :system do
     fill_in 'Title', with: "Automated Test Game"
     click_on "Submit"
     expect(page)
+  end
+end
+
+RSpec.describe 'Game#new', type: :system do
+  before(:each) do
+    User.create(name:"foobar", email:"foo@bar.com", password:"foobar",
+      password_confirmation:"foobar")
+  end
+
+  after(:each) do
+    User.destroy_all
+  end
+
+  it("takes users to the show page of the game they just created") do
+    login
+    create_game
+    expect(current_path).to(eq("/games/#{Game.last.id}"))
   end
 end

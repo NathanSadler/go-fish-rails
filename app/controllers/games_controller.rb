@@ -5,7 +5,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @game_user = GameUser.new
-    
+
   end
 
   def new
@@ -13,12 +13,14 @@ class GamesController < ApplicationController
   end
 
   def create
-    @user = Game.new(game_params)
-    @user.save
+    @game = Game.new(game_params)
+    @game.save
+    redirect_to @game
   end
 
   private
     def game_params
-      params.require(:game).permit(:title)
+      params.require(:game).permit(:title,
+        :minimum_player_count)
     end
 end
