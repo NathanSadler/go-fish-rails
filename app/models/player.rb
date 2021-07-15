@@ -1,9 +1,10 @@
 class Player
-  attr_reader :name, :hand
+  attr_reader :name, :hand, :score
 
   def initialize(name = "Player")
     @name = name
     @hand = []
+    @score = 0
   end
 
   def add_card_to_hand(card)
@@ -34,6 +35,19 @@ class Player
     hand.include?(card)
   end
 
+  def increase_score(points)
+    set_score(score + points)
+  end
+
+  def lay_down_books
+    book_ranks = find_book_ranks
+    books = hand.select {|card| book_ranks.include?(card.rank)}
+    increase_score(books.length / 4)
+    books.each do |card|
+      remove_card_from_hand(card)
+    end
+  end
+
   def remove_card_from_hand(card)
     if self.hand.include?(card)
       set_hand(self.hand.reject {|hand_card| hand_card == card})
@@ -52,5 +66,10 @@ class Player
   def set_hand(new_hand)
     @hand = new_hand
   end
+
+  private
+    def set_score(new_score)
+      @score = new_score
+    end
 
 end
