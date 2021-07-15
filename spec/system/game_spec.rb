@@ -9,8 +9,9 @@ end
 
 def create_game(game_name = "Test Game", player_count = 2)
   visit new_game_path
-  fill_in 'Title', with: game_name
-  fill_in
+  fill_in 'Game Title', with: game_name
+  fill_in 'Minimum Number of Players', with: player_count.to_s
+  click_on "Submit"
 end
 
 RSpec.describe "Game", type: :system do
@@ -26,8 +27,7 @@ RSpec.describe "Game", type: :system do
   scenario("a logged in user creates a game") do
     login
     visit new_game_path
-    fill_in 'Title', with: "Automated Test Game"
-    click_on "Submit"
+    create_game("Automated Test Game", 2)
     expect(page).to(have_content("Automated Test Game"))
   end
 end
