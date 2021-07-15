@@ -35,6 +35,10 @@ class Player
     hand.include?(card)
   end
 
+  def has_card_with_rank?(rank)
+    (hand.select {|card| card.rank == rank}).length > 0
+  end
+
   def increase_score(points)
     set_score(score + points)
   end
