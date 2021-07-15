@@ -56,4 +56,26 @@ RSpec.describe Player do
       expect(added_cards).to(eq(cards_to_add))
     end
   end
+
+  context('#remove_card_from_hand') do
+    before(:each) do
+      player.add_card_to_hand([Card.new("2", "D"), Card.new("3", "D"), Card.new("4", "D")])
+    end
+
+    it("removes specified cards from the player's hand") do
+      player.remove_card_from_hand(Card.new("2", "D"))
+      expect(player.hand).to(eq([Card.new("3", "D"), Card.new("4", "D")]))
+    end
+
+    it("returns the cards that it removed") do
+      test_cards = Card.new("2", "D")
+      expect(player.remove_card_from_hand(test_cards)).to(eq(test_cards))
+    end
+
+    it("returns nil if the player doesn't have the specified cards") do
+      test_card = Card.new("2", "H")
+      expect(player.remove_card_from_hand(test_card)).to(eq(nil))
+    end
+  end
+
 end

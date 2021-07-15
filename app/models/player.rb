@@ -16,6 +16,16 @@ class Player
     end
   end
 
+  def remove_card_from_hand(card)
+    if self.hand.include?(card)
+      set_hand(self.hand.reject {|hand_card| hand_card == card})
+      return card
+    else
+      return nil
+    end
+  end
+
+
   def set_hand(new_hand)
     @hand = new_hand
   end
