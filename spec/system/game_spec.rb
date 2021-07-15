@@ -69,6 +69,15 @@ RSpec.describe "Game", type: :system do
       session2.click_on("Join Game")
       expect(session2.body).to(have_content("foobar"))
     end
+
+    it("displays the main game view when the game has enough players and the "+
+    "user has joined the game") do
+      create_game(session, "Auto Test", 2)
+      session.click_on "Join Game"
+      session2.visit("/games/#{Game.last.id}")
+      session2.click_on("Join Game")
+      expect(session2.body).to(have_content("Wait Your Turn"))
+    end
   end
 
 end

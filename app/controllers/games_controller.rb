@@ -6,11 +6,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game_user = GameUser.new
     #binding.pry
-    if (GameUser.where(game_id: @game.id, user_id: current_user.id).length == 0)
-      render 'show'
-    elsif (GameUser.where(game_id: @game.id).length < @game.minimum_player_count)
-      render 'waiting_room'
-    end
+    render_show_page(@game)
 
   end
 
