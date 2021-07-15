@@ -61,12 +61,31 @@ RSpec.describe 'Game#new', type: :system do
 end
 
 RSpec.describe "joining a game", type: :system do
+  before(:each) do
+    User.create(name:"foobar", email:"foo@bar.com", password:"foobar",
+      password_confirmation:"foobar")
+  end
+
+  let(:test_user) {User.last}
+
+  after(:each) do
+    User.destroy_all
+  end
+
+  it("creates a GameUser object for this game and user if one doesn't " +
+  "already exist") do
+    login
+    create_game
+    click_on "Join Game"
+    last_gameuser = GameUser.last
+    expect(last_gameuser.game_id).to(eq(Game.last.id))
+    expect(last_gameuser.user_id).to(eq(test_user.id))
+  end
+
   it("shows a waiting_room page when there aren't enough players "+
   "in the game") do
     login
-    visit new_game_path
-    fill_in 'Title', with: "Automated Test Game"
-    click_on "Submit"
+    create_game
     click_on "Join Game"
     expect(page).to(have_content("Waiting for game to start"))
   end

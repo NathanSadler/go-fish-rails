@@ -14,7 +14,7 @@ RSpec.describe "GameUsers", type: :system do
     end
 
     it("creates an entry in the GameUsers table") do
-      Game.create(title: "Join Game Test")
+      Game.create(title: "Join Game Test", minimum_player_count: 2)
       visit "/games/#{Game.last.id}"
       click_on "Join Game"
       last_gameuser = GameUser.last
