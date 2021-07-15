@@ -10,7 +10,8 @@ class Player
   def self.from_json(json)
     restored_player = Player.new(json['name'])
     restored_player.increase_score(json['score'])
-    restored_player.set_hand(json['hand'].map {|json_card| Card.from_json(json_card)})
+    restored_player.set_hand(json['hand'].map {
+      |json_card| Card.from_json(json_card)})
     restored_player
   end
 
