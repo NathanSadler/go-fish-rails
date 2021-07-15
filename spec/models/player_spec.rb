@@ -216,4 +216,22 @@ RSpec.describe Player do
     end
   end
 
+  context('.from_json') do
+    let(:player) {Player.new("John Smith")}
+    let(:test_hand) {[Card.new("8", "S"), Card.new("Q", "D")]}
+
+    before(:each) do
+      player.set_hand(test_hand)
+      player.send(:set_score, 8)
+    end
+
+    it("returns a deck of cards using data from a json hash") do
+      json_player = player.as_json
+      restored_player = Player.from_json(json_player)
+      [:name, :hand, :score].each do |attribute|
+        expect(player.send(attribute)).to(eq(restored_player.send(attribute)))
+      end
+    end
+  end
+
 end

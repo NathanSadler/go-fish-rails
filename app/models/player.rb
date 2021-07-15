@@ -7,6 +7,13 @@ class Player
     @score = 0
   end
 
+  def self.from_json(json)
+    restored_player = Player.new(json['name'])
+    restored_player.increase_score(json['score'])
+    restored_player.set_hand(json['hand'].map {|json_card| Card.from_json(json_card)})
+    restored_player
+  end
+
   def add_card_to_hand(card)
     if(card.is_a?(Array))
       set_hand(hand.concat(card))
