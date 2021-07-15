@@ -22,6 +22,14 @@ class Player
     taken_card
   end
 
+  def find_book_ranks
+    occurences = {}
+    hand.each do |card|
+      occurences[card.rank] ? occurences[card.rank] += 1 : occurences[card.rank] = 1
+    end
+    occurences.keys.select {|rank| occurences[rank] == 4}
+  end
+
   def has_card?(card)
     hand.include?(card)
   end

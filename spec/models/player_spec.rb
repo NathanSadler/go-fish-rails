@@ -126,5 +126,18 @@ RSpec.describe Player do
     end
   end
 
+  context('#find_book_ranks') do
+    before(:each) do
+      book = ["S", "D", "H", "C"].map {|suit| Card.new( "7",  suit)}
+      book_b = ["S", "D", "H", "C"].map {|suit| Card.new( "9",  suit)}
+      player.add_card_to_hand(book)
+      player.add_card_to_hand(book_b)
+    end
+
+    it("returns an array the ranks of each book") do
+      expect(player.find_book_ranks).to(eq(["7", "9"]))
+    end
+  end
+
 
 end
