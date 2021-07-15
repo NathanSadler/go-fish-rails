@@ -188,4 +188,32 @@ RSpec.describe Player do
     end
   end
 
+  context('#as_json') do
+    let(:player) {Player.new("John Smith")}
+    let(:test_hand) {[Card.new("8", "S"), Card.new("Q", "D")]}
+
+    before(:each) do
+      player.set_hand(test_hand)
+      player.send(:set_score, 4)
+    end
+
+    let(:json_result) {player.as_json}
+
+    it("returns a hash that contains the player's name") do
+      expect(json_result['name']).to(eq("John Smith"))
+    end
+
+    it("returns a hash that contains the player's score") do
+      expect(json_result['score']).to(eq(4))
+    end
+
+    it("returns a hash that contains the player's hand") do
+      expect(json_result['hand']).to(eq(test_hand.map(&:as_json)))
+    end
+
+    it("returns a hash with only 3 keys") do
+      expect(json_result.keys.length).to(eq(3))
+    end
+  end
+
 end

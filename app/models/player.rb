@@ -17,6 +17,13 @@ class Player
     end
   end
 
+  def as_json
+    {
+      'name' => name, 'score' => score,
+      'hand' => hand.map(&:as_json)
+    }
+  end
+
   def draw_card(deck)
     taken_card = deck.draw_card
     add_card_to_hand(taken_card)
