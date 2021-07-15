@@ -16,6 +16,16 @@ class Player
     end
   end
 
+  def draw_card(deck)
+    taken_card = deck.draw_card
+    add_card_to_hand(taken_card)
+    taken_card
+  end
+
+  def has_card?(card)
+    hand.include?(card)
+  end
+
   def remove_card_from_hand(card)
     if self.hand.include?(card)
       set_hand(self.hand.reject {|hand_card| hand_card == card})

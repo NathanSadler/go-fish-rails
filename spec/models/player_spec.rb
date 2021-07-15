@@ -1,5 +1,6 @@
 require_relative '../../app/models/player'
 require_relative '../../app/models/card'
+require_relative '../../app/models/deck'
 
 RSpec.describe Player do
 
@@ -95,5 +96,35 @@ RSpec.describe Player do
       expect(removed_cards).to(eq([]))
     end
   end
+
+  context('#draw_card') do
+    let(:test_deck) {test_deck = Deck.new([Card.new("8", "H"), Card.new("8", "C")])}
+    it("takes the top card from the deck and adds it to their hand") do
+      player.draw_card(test_deck)
+      expect(player.has_card?(Card.new("8", "H"))).to(eq(true))
+      expect(test_deck.cards).to(eq([Card.new("8", "C")]))
+    end
+
+    it("returns the card the player took") do
+      taken_card = player.draw_card(test_deck)
+      expect(taken_card).to(eq(Card.new("8", "H")))
+    end
+  end
+
+  context('#has_card?') do
+    let(:card_list) {[Card.new("4", "H"), Card.new("7", "D")]}
+    before(:each) do
+      player.set_hand(card_list)
+    end
+
+    it("is true if the player has the specified card") do
+      expect(player.has_card?(Card.new("4", "H"))).to(eq(true))
+    end
+
+    it("is false if the player doesn't have the specified card") do
+      expect(player.has_card?(Card.new("Q", "D"))).to(eq(false))
+    end
+  end
+
 
 end
