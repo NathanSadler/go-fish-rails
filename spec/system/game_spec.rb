@@ -1,12 +1,5 @@
 require 'rails_helper'
 
-# def login
-#   visit login_path
-#   fill_in 'Email', with: "foo@bar.com"
-#   fill_in "Password", with: "foobar"
-#   click_on "Submit"
-# end
-
 def login(session, email="foo@bar.com", password="foobar")
   session.visit login_path
   session.fill_in 'Email', with: email
