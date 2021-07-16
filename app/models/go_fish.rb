@@ -6,10 +6,19 @@ class GoFish
     @current_player_index = current_player_index
   end
 
+  def add_player(player)
+    set_players(players.push(player))
+  end
+
   def as_json
     { 'players' => players.map(&:as_json),
       'deck' => deck.as_json,
       'current_player_index' => current_player_index
     }
   end
+
+  private
+    def set_players(new_players)
+      @players = new_players
+    end
 end

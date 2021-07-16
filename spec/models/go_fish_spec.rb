@@ -27,4 +27,24 @@ RSpec.describe GoFish do
       expect(serialized_game['current_player_index']).to(eq(1))
     end
   end
+
+  context('#add_player') do
+    it("adds a player to the GoFish") do
+      go_fish.add_player(Player.new("John Won't"))
+      expect(go_fish.players[-1].name).to(eq("John Won't"))
+    end
+
+    it("doesn't just replace the GoFish's players array") do
+      go_fish.add_player(Player.new)
+      expect(go_fish.players.length).to(eq(3))
+    end
+  end
+
+  context('#set_players') do
+    it("sets the players array") do
+      go_fish.send(:set_players, [Player.new("John Might")])
+      expect(go_fish.players.length).to(eq(1))
+      expect(go_fish.players[0].name).to(eq("John Might"))
+    end
+  end
 end
