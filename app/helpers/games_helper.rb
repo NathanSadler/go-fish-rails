@@ -8,4 +8,9 @@ module GamesHelper
       render 'main_game_view'
     end
   end
+
+  def turn_player_id(game_id)
+    loaded_go_fish = GoFish.load(game_id)
+    loaded_go_fish.turn_player.user_id
+  end
 end

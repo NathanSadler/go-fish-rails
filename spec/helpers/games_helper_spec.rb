@@ -11,6 +11,17 @@ require 'rails_helper'
 #   end
 # end
 
-# RSpec.describe GamesHelper, type: :helper do
-#   pending "add some examples to (or delete) #{__FILE__}"
-# end
+RSpec.describe GamesHelper, type: :helper do
+  let(:session1) {Capybara::Session.new(:rack_test, Rails.application)}
+
+  describe("turn_player_id") do
+    let(:last_game) {Game.create}
+
+    it("returns the user_id of the player whose turn it is") do
+      loaded_go_fish = GoFish.load(last_game.id)
+      loaded_go_fish.add_player(Player.new("Test Dummy", 14))
+      loaded_go_fish.save
+      expect(turn_player_id(last_game.id)).to(eq(14))
+    end
+  end
+end

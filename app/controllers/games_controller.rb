@@ -24,6 +24,7 @@ class GamesController < ApplicationController
 
   def go_fish
     @go_fish = GoFish.load(params[:id])
+    
     render 'main_game_view'
   end
 
