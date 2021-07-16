@@ -65,4 +65,10 @@ RSpec.describe GoFish do
       expect(go_fish.players[0].name).to(eq("John Might"))
     end
   end
+
+  context('#turn_player') do
+    it("returns the player whose turn it is") do
+      expect(go_fish.turn_player).to(eq(test_players[1]))
+    end
+  end
 end

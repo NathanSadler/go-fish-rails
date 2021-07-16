@@ -22,6 +22,10 @@ class GoFish
     (cards_in_hands == 0) && (deck.empty?)
   end
 
+  def turn_player
+    players[current_player_index]
+  end
+
   private
     def set_players(new_players)
       @players = new_players
