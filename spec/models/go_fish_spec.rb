@@ -77,6 +77,15 @@ RSpec.describe GoFish do
       #started instead of players joinging
   end
 
+  context('.from_json') do
+    let(:json_go_fish) {go_fish.as_json}
+    let(:restored_go_fish) {GoFish.from_json(json_go_fish)}
+
+    it("builds a go_fish game from a json hash") do
+      #expect(restored_game.)
+    end
+  end
+
   context('#increment_current_player_index') do
     it("increases the turn counter by one") do
       go_fish.add_player(Player.new)
@@ -111,7 +120,8 @@ RSpec.describe GoFish do
   context('#save') do
     it("saves the serialized version of itself to the Games table") do
       Game.create
-      go_fish.set_game_id(Game.last.id)
+      # go_fish.set_game_id(Game.last.id)
+      go_fish.send(:set_game_id, Game.last.id)
       go_fish.save
       expect(Game.last.jsonb).to(eq(go_fish.as_json))
       Game.last.destroy
