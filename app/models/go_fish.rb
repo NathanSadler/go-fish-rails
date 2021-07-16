@@ -42,6 +42,12 @@ class GoFish
     (cards_in_hands == 0) && (deck.empty?)
   end
 
+  def save
+    associated_game = Game.find(game_id)
+    associated_game.go_fish = as_json
+    associated_game.save
+  end
+
   def take_turn
     increment_current_player_index
   end

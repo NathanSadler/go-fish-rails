@@ -123,10 +123,9 @@ RSpec.describe GoFish do
   context('#save') do
     it("saves the serialized version of itself to the Games table") do
       Game.create
-      # go_fish.set_game_id(Game.last.id)
       go_fish.send(:set_game_id, Game.last.id)
       go_fish.save
-      expect(Game.last.jsonb).to(eq(go_fish.as_json))
+      expect(Game.last.go_fish).to(eq(go_fish.as_json))
       Game.last.destroy
     end
   end
