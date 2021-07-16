@@ -13,7 +13,6 @@ RSpec.describe GoFish do
     test_players[1].send(:set_score, 2)
     GameUser.create(game_id: Game.last.id, user_id: test_user.id)
     GameUser.create(game_id: Game.last.id, user_id: test_user2.id)
-    binding.pry
   end
 
   after(:each) do
