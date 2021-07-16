@@ -11,15 +11,18 @@ RSpec.describe GoFish do
 
   let(:go_fish) {GoFish.new(test_players, test_deck, 1)}
 
+  # Make it so that it uses an actual hash to test for
+
   describe('#as_json') do
+    let!(:serialized_game) {go_fish.as_json}
+
     it("returns a hash with an array of each player converted to json") do
-      serialized_game = go_fish.as_json
-      expect(serialized_game['players']).to(eq(test_players.map(&:as_json)))
+      expect(serialized_game['players'][0]['name']).to(eq("John Doe"))
     end
 
     it("returns a hash with the deck converted to json") do
-      serialized_game = go_fish.as_json
-      expect(serialized_game['deck']).to(eq(test_deck.as_json))
+
+      expect(serialized_game['deck']['cards'][0]).to(eq({"rank" => "8", "suit" => "C"}))
     end
 
     it("returns a hash with the current_player_index") do
@@ -70,8 +73,19 @@ RSpec.describe GoFish do
 
     # TODO: make it so that dealing cards is what considers the game to begin
       #started instead of players joinging
+  end
 
+  context('#increment_current_player_index') do
+    it("increases the turn counter by one") do
+      go_fish.add_player(Player.new)
+      go_fish.increment_current_player_index
+      expect(go_fish.current_player_index).to(eq(2))
+    end
 
+    it("goes back to 0 if it goes back to the last player") do
+      go_fish.increment_current_player_index
+      expect(go_fish.turn_player).to(eq(test_players[0]))
+    end
   end
 
   context('#over?') do
@@ -89,6 +103,14 @@ RSpec.describe GoFish do
     it("is false if any players have any cards in their hand") do
       go_fish.deck.send(:set_cards, [])
       expect(go_fish.over?).to(eq(false))
+    end
+  end
+
+  context('#set_current_player_index') do
+    it("returns the remainder of the given value divided by the number of "+
+    "players") do
+      go_fish.add_player(Player.new)
+      expect(go_fish.send(:set_current_player_index, 4)).to(eq(1))
     end
   end
 

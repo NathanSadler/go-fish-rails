@@ -1,9 +1,10 @@
 class GoFish
   attr_reader :players, :deck, :current_player_index
-  def initialize(players, deck = Deck.new, current_player_index = 0)
+  def initialize(players, deck = Deck.new, current_player_index = 0, game_user_id: 0)
     @players = players
     @deck = deck
     @current_player_index = current_player_index
+    @game_user_id = game_user_id
   end
 
   def add_player(player)
@@ -22,6 +23,10 @@ class GoFish
     card_deal_count.times do
       players.each {|player| player.add_card_to_hand(deck.draw_card)}
     end
+  end
+
+  def increment_current_player_index
+    
   end
 
   def over?
