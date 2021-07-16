@@ -82,7 +82,10 @@ RSpec.describe GoFish do
     let(:restored_go_fish) {GoFish.from_json(json_go_fish)}
 
     it("builds a go_fish game from a json hash") do
-      #expect(restored_game.)
+      expect(restored_go_fish.players.map(&:name)).to(eq(go_fish.players.map(&:name)))
+      expect(restored_go_fish.deck.cards).to(eq(go_fish.deck.cards))
+      expect(restored_go_fish.current_player_index).to(eq(go_fish.current_player_index))
+      expect(restored_go_fish.game_id).to(eq(go_fish.game_id))
     end
   end
 

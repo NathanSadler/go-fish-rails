@@ -26,6 +26,13 @@ class GoFish
     end
   end
 
+  def self.from_json(json)
+    restored_players = json['players'].map {|json_player| Player.from_json(json_player)}
+    restored_deck = Deck.from_json(json['deck'])
+    GoFish.new(restored_players, restored_deck, json['current_player_index'],
+      game_id: json['game_id'])
+  end
+
   def increment_current_player_index
     set_current_player_index(current_player_index + 1)
   end
