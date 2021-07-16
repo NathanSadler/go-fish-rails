@@ -13,6 +13,18 @@ RSpec.describe GoFish do
 
   # Make it so that it uses an actual hash to test for
 
+  context('#add_player') do
+    it("adds a player to the GoFish") do
+      go_fish.add_player(Player.new("John Won't"))
+      expect(go_fish.players[-1].name).to(eq("John Won't"))
+    end
+
+    it("doesn't just replace the GoFish's players array") do
+      go_fish.add_player(Player.new)
+      expect(go_fish.players.length).to(eq(3))
+    end
+  end
+
   describe('#as_json') do
     let!(:serialized_game) {go_fish.as_json}
 
@@ -30,18 +42,6 @@ RSpec.describe GoFish do
 
     it("returns a hash with the ID of the Game Object associated with it") do
       expect(serialized_game['game_user_id']).to(eq(0))
-    end
-  end
-
-  context('#add_player') do
-    it("adds a player to the GoFish") do
-      go_fish.add_player(Player.new("John Won't"))
-      expect(go_fish.players[-1].name).to(eq("John Won't"))
-    end
-
-    it("doesn't just replace the GoFish's players array") do
-      go_fish.add_player(Player.new)
-      expect(go_fish.players.length).to(eq(3))
     end
   end
 
