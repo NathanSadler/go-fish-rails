@@ -40,6 +40,40 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#deal_cards') do
+    before(:each) do
+      go_fish.players[0].set_hand([])
+      go_fish.deck.send(:set_cards, Deck.default_deck)
+    end
+
+    it("gives 7 cards to each player if there are 3 or fewer players") do
+      go_fish.add_player(Player.new)
+      go_fish.deal_cards
+      go_fish.players.each {|fisher| expect(fisher.hand.length).to(eq(7))}
+    end
+
+    it("gives 5 cards to each player if there are more than 3 players") do
+      2.times {go_fish.add_player(Player.new)}
+      go_fish.deal_cards
+      go_fish.players.each {|fisher| expect(fisher.hand.length).to(eq(5))}
+    end
+
+    it("doesn't make the mistake of giving multiple players the same hand") do
+      go_fish.deal_cards
+      expect(go_fish.players[0].hand).to_not(eq(go_fish.players[1].hand))
+    end
+
+    it("removes cards from the deck") do
+      go_fish.deal_cards
+      expect(go_fish.deck.cards_in_deck).to(eq(38))
+    end
+
+    # TODO: make it so that dealing cards is what considers the game to begin
+      #started instead of players joinging
+
+
+  end
+
   context('#over?') do
     it("is true if all players have no cards and the deck is empty") do
       go_fish.players[0].set_hand([])

@@ -17,6 +17,13 @@ class GoFish
     }
   end
 
+  def deal_cards
+    players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
+    card_deal_count.times do
+      players.each {|player| player.add_card_to_hand(deck.draw_card)}
+    end
+  end
+
   def over?
     cards_in_hands = players.map(&:hand).map(&:length).sum
     (cards_in_hands == 0) && (deck.empty?)
@@ -31,3 +38,6 @@ class GoFish
       @players = new_players
     end
 end
+
+# Method(s) I might need to add later:
+# shuffle_and_deal
