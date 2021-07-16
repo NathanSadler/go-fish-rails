@@ -11,12 +11,14 @@ RSpec.describe GoFish do
     Game.create
     test_players[0].set_hand([Card.new("Q", "C")])
     test_players[1].send(:set_score, 2)
-    GameUser.new(game_id: Game.last, user_id: test_user.id)
-    GameUser.new(game_id: Game.last, user_id: test_user2.id)
+    GameUser.create(game_id: Game.last.id, user_id: test_user.id)
+    GameUser.create(game_id: Game.last.id, user_id: test_user2.id)
+    binding.pry
   end
 
   after(:each) do
     Game.last.destroy
+    2.times {GameUser.last.destroy}
   end
 
   let(:go_fish) {GoFish.new(test_players, test_deck, 1)}
