@@ -1,10 +1,10 @@
 
 RSpec.describe GoFish do
-  let(:test_players) {[Player.new("John Doe"), Player.new("John Don't")]}
-  let(:test_deck) {Deck.new([Card.new("8", "C")])}
   let!(:test_user) {User.first}
   let!(:test_user2) {User.create(name: "Test User", email: "test@user.com",
     password: "password", password_confirmation: "password")}
+  let(:test_players) {[Player.new("John Doe"), Player.new("John Don't")]}
+  let(:test_deck) {Deck.new([Card.new("8", "C")])}
 
 
   before(:each) do

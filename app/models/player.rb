@@ -1,10 +1,11 @@
 class Player
-  attr_reader :name, :hand, :score
+  attr_reader :name, :hand, :score, :user_id
 
-  def initialize(name = "Player")
+  def initialize(name = "Player", user_id = 0)
     @name = name
     @hand = []
     @score = 0
+    @user_id = user_id
   end
 
   def self.from_json(json)
