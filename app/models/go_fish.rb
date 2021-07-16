@@ -37,6 +37,11 @@ class GoFish
     set_current_player_index(current_player_index + 1)
   end
 
+  def self.load(game_id)
+    loaded_go_fish = GoFish.from_json(Game.find(game_id).go_fish)
+    loaded_go_fish
+  end
+
   def over?
     cards_in_hands = players.map(&:hand).map(&:length).sum
     (cards_in_hands == 0) && (deck.empty?)

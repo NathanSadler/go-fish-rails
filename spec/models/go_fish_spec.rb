@@ -102,6 +102,28 @@ RSpec.describe GoFish do
     end
   end
 
+  context('.load') do
+    before(:each) do
+      Game.create
+      go_fish.send(:set_game_id, Game.last.id)
+      go_fish.save
+    end
+
+    after(:each) do
+      Game.last.destroy
+    end
+
+    it("loads a go_fish object using the go_fish column from a record in the "+
+    "Games table") do
+      loaded_go_fish = GoFish.load(Game.last.id)
+      expect(loaded_go_fish.players.map(&:name)).to(eq(go_fish.players.map(&:name)))
+      expect(loaded_go_fish.deck.cards).to(eq(go_fish.deck.cards))
+      [:current_player_index, :game_id].each do |method|
+        expect(loaded_go_fish.send(method)).to(eq(go_fish.send(method)))
+      end
+    end
+  end
+
   context('#over?') do
     it("is true if all players have no cards and the deck is empty") do
       go_fish.players[0].set_hand([])
