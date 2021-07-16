@@ -25,8 +25,11 @@ RSpec.describe GoFish do
     end
 
     it("returns a hash with the current_player_index") do
-      serialized_game = go_fish.as_json
       expect(serialized_game['current_player_index']).to(eq(1))
+    end
+
+    it("returns a hash with the ID of the Game Object associated with it") do
+      expect(serialized_game['game_user_id']).to(eq(0))
     end
   end
 
