@@ -121,6 +121,14 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#take_turn') do
+    it("increments the current_player_index") do
+      go_fish.add_player(Player.new)
+      go_fish.take_turn
+      expect(go_fish.current_player_index).to(eq(2))
+    end
+  end
+
   context('#turn_player') do
     it("returns the player whose turn it is") do
       expect(go_fish.turn_player).to(eq(test_players[1]))

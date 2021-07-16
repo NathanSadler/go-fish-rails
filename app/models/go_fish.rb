@@ -34,6 +34,10 @@ class GoFish
     (cards_in_hands == 0) && (deck.empty?)
   end
 
+  def take_turn
+    increment_current_player_index
+  end
+
   def turn_player
     players[current_player_index]
   end
