@@ -1,6 +1,6 @@
 class GoFish
   attr_reader :players, :deck, :current_player_index, :game_id
-  def initialize(players, deck = Deck.new, current_player_index = 0, game_id: 0)
+  def initialize(players = [], deck = Deck.new, current_player_index = 0, game_id: 0)
     @players = players
     @deck = deck
     @current_player_index = current_player_index
@@ -38,8 +38,13 @@ class GoFish
   end
 
   def self.load(game_id)
-    loaded_go_fish = GoFish.from_json(Game.find(game_id).go_fish)
-    loaded_go_fish
+    game_go_fish = Game.find(game_id).go_fish
+    if(!game_go_fish.nil?)
+      loaded_go_fish = GoFish.from_json(Game.find(game_id).go_fish)
+      loaded_go_fish
+    else
+      GoFish.new(game_id: game_id)
+    end
   end
 
   def over?

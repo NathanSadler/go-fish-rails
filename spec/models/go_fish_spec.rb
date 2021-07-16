@@ -35,6 +35,10 @@ RSpec.describe GoFish do
       go_fish.add_player(Player.new)
       expect(go_fish.players.length).to(eq(3))
     end
+
+    xit("won't add players once the game starts") do
+
+    end
   end
 
   describe('#as_json') do
@@ -127,6 +131,31 @@ RSpec.describe GoFish do
       expect(loaded_go_fish.deck.cards).to(eq(go_fish.deck.cards))
       [:current_player_index, :game_id].each do |method|
         expect(loaded_go_fish.send(method)).to(eq(go_fish.send(method)))
+      end
+    end
+
+    context("the Game object's go_fish column is nil") do
+      before(:each) do
+        Game.create
+      end
+
+      after(:each) do
+        Game.last.destroy
+      end
+
+      let(:last_game_id) {Game.last.id}
+      let(:loaded_go_fish) {GoFish.load(last_game_id)}
+
+      it("generates a new GoFish object with the game_id provided to it") do
+        expect(loaded_go_fish.game_id).to(eq(last_game_id))
+      end
+
+      it("uses the default values for all other attributes") do
+        default_go_fish = GoFish.new
+        expect(loaded_go_fish.players).to(eq(default_go_fish.players))
+        expect(loaded_go_fish.deck.cards).to(eq(default_go_fish.deck.cards))
+        expect(loaded_go_fish.current_player_index).to(eq(
+          default_go_fish.current_player_index))
       end
     end
   end
