@@ -48,6 +48,10 @@ class GoFish
       @current_player_index = new_value % players.length
     end
 
+    def set_game_id(new_id)
+      @game_id = new_id
+    end
+
     def set_players(new_players)
       @players = new_players
     end
