@@ -108,6 +108,16 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#save') do
+    it("saves the serialized version of itself to the Games table") do
+      Game.create
+      go_fish.set_game_id(Game.last.id)
+      go_fish.save
+      expect(Game.last.jsonb).to(eq(go_fish.as_json))
+      Game.last.destroy
+    end
+  end
+
   context('#set_current_player_index') do
     it("returns the remainder of the given value divided by the number of "+
     "players") do
