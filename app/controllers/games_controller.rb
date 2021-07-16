@@ -22,9 +22,18 @@ class GamesController < ApplicationController
     redirect_to @game
   end
 
+  def go_fish
+    @go_fish = GoFish.load(params[:id])
+    render 'main_game_view'
+  end
+
   private
     def game_params
       params.require(:game).permit(:title,
         :minimum_player_count)
+    end
+
+    def go_fish_params
+      params.require(:go_fish).permit(:id)
     end
 end

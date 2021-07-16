@@ -2,11 +2,20 @@
 RSpec.describe GoFish do
   let(:test_players) {[Player.new("John Doe"), Player.new("John Don't")]}
   let(:test_deck) {Deck.new([Card.new("8", "C")])}
+  let!(:test_user) {User.first}
+  let!(:test_user2) {User.create(name: "Test User", email: "test@user.com",
+    password: "password", password_confirmation: "password")}
 
 
   before(:each) do
+    Game.create
     test_players[0].set_hand([Card.new("Q", "C")])
     test_players[1].send(:set_score, 2)
+    GameUser.new(game_id: Game.last)
+  end
+
+  after(:each) do
+    Game.last.destroy
   end
 
   let(:go_fish) {GoFish.new(test_players, test_deck, 1)}
@@ -104,13 +113,8 @@ RSpec.describe GoFish do
 
   context('.load') do
     before(:each) do
-      Game.create
       go_fish.send(:set_game_id, Game.last.id)
       go_fish.save
-    end
-
-    after(:each) do
-      Game.last.destroy
     end
 
     it("loads a go_fish object using the go_fish column from a record in the "+
