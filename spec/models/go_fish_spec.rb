@@ -40,6 +40,24 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#over?') do
+    it("is true if all players have no cards and the deck is empty") do
+      go_fish.players[0].set_hand([])
+      go_fish.deck.send(:set_cards, [])
+      expect(go_fish.over?).to(eq(true))
+    end
+
+    it("is false if the deck isn't empty") do
+      go_fish.players[0].set_hand([])
+      expect(go_fish.over?).to(eq(false))
+    end
+
+    it("is false if any players have any cards in their hand") do
+      go_fish.deck.send(:set_cards, [])
+      expect(go_fish.over?).to(eq(false))
+    end
+  end
+
   context('#set_players') do
     it("sets the players array") do
       go_fish.send(:set_players, [Player.new("John Might")])

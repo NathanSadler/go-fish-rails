@@ -78,7 +78,16 @@ RSpec.describe 'Deck' do
     it("returns a deck of cards using data from a json hash") do
       json_deck = test_deck.as_json
       expect(Deck.from_json(json_deck).cards).to(eq(test_deck.cards))
-      
+    end
+  end
+
+  context('#empty?') do
+    it("is true if there are no cards in the deck") do
+      expect(Deck.new([]).empty?).to(eq(true))
+    end
+
+    it("is false if there are cards in the deck") do
+      expect(Deck.new.empty?).to(eq(false))
     end
   end
 

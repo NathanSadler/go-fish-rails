@@ -37,6 +37,10 @@ class Deck
     cards.length
   end
 
+  def empty?
+    cards_in_deck == 0
+  end
+
   def as_json(*)
     {"cards" => cards.map(&:as_json)}
   end

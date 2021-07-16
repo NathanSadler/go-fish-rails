@@ -17,6 +17,11 @@ class GoFish
     }
   end
 
+  def over?
+    cards_in_hands = players.map(&:hand).map(&:length).sum
+    (cards_in_hands == 0) && (deck.empty?)
+  end
+
   private
     def set_players(new_players)
       @players = new_players
