@@ -21,7 +21,6 @@ RSpec.describe GoFish do
     end
 
     it("returns a hash with the deck converted to json") do
-
       expect(serialized_game['deck']['cards'][0]).to(eq({"rank" => "8", "suit" => "C"}))
     end
 
