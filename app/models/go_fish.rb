@@ -26,7 +26,7 @@ class GoFish
   end
 
   def increment_current_player_index
-    
+    set_current_player_index(current_player_index + 1)
   end
 
   def over?
@@ -39,6 +39,10 @@ class GoFish
   end
 
   private
+    def set_current_player_index(new_value)
+      @current_player_index = new_value % players.length
+    end
+
     def set_players(new_players)
       @players = new_players
     end
