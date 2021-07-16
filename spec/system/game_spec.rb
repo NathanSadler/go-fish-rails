@@ -45,7 +45,6 @@ RSpec.describe "Game", type: :system do
 
   describe("starting a game") do
     it("creates a timestamp for when the game was started") do
-      login(session)
       create_game(session, "Who cares?", 1)
       session.click_on("Join Game")
       expect(Game.last.started_at.nil?).to(be(false))
@@ -53,13 +52,22 @@ RSpec.describe "Game", type: :system do
   end
 
   describe("joining a game") do
+    before(:each) do
+      create_game(session)
+      session.click_on("Join Game")
+    end
+
+    let(:last_gameuser) {GameUser.last}
+
     it("creates a GameUser object for this game and user if one doesn't " +
     "already exist") do
-      create_game(session)
-      session.click_on "Join Game"
-      last_gameuser = GameUser.last
       expect(last_gameuser.game_id).to(eq(Game.last.id))
       expect(last_gameuser.user_id).to(eq(User.last.id))
+    end
+
+    it("adds a Player object to the game for the GameUser that is joining") do
+      loaded_go_fish = GoFish.load(Game.last.id)
+      expect(loaded_go_fish.players.map(&:user_id).include?(last_gameuser.user_id)).to(eq(true))
     end
   end
 

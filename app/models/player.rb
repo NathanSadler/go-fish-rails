@@ -9,7 +9,7 @@ class Player
   end
 
   def self.from_json(json)
-    restored_player = Player.new(json['name'])
+    restored_player = Player.new(json['name'], json['user_id'])
     restored_player.increase_score(json['score'])
     restored_player.set_hand(json['hand'].map {
       |json_card| Card.from_json(json_card)})
@@ -29,7 +29,7 @@ class Player
   def as_json
     {
       'name' => name, 'score' => score,
-      'hand' => hand.map(&:as_json)
+      'hand' => hand.map(&:as_json), 'user_id' => user_id
     }
   end
 

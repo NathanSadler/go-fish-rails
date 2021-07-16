@@ -189,7 +189,7 @@ RSpec.describe Player do
   end
 
   context('#as_json') do
-    let(:player) {Player.new("John Smith")}
+    let(:player) {Player.new("John Smith", 18)}
     let(:test_hand) {[Card.new("8", "S"), Card.new("Q", "D")]}
 
     before(:each) do
@@ -211,13 +211,17 @@ RSpec.describe Player do
       expect(json_result['hand']).to(eq(test_hand.map(&:as_json)))
     end
 
-    it("returns a hash with only 3 keys") do
-      expect(json_result.keys.length).to(eq(3))
+    it("returns a hash that contains the player's user_id") do
+      expect(json_result['user_id']).to(eq(18))
+    end
+
+    it("returns a hash with only 4 keys") do
+      expect(json_result.keys.length).to(eq(4))
     end
   end
 
   context('.from_json') do
-    let(:player) {Player.new("John Smith")}
+    let(:player) {Player.new("John Smith", 18)}
     let(:test_hand) {[Card.new("8", "S"), Card.new("Q", "D")]}
 
     before(:each) do
@@ -228,8 +232,8 @@ RSpec.describe Player do
     it("returns a deck of cards using data from a json hash") do
       json_player = player.as_json
       restored_player = Player.from_json(json_player)
-      [:name, :hand, :score].each do |attribute|
-        expect(player.send(attribute)).to(eq(restored_player.send(attribute)))
+      [:name, :hand, :score, :user_id].each do |attribute|
+        expect(restored_player.send(attribute)).to(eq(player.send(attribute)))
       end
     end
   end
