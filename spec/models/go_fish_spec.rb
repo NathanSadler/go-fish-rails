@@ -116,6 +116,13 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#set_game_id') do
+    it("sets the game_id") do
+      go_fish.send(:set_game_id, 12)
+      expect(go_fish.game_id).to(eq(12))
+    end
+  end
+
   context('#set_players') do
     it("sets the players array") do
       go_fish.send(:set_players, [Player.new("John Might")])
