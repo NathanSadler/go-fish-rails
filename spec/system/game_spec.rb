@@ -95,6 +95,12 @@ RSpec.describe "Game", type: :system do
       session2.click_on("Join Game")
       expect(session2.body).to(have_content("Wait Your Turn"))
     end
+
+    xit("displays the take_turn page when it is the user's turn") do
+      create_game(session, "Otto Test", 1)
+      session.click_on "Join Game"
+      expect(session1.body).to(have_content("Take Your Turn"))
+    end
   end
 
 end
