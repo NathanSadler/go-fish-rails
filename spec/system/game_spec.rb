@@ -63,7 +63,8 @@ RSpec.describe "Game", type: :system do
       create_game(session)
       session.click_on "Join Game"
       expect(session.body).to(have_content("Waiting for game to start"))
-      
+      session.click_on("Try To Start Game")
+      expect(session.body).to(have_content("Waiting for game to start"))
     end
 
     it("lists all players in the game in the waiting room") do
