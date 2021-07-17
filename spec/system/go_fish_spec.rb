@@ -30,6 +30,8 @@ RSpec.describe "GoFish", type: :system do
     User.destroy_all
   end
 
+  describe("")
+
   describe("edit/updating a game") do
     before(:each) do
       create_game(session, "Aught O Test", 2)
@@ -39,12 +41,11 @@ RSpec.describe "GoFish", type: :system do
       session.visit current_path
     end
 
-    describe("the Take Turn button") do
-      it("increments the go_fish's current_player_index after pressing it") do
-        session.click_on "Take Turn"
-        loaded_go_fish = GoFish.load(Game.last.id)
-        expect(loaded_go_fish.turn_player).to(eq(loaded_go_fish.players[1]))
-      end
+    it("increments the go_fish's current_player_index after pressing the take "+
+      "turn button") do
+      session.click_on "Take Turn"
+      loaded_go_fish = GoFish.load(Game.last.id)
+      expect(loaded_go_fish.turn_player).to(eq(loaded_go_fish.players[1]))
     end
   end
 
