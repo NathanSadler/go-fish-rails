@@ -103,22 +103,4 @@ RSpec.describe "Game", type: :system do
     end
   end
 
-  describe("the take_turn page") do
-    before(:each) do
-      create_game(session, "Aught O Test", 2)
-      session.click_on "Join Game"
-      session2.visit("/games/#{Game.last.id}")
-      session2.click_on "Join Game"
-      session.visit current_path
-    end
-
-    describe("the Take Turn button") do
-      it("increments the go_fish's current_player_index after pressing it") do
-        session.click_on "Take Turn"
-        loaded_go_fish = GoFish.load(Game.last.id)
-        expect(loaded_go_fish.turn_player).to(eq(loaded_go_fish.players[1]))
-      end
-    end
-  end
-
 end
