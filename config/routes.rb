@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'go_fish/show'
+  get 'go_fish/edit'
   #get 'game_user/create'
   # get 'games/index'
   # get 'games/show'
