@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
   post 'game_users', to: 'game_user#create'
   post 'game_user/create'
+  
   resources :users
   resources :games
   resources :go_fish
