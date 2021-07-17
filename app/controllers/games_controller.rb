@@ -24,8 +24,11 @@ class GamesController < ApplicationController
 
   def go_fish
     @go_fish = GoFish.load(params[:id])
-    
-    render 'main_game_view'
+    if current_user.id == turn_player_id(params[:id])
+      render 'take_turn'
+    else
+      render 'main_game_view'
+    end
   end
 
   private
