@@ -32,17 +32,21 @@ RSpec.describe "GoFish", type: :system do
 
   describe("showing a game") do
     before(:each) do
-      create_game(session "Ah, Toe Test", 2)
+      create_game(session, "Ah, Toe Test", 2)
       session.click_on "Join Game"
       session2.visit("/games/#{Game.last.id}")
       session2.click_on "Join Game"
       session.visit current_path
     end
 
+    let(:loaded_go_fish) {GoFish.load(Game.last.id)}
+
     it("displays the cards that the player has") do
-      loaded_go_fish = GoFish.load(Game.last.id)
       loaded_go_fish.players[0].send(:set_hand, [])
-      #load
+      loaded_go_fish.deck.send(:set_cards, [Card.new("9", "S")])
+      loaded_go_fish.save
+      session.click_on "Take Turn"
+      expect(session.body).to(have_content("9 of Spades"))
     end
   end
 
