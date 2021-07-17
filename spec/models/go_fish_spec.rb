@@ -1,3 +1,4 @@
+require 'rails_helper'
 
 RSpec.describe GoFish do
   let!(:test_user) {User.first}
@@ -91,6 +92,24 @@ RSpec.describe GoFish do
 
     # TODO: make it so that dealing cards is what considers the game to begin
       #started instead of players joinging
+  end
+
+  context('#find_player_with_user_id') do
+    before(:each) do
+      new_id = 1
+      go_fish.players.each do |go_fish_player|
+        go_fish_player.send(:set_user_id, new_id)
+        new_id += 1
+      end
+    end
+
+    it("returns a player with a given user_id") do
+      expect(go_fish.find_player_with_user_id(1)).to(eq(go_fish.players[0]))
+    end
+
+    it("returns nil if there is no player with a matching id") do
+      expect(go_fish.find_player_with_user_id(0)).to(eq(nil))
+    end
   end
 
   context('.from_json') do
@@ -215,7 +234,7 @@ RSpec.describe GoFish do
   context('#take_turn') do
     it("increments the current_player_index") do
       go_fish.add_player(Player.new)
-      go_fish.take_turn
+      go_fish.take_turn(go_fish.turn_player)
       expect(go_fish.current_player_index).to(eq(2))
     end
   end

@@ -8,11 +8,13 @@ class GoFishController < ApplicationController
 
   def edit
     @go_fish = GoFish.load(params[:id])
+    @go_fish.players[0].draw_card(@go_fish.deck)
+    @go_fish.save
   end
 
   def update
     @go_fish = GoFish.load(params[:id])
-    @go_fish.take_turn
+    @go_fish.take_turn(@go_fish.find_player_with_user_id(current_user.id))
     @go_fish.save
     redirect_to go_fish_path(@go_fish.game_id)
   end

@@ -92,4 +92,9 @@ class Player
       @score = new_score
     end
 
+    # only to be used in tests!
+    def set_user_id(new_id)
+      @user_id = new_id
+    end
+
 end

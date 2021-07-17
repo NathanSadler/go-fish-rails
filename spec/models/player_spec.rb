@@ -238,4 +238,12 @@ RSpec.describe Player do
     end
   end
 
+  context('.set_user_id') do
+    it("changes the player's user_id") do
+      expected_id = 420
+      player.send(:set_user_id, expected_id)
+      expect(player.user_id).to(eq(expected_id))
+    end
+  end
+
 end

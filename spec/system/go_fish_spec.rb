@@ -30,7 +30,21 @@ RSpec.describe "GoFish", type: :system do
     User.destroy_all
   end
 
-  describe("")
+  describe("showing a game") do
+    before(:each) do
+      create_game(session "Ah, Toe Test", 2)
+      session.click_on "Join Game"
+      session2.visit("/games/#{Game.last.id}")
+      session2.click_on "Join Game"
+      session.visit current_path
+    end
+
+    it("displays the cards that the player has") do
+      loaded_go_fish = GoFish.load(Game.last.id)
+      loaded_go_fish.players[0].send(:set_hand, [])
+      #load
+    end
+  end
 
   describe("edit/updating a game") do
     before(:each) do
@@ -46,6 +60,23 @@ RSpec.describe "GoFish", type: :system do
       session.click_on "Take Turn"
       loaded_go_fish = GoFish.load(Game.last.id)
       expect(loaded_go_fish.turn_player).to(eq(loaded_go_fish.players[1]))
+    end
+
+    describe("taking a card from the deck and giving it to the user") do
+      before(:each) do
+        loaded_go_fish = GoFish.load(Game.last.id)
+        loaded_go_fish.players[0].set_hand([])
+        loaded_go_fish.deck.send(:set_cards, [Card.new("4", "H")])
+        loaded_go_fish.save
+      end
+
+      it("takes a card from the deck and adds it to the user's hand when their" +
+      " turn is over") do
+        session.click_on "Take Turn"
+        loaded_go_fish = GoFish.load(Game.last.id)
+        expect(loaded_go_fish.players[0].hand).to(eq([Card.new("4", "H")]))
+        expect(loaded_go_fish.deck.empty?).to(be(true))
+      end
     end
   end
 

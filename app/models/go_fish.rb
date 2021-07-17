@@ -26,6 +26,11 @@ class GoFish
     end
   end
 
+  def find_player_with_user_id(user_id)
+    players.each {|player| return player if player.user_id == user_id}
+    return nil
+  end
+
   def self.from_json(json)
     restored_players = json['players'].map {|json_player| Player.from_json(json_player)}
     restored_deck = Deck.from_json(json['deck'])
@@ -58,7 +63,8 @@ class GoFish
     associated_game.save
   end
 
-  def take_turn
+  def take_turn(player)
+    player.draw_card(deck)
     increment_current_player_index
   end
 
