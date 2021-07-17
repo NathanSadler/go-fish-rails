@@ -138,6 +138,23 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#list_cards_of_player_with_user_id') do
+    let(:expected_cards) {[Card.new("8", "H"), Card.new("9", "D")]}
+    before(:each) do
+      new_id = 0
+      go_fish.players.each do |player|
+        player.send(:set_user_id, new_id)
+        new_id += 1
+      end
+      go_fish.players[0].send(:set_hand, expected_cards)
+    end
+
+    it("returns the list of cards of a player with a given user_id") do
+      player_cards = go_fish.list_cards_of_player_with_user_id(0)
+      expect(player_cards).to(eq(expected_cards))
+    end
+  end
+
   context('.load') do
     before(:each) do
       go_fish.send(:set_game_id, Game.last.id)

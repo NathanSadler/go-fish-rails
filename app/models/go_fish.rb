@@ -42,6 +42,11 @@ class GoFish
     set_current_player_index(current_player_index + 1)
   end
 
+  def list_cards_of_player_with_user_id(user_id)
+    player = find_player_with_user_id(user_id)
+    player.hand
+  end
+
   def self.load(game_id)
     game_go_fish = Game.find(game_id).go_fish
     if(!game_go_fish.nil?)
