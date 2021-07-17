@@ -1,3 +1,4 @@
 h1 Hi there!
-- Game.all.each do |game|
-  = link_to "#{game.title}", game
+ul
+  - Game.all.each do |game|
+    li = link_to "#{game.title}", game
