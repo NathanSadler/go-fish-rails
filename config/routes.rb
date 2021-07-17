@@ -17,8 +17,8 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
   post 'game_users', to: 'game_user#create'
   post 'game_user/create'
-  get 'games/:id/go_fish', to: 'games#go_fish', as: 'go_fish'
   resources :users
   resources :games
+  resources :go_fish
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
