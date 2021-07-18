@@ -73,6 +73,7 @@ RSpec.describe "GoFish", type: :system do
 
       it("takes a card from the deck and adds it to the user's hand when their" +
       " turn is over") do
+        take_turn(session, "Michael Example", "7 of Spades")
         expect(go_fish.players[0].hand.include?(Card.new("4", "H"))).to(be(true))
         expect(go_fish.deck.empty?).to(be(true))
       end
