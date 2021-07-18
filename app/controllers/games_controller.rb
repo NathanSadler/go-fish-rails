@@ -22,13 +22,10 @@ class GamesController < ApplicationController
     redirect_to @game
   end
 
-  def go_fish
-    @go_fish = GoFish.load(params[:id])
-    if current_user.id == turn_player_id(params[:id])
-      render 'take_turn'
-    else
-      render 'main_game_view'
-    end
+  def update
+    @game = Game.find(params[:id])
+    try_to_start(@game)
+    redirect_to @game
   end
 
   private

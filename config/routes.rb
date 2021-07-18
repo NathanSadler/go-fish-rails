@@ -1,10 +1,6 @@
 Rails.application.routes.draw do
   get 'go_fish/show'
   get 'go_fish/edit'
-  #get 'game_user/create'
-  # get 'games/index'
-  # get 'games/show'
-  # get 'games/new'
   root 'static_pages#home'
   get 'static_pages/home'
   get 'sessions/new'
@@ -17,7 +13,7 @@ Rails.application.routes.draw do
   delete 'logout', to: 'sessions#destroy'
   post 'game_users', to: 'game_user#create'
   post 'game_user/create'
-  
+
   resources :users
   resources :games
   resources :go_fish

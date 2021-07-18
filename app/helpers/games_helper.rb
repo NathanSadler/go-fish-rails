@@ -1,5 +1,8 @@
+require 'date'
 module GamesHelper
   def render_show_page(game)
+    # If there aren't any records in the GameUser table that have this game's
+    # id and this user's id, render the basic show page
     if (GameUser.where(game_id: game.id, user_id: current_user.id).length == 0)
       render 'show'
     elsif (GameUser.where(game_id: game.id).length < game.minimum_player_count)
@@ -12,5 +15,15 @@ module GamesHelper
   def turn_player_id(game_id)
     loaded_go_fish = GoFish.load(game_id)
     loaded_go_fish.turn_player.user_id
+  end
+
+  def try_to_start(game)
+    if (GameUser.where(game_id: game.id).length >= game.minimum_player_count)
+      go_fish = GoFish.load(game.id)
+      go_fish.deck.shuffle
+      go_fish.deal_cards
+      go_fish.save
+      game.started_at = DateTime.now
+    end
   end
 end

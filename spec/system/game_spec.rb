@@ -30,10 +30,23 @@ RSpec.describe "Game", type: :system do
   end
 
   describe("starting a game") do
-    it("creates a timestamp for when the game was started") do
-      create_game(session, "Who cares?", 1)
+    before(:each) do
+      create_game(session, "Who cares?", 2)
       session.click_on("Join Game")
+      session2.visit("/games/#{Game.last.id}")
+      session2.click_on("Join Game")
+    end
+
+    it("creates a timestamp for when the game was started") do
       expect(Game.last.started_at.nil?).to(be(false))
+    end
+
+    it("deals the deck of cards") do
+      session.click_on "Try To Start Game"
+      loaded_go_fish = GoFish.load(Game.last.id)
+      comparison_deck = Deck.new
+      expect(loaded_go_fish.deck.cards_in_deck).to(eq(
+        Deck.cards_in_default_deck - (InitialCardsPerPlayer::FEW_PLAYERS * 2)))
     end
   end
 

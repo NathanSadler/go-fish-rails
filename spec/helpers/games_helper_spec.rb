@@ -13,15 +13,68 @@ require 'rails_helper'
 
 RSpec.describe GamesHelper, type: :helper do
   let(:session1) {Capybara::Session.new(:rack_test, Rails.application)}
+  let(:last_game) {Game.create}
 
   describe("turn_player_id") do
-    let(:last_game) {Game.create}
-
     it("returns the user_id of the player whose turn it is") do
       loaded_go_fish = GoFish.load(last_game.id)
       loaded_go_fish.add_player(Player.new("Test Dummy", 14))
       loaded_go_fish.save
       expect(turn_player_id(last_game.id)).to(eq(14))
+    end
+  end
+
+  describe("try_to_start") do
+    before(:each) do
+      GameUser.create(game_id: last_game.id, user_id: User.last.id)
+      go_fish = GoFish.load(last_game.id)
+      go_fish.add_player(Player.new)
+      go_fish.save
+      last_game.started_at = nil
+    end
+
+    let(:go_fish) {GoFish.load(last_game.id)}
+
+    context("the game hasn't started yet and there are enough players") do
+      before(:each) do
+        last_game.minimum_player_count = 1
+        last_game.maximum_player_count = 1
+        try_to_start(last_game)
+      end
+
+      it("shuffles the deck") do
+        comparison_deck = Deck.new
+        expect(go_fish.deck.cards).to_not(eq(comparison_deck.cards))
+      end
+
+      it("deals the cards") do
+        player = go_fish.players[0]
+        expect(player.hand.length).to(eq(InitialCardsPerPlayer::FEW_PLAYERS))
+      end
+
+      it("sets started_at") do
+        expect(last_game.started_at.nil?).to(be(false))
+      end
+    end
+
+    context("there aren't enough players to start the game") do
+      before(:each) do
+        last_game.minimum_player_count = 2
+        last_game.maximum_player_count = 2
+        try_to_start(last_game)
+      end
+
+      it("doesn't shuffle the deck") do
+        expect(go_fish.deck.cards).to(eq(Deck.new.cards))
+      end
+
+      it("doesn't deal the cards") do
+        expect(go_fish.players[0].hand.length).to(eq(0))
+      end
+
+      it("doesn't set started_at") do
+        expect(last_game.started_at.nil?).to(be(true))
+      end
     end
   end
 end

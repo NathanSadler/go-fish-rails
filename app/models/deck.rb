@@ -37,6 +37,10 @@ class Deck
     cards.length
   end
 
+  def self.cards_in_default_deck
+    Deck.new.cards_in_deck
+  end
+
   def empty?
     cards_in_deck == 0
   end

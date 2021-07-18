@@ -6,4 +6,5 @@ RSpec.configure do |c|
   # for example, given you have a spec/support/helpers/login_helpers.rb
   # c.include LoginHelpers, type: :system
   c.include FillInForms, type: :system
+  c.include InitialCardsPerPlayer
 end
