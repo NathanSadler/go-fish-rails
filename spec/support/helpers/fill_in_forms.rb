@@ -15,4 +15,10 @@ module FillInForms
     session.fill_in 'Password', with: password
     session.click_on "Submit"
   end
+
+  def take_turn(session, player, card)
+    session.choose(player)
+    session.choose(card)
+    session.click_on("Take Turn")
+  end
 end

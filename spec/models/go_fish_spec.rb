@@ -249,11 +249,29 @@ RSpec.describe GoFish do
   end
 
   context('#take_turn') do
+    before(:each) do
+      go_fish.players[1].send(:set_hand, [Card.new("Q", "D")])
+    end
+
     it("increments the current_player_index") do
       go_fish.add_player(Player.new)
-      go_fish.take_turn(go_fish.turn_player)
+      go_fish.take_turn(go_fish.turn_player, requested_player: go_fish.players[0])
       expect(go_fish.current_player_index).to(eq(2))
     end
+
+    it("lets one player take card(s) of a specified rank from another player") do
+      go_fish.take_turn(go_fish.players[1], requested_player: go_fish.players[0],
+        requested_rank: "Q")
+      expect(go_fish.players[1].hand).to(eq([Card.new("Q", "D"), Card.new("Q", "C")]))
+      expect(go_fish.players[0].hand.length).to(eq(0))
+    end
+
+    it("doesn't have a player draw a card from the deck if they get card(s) "+
+  "of a rank they ask for from another player") do
+    go_fish.take_turn(go_fish.players[1], requested_player: go_fish.players[0],
+      requested_rank: "Q")
+    expect(go_fish.players[1].hand.include?(Card.new("8", "C"))).to(be(false))
+  end
   end
 
   context('#turn_player') do

@@ -1,5 +1,6 @@
 class GoFish
   attr_reader :players, :deck, :current_player_index, :game_id
+
   def initialize(players = [], deck = Deck.new, current_player_index = 0, game_id: 0)
     @players = players
     @deck = deck
@@ -68,9 +69,14 @@ class GoFish
     associated_game.save
   end
 
-  def take_turn(player)
-    player.draw_card(deck)
-    increment_current_player_index
+  def take_turn(player, requested_player:, requested_rank: "H")
+    if(requested_player.has_card_with_rank?(requested_rank))
+      won_cards = requested_player.remove_cards_with_rank(requested_rank)
+      player.add_card_to_hand(won_cards)
+    else
+      player.draw_card(deck)
+      increment_current_player_index
+    end
   end
 
   def turn_player

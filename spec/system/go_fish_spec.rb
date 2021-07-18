@@ -28,10 +28,12 @@ RSpec.describe "GoFish", type: :system do
     let(:loaded_go_fish) {GoFish.load(Game.last.id)}
 
     it("displays the cards that the player has") do
-      loaded_go_fish.players[0].send(:set_hand, [])
+      loaded_go_fish.players[0].send(:set_hand, [Card.new("3", "H")])
+      loaded_go_fish.players[1].send(:set_hand, [Card.new("A", "D")])
       loaded_go_fish.deck.send(:set_cards, [Card.new("9", "S")])
       loaded_go_fish.save
-      session.click_on "Take Turn"
+      session.visit(session.current_path)
+      take_turn(session, "Michael Example", "3 of Hearts")
       expect(session.body).to(have_content("9 of Spades"))
     end
   end
@@ -45,27 +47,43 @@ RSpec.describe "GoFish", type: :system do
       session.visit current_path
     end
 
+    let(:loaded_go_fish) {GoFish.load(Game.last.id)}
+
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
-      session.click_on "Take Turn"
-      loaded_go_fish = GoFish.load(Game.last.id)
-      expect(loaded_go_fish.turn_player).to(eq(loaded_go_fish.players[1]))
+      loaded_go_fish.players[0].set_hand([Card.new("3", "D")])
+      loaded_go_fish.players[1].set_hand([Card.new("7", "J")])
+      loaded_go_fish.save
+      session.visit(session.current_path)
+      take_turn(session, "Michael Example", "3 of Diamonds")
+      expect(GoFish.load(Game.last.id).turn_player.name).to(eq(loaded_go_fish.players[1].name))
     end
 
     describe("taking a card from the deck and giving it to the user") do
       before(:each) do
-        loaded_go_fish = GoFish.load(Game.last.id)
-        loaded_go_fish.players[0].set_hand([])
+        loaded_go_fish.players[0].set_hand([Card.new("7", "S"), Card.new("Q", "D")])
+        loaded_go_fish.players[1].set_hand([Card.new("7", "C")])
         loaded_go_fish.deck.send(:set_cards, [Card.new("4", "H")])
         loaded_go_fish.save
+        session.visit(session.current_path)
+        take_turn(session, "Michael Example", "7 of Spades")
       end
+
+      let(:go_fish) {GoFish.load(Game.last.id)}
 
       it("takes a card from the deck and adds it to the user's hand when their" +
       " turn is over") do
-        session.click_on "Take Turn"
-        loaded_go_fish = GoFish.load(Game.last.id)
-        expect(loaded_go_fish.players[0].hand).to(eq([Card.new("4", "H")]))
-        expect(loaded_go_fish.deck.empty?).to(be(true))
+        expect(go_fish.players[0].hand.include?(Card.new("4", "H"))).to(be(true))
+        expect(go_fish.deck.empty?).to(be(true))
+      end
+
+      it("lets one user ask for and take card(s) from another") do
+        expect(go_fish.players[0].hand.include?(Card.new("7", "C"))).to(be(true))
+        expect(go_fish.players[1].hand.include?(Card.new("7", "C"))).to(be(false))
+      end
+
+      it("will still be the player's turn if they get a card from another player") do
+        expect(go_fish.turn_player.name).to(eq(go_fish.players[0].name))
       end
     end
   end

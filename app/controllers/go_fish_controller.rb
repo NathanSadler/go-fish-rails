@@ -8,12 +8,16 @@ class GoFishController < ApplicationController
 
   def edit
     @go_fish = GoFish.load(params[:id])
+    @player_id = current_user.id
     @go_fish.save
   end
 
   def update
     @go_fish = GoFish.load(params[:id])
-    @go_fish.take_turn(@go_fish.find_player_with_user_id(current_user.id))
+    requested_player = @go_fish.find_player_with_user_id(params[params[:id]][:requested_player].to_i)
+    requested_rank = Card.from_str(params[params[:id]][:requested_rank]).rank
+    @go_fish.take_turn(@go_fish.find_player_with_user_id(current_user.id),
+      requested_player: requested_player, requested_rank: requested_rank)
     @go_fish.save
     redirect_to go_fish_path(@go_fish.game_id)
   end
