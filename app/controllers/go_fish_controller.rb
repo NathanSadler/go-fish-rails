@@ -8,7 +8,6 @@ class GoFishController < ApplicationController
 
   def edit
     @go_fish = GoFish.load(params[:id])
-    @go_fish.players[0].draw_card(@go_fish.deck)
     @go_fish.save
   end
 
