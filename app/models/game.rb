@@ -25,9 +25,18 @@ class Game < ApplicationRecord
     !save
   end
 
+  def set_player_hand(player_index, new_hand)
+    go_fish.players[player_index].send(:set_hand, new_hand)
+    !save
+  end
+
   def take_turn(player, requested_player:, requested_rank: "H")
     go_fish.take_turn
     !save
+  end
+
+  def turn_player
+    go_fish.turn_player
   end
 
 end

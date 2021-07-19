@@ -25,13 +25,12 @@ RSpec.describe "GoFish", type: :system do
       session.visit current_path
     end
 
-    let(:loaded_go_fish) {GoFish.load(Game.last.id)}
+    let(:game) {Game.last}
 
     it("displays the cards that the player has") do
-      loaded_go_fish.players[0].send(:set_hand, [Card.new("3", "H")])
-      loaded_go_fish.players[1].send(:set_hand, [Card.new("A", "D")])
-      loaded_go_fish.deck.send(:set_cards, [Card.new("9", "S")])
-      loaded_go_fish.save
+      game.set_player_hand(0, Card.new("3", "H"))
+      game.set_player_hand(1, Card.new("A", "D"))
+      game.set_deck([Card.new("9", "S")])
       session.visit(session.current_path)
       take_turn(session, "Michael Example", "3 of Hearts")
       expect(session.body).to(have_content("9 of Spades"))
@@ -47,24 +46,21 @@ RSpec.describe "GoFish", type: :system do
       session.visit current_path
     end
 
-    let(:loaded_go_fish) {GoFish.load(Game.last.id)}
+    let(:game) {GoFish.load(Game.last.id)}
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
-      loaded_go_fish.players[0].set_hand([Card.new("3", "D")])
-      loaded_go_fish.players[1].set_hand([Card.new("7", "J")])
-      loaded_go_fish.save
+      game.players[0].set_hand([Card.new("3", "D")])
+      game.players[1].set_hand([Card.new("7", "J")])
       session.visit(session.current_path)
       take_turn(session, "Michael Example", "3 of Diamonds")
-      expect(GoFish.load(Game.last.id).turn_player.name).to(eq(loaded_go_fish.players[1].name))
+      expect(GoFish.load(Game.last.id).turn_player.name).to(eq(game.players[1].name))
     end
 
     describe("taking a card from the deck and giving it to the user") do
       before(:each) do
-        loaded_go_fish.players[0].set_hand([Card.new("7", "S"), Card.new("Q", "D")])
-        loaded_go_fish.players[1].set_hand([Card.new("7", "C")])
-        loaded_go_fish.deck.send(:set_cards, [Card.new("4", "H")])
-        loaded_go_fish.save
+        game.set_player_hand(0, [Card.new("7", "S"), Card.new("Q", "D")])
+        game.set_player_hand(0, [Card.new("7", "C")])
         session.visit(session.current_path)
         take_turn(session, "Michael Example", "7 of Spades")
       end
