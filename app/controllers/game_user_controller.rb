@@ -6,7 +6,7 @@ class GameUserController < ApplicationController
     game = Game.find(game_user_params[:game_id])
     game.add_player(Player.new(current_user.name,
       @game_user.user_id.to_i))
-    game.save
+    #game.save
 
 
     redirect_to Game.find(game_id_params[:game_id].to_i)
