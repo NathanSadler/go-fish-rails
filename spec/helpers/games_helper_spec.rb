@@ -18,7 +18,7 @@ RSpec.describe GamesHelper, type: :helper do
   describe("turn_player_id") do
     it("returns the user_id of the player whose turn it is") do
       last_game.add_player(Player.new("Test Dummy", 14))
-      expect(turn_player_id(last_game)).to(eq(14))
+      expect(turn_player_id(last_game.id)).to(eq(14))
     end
   end
 
