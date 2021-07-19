@@ -49,7 +49,8 @@ class Game < ApplicationRecord
   end
 
   def take_turn(player, requested_player:, requested_rank: "H")
-    go_fish.take_turn
+    go_fish.take_turn(player, requested_player: requested_player,
+      requested_rank: requested_rank)
     !save
   end
 

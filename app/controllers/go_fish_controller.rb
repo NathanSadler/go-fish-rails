@@ -12,12 +12,11 @@ class GoFishController < ApplicationController
   end
 
   def update
-    @go_fish = GoFish.load(params[:id])
-    requested_player = @go_fish.find_player_with_user_id(params[params[:id]][:requested_player].to_i)
-    requested_rank = Card.from_str(params[params[:id]][:requested_rank]).rank
-    @go_fish.take_turn(@go_fish.find_player_with_user_id(current_user.id),
+    @game = Game.find(params[:id])
+    requested_player = @game.find_player_with_user_id(params[:game][:requested_player].to_i)
+    requested_rank = Card.from_str(params[:game][:requested_rank]).rank
+    @game.take_turn(@game.find_player_with_user_id(current_user.id),
       requested_player: requested_player, requested_rank: requested_rank)
-    @go_fish.save
-    redirect_to go_fish_path(@go_fish.game_id)
+    redirect_to go_fish_path(@game.id)
   end
 end

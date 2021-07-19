@@ -28,8 +28,8 @@ RSpec.describe "GoFish", type: :system do
     let(:game) {Game.last}
 
     it("displays the cards that the player has") do
-      game.set_player_hand(0, Card.new("3", "H"))
-      game.set_player_hand(1, Card.new("A", "D"))
+      game.set_player_hand(0, [Card.new("3", "H")])
+      game.set_player_hand(1, [Card.new("A", "D")])
       game.set_deck([Card.new("9", "S")])
       session.visit(session.current_path)
       take_turn(session, "Michael Example", "3 of Hearts")
