@@ -12,8 +12,17 @@ class Game < ApplicationRecord
     go_fish.current_player_index
   end
 
+  def deal_cards
+    go_fish.deal_cards
+    !save
+  end
+
   def deck
     go_fish.deck
+  end
+
+  def find_player_with_user_id(user_id)
+    go_fish.find_player_with_user_id(user_id)
   end
 
   def list_cards_of_player_with_user_id(user_id)
@@ -31,6 +40,11 @@ class Game < ApplicationRecord
 
   def set_player_hand(player_index, new_hand)
     go_fish.players[player_index].send(:set_hand, new_hand)
+    !save
+  end
+
+  def shuffle
+    go_fish.deck.shuffle
     !save
   end
 

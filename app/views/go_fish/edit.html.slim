@@ -1,14 +1,14 @@
 h1 Take Your Turn
 
 - players_array = []
-- @go_fish.players.each do |player|
+- @game.players.each do |player|
   - players_array.push([player.name, player.user_id])
 
 - cards_array = []
-- @go_fish.find_player_with_user_id(@player_id).hand.each do |card|
+- @game.find_player_with_user_id(@player_id).hand.each do |card|
   - cards_array.push([card.description, "#{card.rank}-#{card.suit}"])
 
-= simple_form_for(@go_fish.game_id, method: :patch, url: go_fish_path(@go_fish.game_id)) do |f|
+= simple_form_for(@game, method: :patch, url: go_fish_path(@game.id)) do |f|
   = f.input :requested_player, as: :radio_buttons, collection: players_array, checked: players_array[0]
   = f.input :requested_rank, as: :radio_buttons, collection: cards_array, checked: cards_array[0]
   = f.submit "Take Turn"

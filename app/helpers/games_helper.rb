@@ -19,10 +19,9 @@ module GamesHelper
 
   def try_to_start(game)
     if (GameUser.where(game_id: game.id).length >= game.minimum_player_count)
-      go_fish = GoFish.load(game.id)
-      go_fish.deck.shuffle
-      go_fish.deal_cards
-      go_fish.save
+      game = Game.find(game.id)
+      game.shuffle
+      game.deal_cards
       game.started_at = DateTime.now
     end
   end
