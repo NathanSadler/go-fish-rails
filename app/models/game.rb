@@ -16,6 +16,10 @@ class Game < ApplicationRecord
     go_fish.deck
   end
 
+  def list_cards_of_player_with_user_id(user_id)
+    go_fish.list_cards_of_player_with_user_id(user_id)
+  end
+
   def players
     go_fish.players
   end

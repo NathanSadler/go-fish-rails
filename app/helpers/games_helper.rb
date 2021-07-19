@@ -13,8 +13,8 @@ module GamesHelper
   end
 
   def turn_player_id(game_id)
-    loaded_go_fish = GoFish.load(game_id)
-    loaded_go_fish.turn_player.user_id
+    game = Game.find(game_id)
+    game.turn_player.user_id
   end
 
   def try_to_start(game)
