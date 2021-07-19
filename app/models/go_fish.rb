@@ -52,8 +52,9 @@ class GoFish
     player.hand
   end
 
-  def self.load(obj)
-    obj.as_json
+  def self.load(json)
+    return GoFish.new if json.blank?
+    self.from_json(json)
     # game_go_fish = Game.find(game_id).go_fish
     # if(!game_go_fish.nil?)
     #   loaded_go_fish = GoFish.from_json(Game.find(game_id).go_fish)
