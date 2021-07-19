@@ -12,4 +12,8 @@ class Game < ApplicationRecord
     go_fish.add_player(player)
     !save
   end
+
+  def players
+    go_fish.players
+  end
 end
