@@ -27,6 +27,10 @@ class GoFish
     end
   end
 
+  def self.dump(obj)
+    obj.as_json
+  end
+
   def find_player_with_user_id(user_id)
     players.each {|player| return player if player.user_id == user_id}
     return nil
@@ -48,14 +52,16 @@ class GoFish
     player.hand
   end
 
-  def self.load(game_id)
-    game_go_fish = Game.find(game_id).go_fish
-    if(!game_go_fish.nil?)
-      loaded_go_fish = GoFish.from_json(Game.find(game_id).go_fish)
-      loaded_go_fish
-    else
-      GoFish.new(game_id: game_id)
-    end
+  def self.load(json)
+    return GoFish.new if json.blank?
+    self.from_json(json)
+    # game_go_fish = Game.find(game_id).go_fish
+    # if(!game_go_fish.nil?)
+    #   loaded_go_fish = GoFish.from_json(Game.find(game_id).go_fish)
+    #   loaded_go_fish
+    # else
+    #   GoFish.new(game_id: game_id)
+    # end
   end
 
   def over?
