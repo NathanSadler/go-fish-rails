@@ -7,4 +7,9 @@ class Game < ApplicationRecord
     go_fish.take_turn
     !save
   end
+
+  def add_player(player)
+    go_fish.add_player(player)
+    !save
+  end
 end
