@@ -6,10 +6,10 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @game_user = GameUser.new
-    render_show_page(@game)
     if (GameUser.where(game_id: @game.id).length == @game.minimum_player_count)
       @game.update(started_at: DateTime.now)
     end
+    render_show_page(@game)
   end
 
   def new

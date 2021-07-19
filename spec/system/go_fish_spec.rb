@@ -50,17 +50,17 @@ RSpec.describe "GoFish", type: :system do
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
-      game.players[0].set_hand([Card.new("3", "D")])
-      game.players[1].set_hand([Card.new("7", "J")])
-      session.visit(session.current_path)
+      game.set_player_hand(0, [Card.new("3", "D")])
+      game.set_player_hand(1, [Card.new("7", "H")])
+      session.visit current_path
       take_turn(session, "Michael Example", "3 of Diamonds")
-      expect(GoFish.load(Game.last.id).turn_player.name).to(eq(game.players[1].name))
+      expect(game.turn_player.name).to(eq(game.players[1].name))
     end
 
     describe("taking a card from the deck and giving it to the user") do
       before(:each) do
         game.set_player_hand(0, [Card.new("7", "S"), Card.new("Q", "D")])
-        game.set_player_hand(1, [Card.new("7", "C")])
+        game.set_player_hand(1, [Card.new("7", "C"), Card.new("4", "S")])
         game.set_deck([Card.new("4", "H")])
         session.visit(session.current_path)
         take_turn(session, "Michael Example", "7 of Spades")
@@ -72,7 +72,7 @@ RSpec.describe "GoFish", type: :system do
       " turn is over") do
         game.set_deck([Card.new("4", "H")])
         take_turn(session, "Michael Example", "7 of Spades")
-        expect(game.players[0].hand.include?(Card.new("4", "H"))).to(be(true))
+        expect(game.players[1].hand.include?(Card.new("4", "H"))).to(be(true))
         expect(game.deck.empty?).to(be(true))
       end
 
@@ -82,13 +82,14 @@ RSpec.describe "GoFish", type: :system do
       end
 
       it("will still be the player's turn if they get a card from another player") do
-        expect(go_fish.turn_player.name).to(eq(go_fish.players[0].name))
+        expect(game.turn_player.name).to(eq(game.players[0].name))
       end
 
       describe("handing scoring and books at the end of a turn") do
         before(:each) do
-          go_fish.players[0].add_card_to_hand([Card.new("7", "D"), Card.new("7", "H")])
-          go_fish.save
+          user_id = game.players[0].user_id
+          game.give_card_to_player_with_user_id(user_id, [Card.new("7", "D"),
+            Card.new("7", "H")])
           take_turn(session, "Michael Example", "7 of Spades")
         end
 
