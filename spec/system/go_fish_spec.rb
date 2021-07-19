@@ -46,7 +46,7 @@ RSpec.describe "GoFish", type: :system do
       session.visit current_path
     end
 
-    let(:game) {GoFish.load(Game.last.id)}
+    let(:game) {Game.last}
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
