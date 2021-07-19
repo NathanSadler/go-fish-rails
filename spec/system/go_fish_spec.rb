@@ -86,7 +86,22 @@ RSpec.describe "GoFish", type: :system do
       it("will still be the player's turn if they get a card from another player") do
         expect(go_fish.turn_player.name).to(eq(go_fish.players[0].name))
       end
+
+      describe("handing scoring and books at the end of a turn") do
+        before(:each) do
+          go_fish.players[0].add_card_to_hand([Card.new("7", "D"), Card.new("7", "H")])
+          go_fish.save
+          take_turn(session, "Michael Example", "7 of Spades")
+        end
+
+        xit("removes books from a player's hand at the end of a turn") do
+          expect(GoFish.load(Game.last.id).players[0].has_card_with_rank?("7")).to(eq(false))
+        end
+
+        xit("adds to the player's score when they end a turn with a book") do
+          expect(GoFish.load(Game.last.id).players[0].score).to(eq(1))
+        end
+      end
     end
   end
-
 end
