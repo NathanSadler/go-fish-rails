@@ -3,6 +3,25 @@ class GamesController < ApplicationController
   def index
   end
 
+  def choose_show_page(game)
+    # Replace with a scope when you understand them better
+    if (GameUser.where(game_id: game.id, user_id: current_user.id).length == 0)
+      render 'show'
+    else
+      choose_game_show(game)
+    end
+  end
+
+  def choose_game_show(game)
+    if (GameUser.where(game_id: game.id).length < game.minimum_player_count)
+      render 'waiting_to_start'
+    elsif
+      render 'waiting_to_play'
+    else
+      render 'taking_turn'
+    end
+  end
+
   def show
     @game = Game.find(params[:id])
     @game_user = GameUser.new
