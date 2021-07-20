@@ -8,10 +8,6 @@ class Game < ApplicationRecord
     save!
   end
 
-  def current_player_index
-    go_fish.current_player_index
-  end
-
   def deal_cards
     go_fish.deal_cards
     !save

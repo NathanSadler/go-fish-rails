@@ -186,7 +186,7 @@ RSpec.describe GoFish do
       it("uses the default values for all other attributes") do
         expect(game.players).to(eq(default_go_fish.players))
         expect(game.go_fish.deck.cards).to(eq(default_go_fish.deck.cards))
-        expect(game.current_player_index).to(eq(
+        expect(game.go_fish.current_player_index).to(eq(
           default_go_fish.current_player_index))
       end
     end
