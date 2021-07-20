@@ -10,7 +10,7 @@ class Game < ApplicationRecord
 
   def deal_cards
     go_fish.deal_cards
-    !save
+    save!
   end
 
   def find_player_with_user_id(user_id)
@@ -20,7 +20,7 @@ class Game < ApplicationRecord
   def give_card_to_player_with_user_id(user_id, card)
     player = find_player_with_user_id(user_id)
     player.add_card_to_hand(card)
-    !save
+    save!
   end
 
   def list_cards_of_player_with_user_id(user_id)
@@ -37,23 +37,23 @@ class Game < ApplicationRecord
 
   def set_deck(deck)
     go_fish.deck.send(:set_cards, deck)
-    !save
+    save!
   end
 
   def set_player_hand(player_index, new_hand)
     go_fish.players[player_index].send(:set_hand, new_hand)
-    !save
+    save!
   end
 
   def shuffle
     go_fish.deck.shuffle
-    !save
+    save!
   end
 
   def take_turn(player, requested_player:, requested_rank: "H")
     go_fish.take_turn(player, requested_player: requested_player,
       requested_rank: requested_rank)
-    !save
+    save!
   end
 
   def turn_player
