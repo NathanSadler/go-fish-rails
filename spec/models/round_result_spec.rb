@@ -12,7 +12,7 @@ RSpec.describe RoundResult do
     end
 
     it("defaults to using 'an unspecified source' for the source") do
-      expect(test_round_result.source).to(eq("an unspecified source"))
+      expect(test_round_result.source_name).to(eq("an unspecified source"))
     end
 
     it("automatically converts single cards into an array") do
@@ -26,12 +26,12 @@ RSpec.describe RoundResult do
     end
   end
 
-  context('#source') do
-    # let(:test_round_result {RoundResult.new(cards: test_card,
-      # recieving_player: test_player))})
-    it("returns the name of a player if it is the source") do
+  context('#source_name') do
+    let(:test_round_result) {RoundResult.new(cards: test_card,
+      recieving_player: test_player, source: Player.new("Joe"))}
 
-      # expect(test_round_result.source).to(eq("Player"))
+    it("returns the name of a player if it is the source") do
+      expect(test_round_result.source_name).to(eq("Joe"))
     end
 
     it("returns 'the deck' if the source is a deck") do

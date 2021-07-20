@@ -1,5 +1,5 @@
 class RoundResult
-  attr_reader :recieving_player, :expected_rank, :source, :cards
+  attr_reader :recieving_player, :expected_rank, :cards, :source
 
   def initialize(cards:, recieving_player:, expected_rank: "none given",
     source: "an unspecified source")
@@ -12,5 +12,10 @@ class RoundResult
   def card_to_array(card)
     return card if card.is_a?(Array)
     [card]
+  end
+
+  def source_name
+    return source.name if source.is_a?(Player)
+    return source
   end
 end
