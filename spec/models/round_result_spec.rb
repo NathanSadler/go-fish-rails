@@ -36,7 +36,7 @@ RSpec.describe RoundResult do
 
     it("returns 'the deck' if the source is a deck") do
       test_round_result = RoundResult.new(cards: test_card,
-        recieving_player: test_player)
+        recieving_player: test_player, source: Deck.new)
       expect(test_round_result.source_name).to(eq("the deck"))
     end
   end

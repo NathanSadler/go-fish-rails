@@ -16,6 +16,7 @@ class RoundResult
 
   def source_name
     return source.name if source.is_a?(Player)
+    return "the deck" if source.is_a?(Deck)
     return source
   end
 end
