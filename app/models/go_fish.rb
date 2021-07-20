@@ -21,6 +21,8 @@ class GoFish
     }
   end
 
+  # NOTE: gets to stay for now, but you could probably just create some sort of
+  # start_game method instead 
   def deal_cards
     players.length > 3 ? (card_deal_count = 5) : (card_deal_count = 7)
     card_deal_count.times do
