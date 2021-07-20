@@ -54,7 +54,7 @@ RSpec.describe "GoFish", type: :system do
       game.set_player_hand(1, [Card.new("7", "H")])
       session.visit current_path
       take_turn(session, "Michael Example", "3 of Diamonds")
-      expect(game.turn_player.name).to(eq(game.players[1].name))
+      expect(game.turn_player.name).to(eq(game.players[0].name))
     end
 
     describe("taking a card from the deck and giving it to the user") do
