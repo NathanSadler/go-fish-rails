@@ -47,6 +47,12 @@ class GamesController < ApplicationController
     redirect_to @game
   end
 
+  def start_game
+    @game = Game.find(params[:id])
+    try_to_start(@game)
+    redirect_to @game
+  end
+
   private
     def game_params
       params.require(:game).permit(:title,
