@@ -14,9 +14,9 @@ class GamesController < ApplicationController
 
   def choose_game_show(game)
     if (GameUser.where(game_id: game.id).length < game.minimum_player_count)
-      render 'waiting_to_start'
+      render 'waiting_room'
     elsif
-      render 'waiting_to_play'
+      render 'waiting_to_take_turn'
     else
       render 'taking_turn'
     end
