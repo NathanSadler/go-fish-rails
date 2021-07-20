@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   post 'game_users', to: 'game_user#create'
   post 'game_user/create'
 
+  get 'try_to_start_game/:game', to: 'games#start_game', as: 'try_to_start_game'
+
   resources :users
   resources :games
   resources :go_fish

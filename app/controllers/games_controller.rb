@@ -15,7 +15,7 @@ class GamesController < ApplicationController
   def choose_game_show(game)
     if (GameUser.where(game_id: game.id).length < game.minimum_player_count)
       render 'waiting_room'
-    elsif
+    elsif (game.turn_player.user_id != current_user.id)
       render 'waiting_to_take_turn'
     else
       render 'taking_turn'
@@ -42,13 +42,14 @@ class GamesController < ApplicationController
   end
 
   def update
+    #binding.pry
     @game = Game.find(params[:id])
     try_to_start(@game)
     redirect_to @game
   end
 
   def start_game
-    @game = Game.find(params[:id])
+    @game = Game.find(params[:game])
     try_to_start(@game)
     redirect_to @game
   end
