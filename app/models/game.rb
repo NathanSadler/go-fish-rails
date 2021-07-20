@@ -15,14 +15,9 @@ class Game < ApplicationRecord
     save!
   end
 
+  # used in games controller and taking_turn
   def find_player_with_user_id(user_id)
     go_fish.find_player_with_user_id(user_id)
-  end
-
-  def give_card_to_player_with_user_id(user_id, card)
-    player = find_player_with_user_id(user_id)
-    player.add_card_to_hand(card)
-    save!
   end
 
   def list_cards_of_player_with_user_id(user_id)
