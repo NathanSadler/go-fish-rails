@@ -63,11 +63,16 @@ RSpec.describe RoundResult do
 
   context('#hidden_message') do
     it("returns a message in the form 'you took <x> <y>(s) from <z>'") do
-
+      round_result = RoundResult.new(cards: test_card,
+        recieving_player: test_player, source: Player.new("Seth"))
+      expected_message = "You took 1 7(s) from Seth"
+      expect(round_result.hidden_message).to(eq(expected_message))
     end
 
     it("returns 'You took no cards' if cards is empty") do
-
+      round_result = RoundResult.new(cards: [],
+        recieving_player: test_player, source: Player.new("Seth"))
+      expect(round_result.hidden_message).to(eq("You took no cards"))
     end
   end
 

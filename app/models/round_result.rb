@@ -14,6 +14,11 @@ class RoundResult
     [card]
   end
 
+  def hidden_message
+    return "You took no cards" if cards.empty?
+    "You took #{cards.length} #{cards[0].rank}(s) from #{source_name}"
+  end
+
   def matched_rank?
     return false if cards.empty?
     expected_rank == cards[0].rank
