@@ -9,6 +9,14 @@ class RoundResult
     @source = source
   end
 
+  def as_json
+    {
+      "cards" => cards.map(&:as_json), "expected_rank" => expected_rank,
+      "recieving_player" => recieving_player.as_json,
+      "source" => source_name
+    }
+  end
+
   def card_to_array(card)
     return card if card.is_a?(Array)
     [card]
