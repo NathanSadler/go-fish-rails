@@ -17,9 +17,7 @@ RSpec.describe GamesHelper, type: :helper do
 
   describe("turn_player_id") do
     it("returns the user_id of the player whose turn it is") do
-      loaded_go_fish = GoFish.load(last_game.id)
-      loaded_go_fish.add_player(Player.new("Test Dummy", 14))
-      loaded_go_fish.save
+      last_game.add_player(Player.new("Test Dummy", 14))
       expect(turn_player_id(last_game.id)).to(eq(14))
     end
   end
@@ -27,28 +25,28 @@ RSpec.describe GamesHelper, type: :helper do
   describe("try_to_start") do
     before(:each) do
       GameUser.create(game_id: last_game.id, user_id: User.last.id)
-      go_fish = GoFish.load(last_game.id)
-      go_fish.add_player(Player.new)
-      go_fish.save
-      last_game.started_at = nil
+      game = Game.last
+      game.add_player(Player.new)
+      game.started_at = nil
     end
 
-    let(:go_fish) {GoFish.load(last_game.id)}
+    let(:game) {Game.last}
 
     context("the game hasn't started yet and there are enough players") do
       before(:each) do
-        last_game.minimum_player_count = 1
-        last_game.maximum_player_count = 1
-        try_to_start(last_game)
+        game.minimum_player_count = 1
+        game.maximum_player_count = 1
+        game.save
+        try_to_start(game)
       end
 
       it("shuffles the deck") do
         comparison_deck = Deck.new
-        expect(go_fish.deck.cards).to_not(eq(comparison_deck.cards))
+        expect(game.deck.cards).to_not(eq(comparison_deck.cards))
       end
 
       it("deals the cards") do
-        player = go_fish.players[0]
+        player = game.players[0]
         expect(player.hand.length).to(eq(InitialCardsPerPlayer::FEW_PLAYERS))
       end
 
@@ -65,11 +63,11 @@ RSpec.describe GamesHelper, type: :helper do
       end
 
       it("doesn't shuffle the deck") do
-        expect(go_fish.deck.cards).to(eq(Deck.new.cards))
+        expect(game.deck.cards).to(eq(Deck.new.cards))
       end
 
       it("doesn't deal the cards") do
-        expect(go_fish.players[0].hand.length).to(eq(0))
+        expect(game.players[0].hand.length).to(eq(0))
       end
 
       it("doesn't set started_at") do

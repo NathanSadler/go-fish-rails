@@ -10,9 +10,11 @@ RSpec.describe GoFish do
 
 
   before(:each) do
-    Game.create
+    game = Game.create
     test_players[0].set_hand([Card.new("Q", "C")])
     test_players[1].send(:set_score, 2)
+    test_players.each {|player| game.add_player(player)}
+    game.set_deck(test_deck.cards)
     GameUser.create(game_id: Game.last.id, user_id: test_user.id)
     GameUser.create(game_id: Game.last.id, user_id: test_user2.id)
   end
@@ -163,12 +165,9 @@ RSpec.describe GoFish do
 
     it("loads a go_fish object using the go_fish column from a record in the "+
     "Games table") do
-      loaded_go_fish = GoFish.load(Game.last.id)
-      expect(loaded_go_fish.players.map(&:name)).to(eq(go_fish.players.map(&:name)))
-      expect(loaded_go_fish.deck.cards).to(eq(go_fish.deck.cards))
-      [:current_player_index, :game_id].each do |method|
-        expect(loaded_go_fish.send(method)).to(eq(go_fish.send(method)))
-      end
+      game = Game.last
+      expect(game.players.map(&:name)).to(eq(go_fish.players.map(&:name)))
+      expect(game.deck.cards).to(eq(go_fish.deck.cards))
     end
 
     context("the Game object's go_fish column is nil") do
@@ -180,18 +179,13 @@ RSpec.describe GoFish do
         Game.last.destroy
       end
 
-      let(:last_game_id) {Game.last.id}
-      let(:loaded_go_fish) {GoFish.load(last_game_id)}
-
-      it("generates a new GoFish object with the game_id provided to it") do
-        expect(loaded_go_fish.game_id).to(eq(last_game_id))
-      end
+      let(:game) {Game.last}
+      let(:default_go_fish) {GoFish.new}
 
       it("uses the default values for all other attributes") do
-        default_go_fish = GoFish.new
-        expect(loaded_go_fish.players).to(eq(default_go_fish.players))
-        expect(loaded_go_fish.deck.cards).to(eq(default_go_fish.deck.cards))
-        expect(loaded_go_fish.current_player_index).to(eq(
+        expect(game.players).to(eq(default_go_fish.players))
+        expect(game.deck.cards).to(eq(default_go_fish.deck.cards))
+        expect(game.current_player_index).to(eq(
           default_go_fish.current_player_index))
       end
     end
@@ -212,16 +206,6 @@ RSpec.describe GoFish do
     it("is false if any players have any cards in their hand") do
       go_fish.deck.send(:set_cards, [])
       expect(go_fish.over?).to(eq(false))
-    end
-  end
-
-  context('#save') do
-    it("saves the serialized version of itself to the Games table") do
-      Game.create
-      go_fish.send(:set_game_id, Game.last.id)
-      go_fish.save
-      expect(Game.last.go_fish).to(eq(go_fish.as_json))
-      Game.last.destroy
     end
   end
 

@@ -43,9 +43,9 @@ RSpec.describe "Game", type: :system do
 
     it("deals the deck of cards") do
       session.click_on "Try To Start Game"
-      loaded_go_fish = GoFish.load(Game.last.id)
+      game = Game.last
       comparison_deck = Deck.new
-      expect(loaded_go_fish.deck.cards_in_deck).to(eq(
+      expect(game.deck.cards_in_deck).to(eq(
         Deck.cards_in_default_deck - (InitialCardsPerPlayer::FEW_PLAYERS * 2)))
     end
   end
@@ -65,8 +65,8 @@ RSpec.describe "Game", type: :system do
     end
 
     it("adds a Player object to the game for the GameUser that is joining") do
-      loaded_go_fish = GoFish.load(Game.last.id)
-      expect(loaded_go_fish.players.map(&:user_id).include?(last_gameuser.user_id)).to(eq(true))
+      game = Game.last
+      expect(game.players.map(&:user_id).include?(last_gameuser.user_id)).to(eq(true))
     end
   end
 
