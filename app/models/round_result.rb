@@ -14,6 +14,11 @@ class RoundResult
     [card]
   end
 
+  def matched_rank?
+    return false if cards.empty?
+    expected_rank == cards[0].rank
+  end
+
   def source_name
     return source.name if source.is_a?(Player)
     return "the deck" if source.is_a?(Deck)

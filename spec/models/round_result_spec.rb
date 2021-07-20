@@ -43,11 +43,21 @@ RSpec.describe RoundResult do
 
   context('#matched_rank?') do
     it("is true if there is a card with expected_rank rank in cards") do
-
+      round_result = RoundResult.new(cards: Card.new("7", "H"),
+      recieving_player: Player.new, expected_rank: "7")
+      expect(round_result.matched_rank?).to(be(true))
     end
 
     it("is false if there isn't a card with expected_rank in cards") do
+      round_result = RoundResult.new(cards: Card.new("7", "H"),
+      recieving_player: Player.new, expected_rank: "8")
+      expect(round_result.matched_rank?).to(be(false))
+    end
 
+    it("returns false if no cards are won") do
+      round_result = RoundResult.new(cards: [],
+      recieving_player: Player.new, expected_rank: "8")
+      expect(round_result.matched_rank?).to(be(false))
     end
   end
 
