@@ -79,12 +79,18 @@ RSpec.describe RoundResult do
   context('#public_message') do
     it("displays the recieved cards if the card rank matches the requested "+
     "rank") do
-
+      round_result = RoundResult.new(cards: Card.new("3", "S"), expected_rank: "3",
+        recieving_player: Player.new("Bert"), source: Player.new("Ernie"))
+      expected_message = "Bert took 1 3(s) from Ernie"
+      expect(round_result.public_message).to(eq(expected_message))
     end
 
     it("hides the rank of the recieved cards if the card rank doesn't match "+
     "the requested rank") do
-
+      round_result = RoundResult.new(cards: Card.new("3", "S"), expected_rank: "9",
+        recieving_player: Player.new("Bert"), source: Player.new("Ernie"))
+      expected_message = "Bert took 1 card(s) from Ernie"
+      expect(round_result.public_message).to(eq(expected_message))
     end
   end
 end
