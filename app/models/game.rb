@@ -36,11 +36,6 @@ class Game < ApplicationRecord
     save!
   end
 
-  def set_player_hand(player_index, new_hand)
-    go_fish.players[player_index].send(:set_hand, new_hand)
-    save!
-  end
-
   def shuffle
     go_fish.deck.shuffle
     save!
