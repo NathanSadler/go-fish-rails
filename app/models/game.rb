@@ -20,11 +20,12 @@ class Game < ApplicationRecord
     go_fish.find_player_with_user_id(user_id)
   end
 
-  # used in waiting_to_take_turn, but only once. 
+  # used in waiting_to_take_turn, but only once.
   def list_cards_of_player_with_user_id(user_id)
     go_fish.list_cards_of_player_with_user_id(user_id)
   end
 
+  # used in taking_turn, but only once
   def players
     go_fish.players
   end
