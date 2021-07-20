@@ -45,7 +45,7 @@ RSpec.describe "Game", type: :system do
       session.click_on "Try To Start Game"
       game = Game.last
       comparison_deck = Deck.new
-      expect(game.deck.cards_in_deck).to(eq(
+      expect(game.go_fish.deck.cards_in_deck).to(eq(
         Deck.cards_in_default_deck - (InitialCardsPerPlayer::FEW_PLAYERS * 2)))
     end
   end

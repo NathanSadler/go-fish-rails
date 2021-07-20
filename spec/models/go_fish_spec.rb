@@ -168,7 +168,7 @@ RSpec.describe GoFish do
     "Games table") do
       game = Game.last
       expect(game.players.map(&:name)).to(eq(go_fish.players.map(&:name)))
-      expect(game.deck.cards).to(eq(go_fish.deck.cards))
+      expect(game.go_fish.deck.cards).to(eq(go_fish.deck.cards))
     end
 
     context("the Game object's go_fish column is nil") do
@@ -185,7 +185,7 @@ RSpec.describe GoFish do
 
       it("uses the default values for all other attributes") do
         expect(game.players).to(eq(default_go_fish.players))
-        expect(game.deck.cards).to(eq(default_go_fish.deck.cards))
+        expect(game.go_fish.deck.cards).to(eq(default_go_fish.deck.cards))
         expect(game.current_player_index).to(eq(
           default_go_fish.current_player_index))
       end

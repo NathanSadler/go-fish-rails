@@ -17,10 +17,6 @@ class Game < ApplicationRecord
     !save
   end
 
-  def deck
-    go_fish.deck
-  end
-
   def find_player_with_user_id(user_id)
     go_fish.find_player_with_user_id(user_id)
   end

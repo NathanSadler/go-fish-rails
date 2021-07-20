@@ -42,7 +42,7 @@ RSpec.describe GamesHelper, type: :helper do
 
       it("shuffles the deck") do
         comparison_deck = Deck.new
-        expect(game.deck.cards).to_not(eq(comparison_deck.cards))
+        expect(game.go_fish.deck.cards).to_not(eq(comparison_deck.cards))
       end
 
       it("deals the cards") do
@@ -63,7 +63,7 @@ RSpec.describe GamesHelper, type: :helper do
       end
 
       it("doesn't shuffle the deck") do
-        expect(game.deck.cards).to(eq(Deck.new.cards))
+        expect(game.go_fish.deck.cards).to(eq(Deck.new.cards))
       end
 
       it("doesn't deal the cards") do

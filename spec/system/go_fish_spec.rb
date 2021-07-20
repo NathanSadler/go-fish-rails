@@ -73,7 +73,7 @@ RSpec.describe "GoFish", type: :system do
         game.set_deck([Card.new("4", "H")])
         take_turn(session, "Michael Example", "7 of Spades")
         expect(game.players[1].hand.include?(Card.new("4", "H"))).to(be(true))
-        expect(game.deck.empty?).to(be(true))
+        expect(game.go_fish.deck.empty?).to(be(true))
       end
 
       it("lets one user ask for and take card(s) from another") do
