@@ -63,6 +63,10 @@ RSpec.describe GoFish do
     it("returns a hash with the ID of the Game Object associated with it") do
       expect(serialized_game['game_id']).to(eq(0))
     end
+
+    xit("returns a hash with the go_fish's round results") do
+
+    end
   end
 
   context('#deal_cards') do
@@ -210,6 +214,17 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#save_round_result') do
+    it("saves a round result") do
+      round_result = RoundResult.new(cards: Card.new("4", "D"),
+        recieving_player: go_fish.players[0], expected_rank: "8",
+        source: go_fish.players[1])
+      go_fish.save_round_result(round_result)
+      expect(go_fish.round_results[0].hidden_message).to(eq("You took 1 4(s) "+
+      "from John Don't"))
+    end
+  end
+
   context('#set_current_player_index') do
     it("returns the remainder of the given value divided by the number of "+
     "players") do
@@ -258,14 +273,14 @@ RSpec.describe GoFish do
     expect(go_fish.players[1].hand.include?(Card.new("8", "C"))).to(be(false))
     end
 
-    xit("stores the results of a round") do
+    it("stores the results of a round") do
       game.go_fish.players[1].set_hand([Card.new("Q", "D")])
       game.save!
       game.take_turn(game.players[0], requested_player: game.players[1], requested_rank: "Q")
+      binding.pry
       round_result = RoundResult.new(cards: Card.new("Q", "D"),
         expected_rank: "Q", recieving_player: game.players[0], source: game.players[1])
-      expect(game.go_fish.round_results[0].hidden_message).to(eq("You took 1 Q(s) from "+
-      "John Don't"))
+      expect(game.go_fish.round_results[0].hidden_message).to(eq("You took 1 Q(s) from John Don't"))
     end
   end
 

@@ -69,14 +69,19 @@ class GoFish
     associated_game.save
   end
 
+  def save_round_result(result_to_save)
+    new_round_results = [result_to_save] + round_results
+    set_round_results(new_round_results)
+  end
+
   def take_turn(player, requested_player:, requested_rank: "H")
     if(requested_player.has_card_with_rank?(requested_rank))
-      won_cards = requested_player.remove_cards_with_rank(requested_rank)
-      player.add_card_to_hand(won_cards)
+       won_cards, card_source = [player.add_card_to_hand(requested_player.remove_cards_with_rank(requested_rank)), requested_player]
     else
-      player.draw_card(deck)
-      increment_current_player_index
+      won_cards, card_source = [player.draw_card(deck), "the deck"]
     end
+    save_round_result(RoundResult.new(cards: won_cards, recieving_player: player, expected_rank: requested_rank, source: card_source))
+    increment_current_player_index if !round_results[0].matched_rank?
   end
 
   def turn_player
@@ -94,6 +99,10 @@ class GoFish
 
     def set_players(new_players)
       @players = new_players
+    end
+
+    def set_round_results(new_round_results)
+      @round_results = new_round_results
     end
 end
 

@@ -34,9 +34,7 @@ RSpec.describe GamesHelper, type: :helper do
 
     context("the game hasn't started yet and there are enough players") do
       before(:each) do
-        game.minimum_player_count = 1
-        game.maximum_player_count = 1
-        game.save
+        game.update(minimum_player_count: 1, maximum_player_count: 1)
         try_to_start(game)
       end
 
@@ -51,7 +49,7 @@ RSpec.describe GamesHelper, type: :helper do
       end
 
       it("sets started_at") do
-        expect(last_game.started_at.nil?).to(be(false))
+        expect(game.started_at).to be_present
       end
     end
 

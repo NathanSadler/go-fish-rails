@@ -1,5 +1,5 @@
 class RoundResult
-  attr_reader :recieving_player, :expected_rank, :cards, :source
+  attr_reader :recieving_player, :expected_rank, :cards, :source, :round_results
 
   def initialize(cards:, recieving_player:, expected_rank: "none given",
     source: "an unspecified source")
@@ -7,6 +7,7 @@ class RoundResult
     @recieving_player = recieving_player
     @expected_rank = expected_rank.to_s
     @source = source
+    @round_results = []
   end
 
   def as_json
