@@ -8,6 +8,8 @@ class Game < ApplicationRecord
     save!
   end
 
+  # NOTE: gets to stay for now, but you could probably just create some sort of
+  # start_game method instead
   def deal_cards
     go_fish.deal_cards
     save!
