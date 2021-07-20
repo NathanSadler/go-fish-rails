@@ -43,6 +43,7 @@ class Game < ApplicationRecord
     save!
   end
 
+  # used in games_controller and games_helper
   def turn_player
     go_fish.turn_player
   end
