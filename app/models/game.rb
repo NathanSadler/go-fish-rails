@@ -30,6 +30,7 @@ class Game < ApplicationRecord
     go_fish.players
   end
 
+
   def set_deck(deck)
     go_fish.deck.send(:set_cards, deck)
     save!

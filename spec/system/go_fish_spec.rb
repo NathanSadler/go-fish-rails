@@ -31,6 +31,8 @@ RSpec.describe "GoFish", type: :system do
       game.set_player_hand(0, [Card.new("3", "H")])
       game.set_player_hand(1, [Card.new("A", "D")])
       game.set_deck([Card.new("9", "S")])
+      # Why doesn't this one work????
+      # game.go_fish.deck(:set_cards, [Card.new("9", "S")])
       session.visit(session.current_path)
       take_turn(session, "Michael Example", "3 of Hearts")
       expect(session.body).to(have_content("9 of Spades"))
@@ -61,7 +63,7 @@ RSpec.describe "GoFish", type: :system do
       before(:each) do
         game.set_player_hand(0, [Card.new("7", "S"), Card.new("Q", "D")])
         game.set_player_hand(1, [Card.new("7", "C"), Card.new("4", "S")])
-        game.set_deck([Card.new("4", "H")])
+        game.go_fish.deck.send(:set_cards, [Card.new("4", "H")])
         session.visit(session.current_path)
         take_turn(session, "Michael Example", "7 of Spades")
       end

@@ -14,7 +14,7 @@ RSpec.describe GoFish do
     test_players[0].set_hand([Card.new("Q", "C")])
     test_players[1].send(:set_score, 2)
     test_players.each {|player| game.add_player(player)}
-    game.set_deck(test_deck.cards)
+    game.go_fish.deck.send(:set_cards, test_deck.cards)
     GameUser.create(game_id: Game.last.id, user_id: test_user.id)
     GameUser.create(game_id: Game.last.id, user_id: test_user2.id)
   end
