@@ -30,7 +30,7 @@ class Game < ApplicationRecord
     go_fish.players
   end
 
-
+  # one instance of this being used just doens't wanna be removed
   def set_deck(deck)
     go_fish.deck.send(:set_cards, deck)
     save!
