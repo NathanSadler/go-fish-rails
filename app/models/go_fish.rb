@@ -56,13 +56,6 @@ class GoFish
   def self.load(json)
     return GoFish.new if json.blank?
     self.from_json(json)
-    # game_go_fish = Game.find(game_id).go_fish
-    # if(!game_go_fish.nil?)
-    #   loaded_go_fish = GoFish.from_json(Game.find(game_id).go_fish)
-    #   loaded_go_fish
-    # else
-    #   GoFish.new(game_id: game_id)
-    # end
   end
 
   def over?
