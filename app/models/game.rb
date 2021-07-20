@@ -30,6 +30,8 @@ class Game < ApplicationRecord
     go_fish.players
   end
 
+  # used once in games_helper, but you could probably merge game#deal and
+  # game#shuffle, letting you get rid of the two individual game methods
   def shuffle
     go_fish.deck.shuffle
     save!
