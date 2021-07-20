@@ -1,11 +1,12 @@
 class GoFish
-  attr_reader :players, :deck, :current_player_index, :game_id
+  attr_reader :players, :deck, :current_player_index, :game_id, :round_results
 
   def initialize(players = [], deck = Deck.new, current_player_index = 0, game_id: 0)
     @players = players
     @deck = deck
     @current_player_index = current_player_index
     @game_id = game_id
+    @round_results = []
   end
 
   def add_player(player)

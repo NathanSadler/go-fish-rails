@@ -25,6 +25,7 @@ RSpec.describe GoFish do
   end
 
   let(:go_fish) {GoFish.new(test_players, test_deck, 1)}
+  let(:game) {Game.last}
 
   # Make it so that it uses an actual hash to test for
 
@@ -257,7 +258,7 @@ RSpec.describe GoFish do
     expect(go_fish.players[1].hand.include?(Card.new("8", "C"))).to(be(false))
     end
 
-    it("stores the results of a round") do
+    xit("stores the results of a round") do
       game.set_player_hand(1, [Card.new("Q", "D")])
       game.take_turn(game.players[0], requested_player: game.players[1],
         requested_rank: "Q")

@@ -5,7 +5,7 @@ class Game < ApplicationRecord
 
   def add_player(player)
     go_fish.add_player(player)
-    !save
+    save!
   end
 
   def current_player_index
@@ -37,6 +37,10 @@ class Game < ApplicationRecord
 
   def players
     go_fish.players
+  end
+
+  def round_results
+    go_fish.round_results
   end
 
   def set_deck(deck)
