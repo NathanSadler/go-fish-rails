@@ -47,7 +47,7 @@ RSpec.describe RoundResult do
     end
 
     it("returns a hash with the source's name") do
-        expect(json_round_result['source']).to(eq("John Ruby"))
+        expect(json_round_result['source']['name']).to(eq("John Ruby"))
     end
   end
 
@@ -62,7 +62,7 @@ RSpec.describe RoundResult do
       expect(restored_round_result.cards).to(eq([test_card]))
       expect(restored_round_result.expected_rank).to(eq("6"))
       expect(restored_round_result.recieving_player.name).to(eq("Tim Emerald"))
-      expect(restored_round_result.source).to(eq("John Ruby"))
+      expect(restored_round_result.source.name).to(eq("John Ruby"))
     end
   end
 

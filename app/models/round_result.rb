@@ -14,7 +14,7 @@ class RoundResult
     {
       "cards" => cards.map(&:as_json), "expected_rank" => expected_rank,
       "recieving_player" => recieving_player.as_json,
-      "source" => source_name, "asked_player" => asked_player.as_json
+      "source" => source.as_json, "asked_player" => asked_player.as_json
     }
   end
 
@@ -27,8 +27,9 @@ class RoundResult
     restored_cards = json["cards"].map{|json_card| Card.from_json(json_card)}
     restored_reciever = Player.from_json(json["recieving_player"])
     restored_asked_player = Player.from_json(json["asked_player"])
+    json["source"].is_a?(Hash) ? restored_source = Player.from_json(json["source"]) : restored_source = json["source"]
     RoundResult.new(cards: restored_cards, expected_rank: json["expected_rank"],
-    recieving_player: restored_reciever, source: json["source"], asked_player: restored_asked_player)
+    recieving_player: restored_reciever, source: restored_source, asked_player: restored_asked_player)
   end
 
   def hidden_message
