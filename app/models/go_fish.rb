@@ -66,6 +66,13 @@ class GoFish
     self.from_json(json)
   end
 
+  def next_player
+    increment_current_player_index
+    until (!turn_player.hand.empty?) || (!deck.empty?)
+      increment_current_player_index
+    end
+  end
+
   def over?
     cards_in_hands = players.map(&:hand).map(&:length).sum
     (cards_in_hands == 0) && (deck.empty?)

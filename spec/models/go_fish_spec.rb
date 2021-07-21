@@ -202,6 +202,33 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#next_player') do
+    before(:each) do
+      go_fish.send(:set_current_player_index, 0)  
+    end
+
+    it("increments the current_player index") do
+      go_fish.players[1].set_hand([Card.new('4', "H")])
+      go_fish.next_player
+      expect(go_fish.turn_player).to(eq(go_fish.players[1]))
+    end
+
+    it("skips players that don't have any cards if there aren't any cards in the deck") do
+      go_fish.add_player(Player.new("Empty Johnson"))
+      go_fish.deck.send(:set_cards, [])
+      go_fish.next_player
+      expect(go_fish.turn_player).to(eq(go_fish.players[0]))
+    end
+
+    it("doesn't skip a player that shouldn't be skipped") do
+      go_fish.add_player(Player.new("Empty Johnson"))
+      go_fish.players[1].set_hand([Card.new("4", "S")])
+      go_fish.deck.send(:set_cards, [])
+      go_fish.next_player
+      expect(go_fish.turn_player).to(eq(go_fish.players[1]))
+    end
+  end
+
   context('#over?') do
     it("is true if all players have no cards and the deck is empty") do
       go_fish.players[0].set_hand([])

@@ -14,6 +14,7 @@ class GamesController < ApplicationController
   end
 
   def choose_game_show(game)
+    # TODO: move check into Game model
     if (GameUser.where(game_id: game.id).length < game.minimum_player_count)
       render 'waiting_room'
     elsif (game.turn_player.user_id != current_user.id)
@@ -27,9 +28,11 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     @game_user = GameUser.new
     @player_id = current_user.id
+    # NOTE: get rid of this part
     if (GameUser.where(game_id: @game.id).length == @game.minimum_player_count)
       @game.update(started_at: DateTime.current)
     end
+    
     choose_show_page(@game)
   end
 
