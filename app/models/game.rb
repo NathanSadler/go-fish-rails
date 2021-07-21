@@ -48,4 +48,8 @@ class Game < ApplicationRecord
     go_fish.turn_player
   end
 
+  def round_results
+    go_fish.round_results
+  end
+
 end

@@ -6,3 +6,5 @@ ul
   // Get the cards of the current player and list them all
   - @game.list_cards_of_player_with_user_id(current_user.id).each do |card|
     li = card.description
+
+= render partial: 'round_results', locals: {round_results: @game.round_results}
