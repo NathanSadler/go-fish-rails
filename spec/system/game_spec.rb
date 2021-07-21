@@ -119,9 +119,19 @@ RSpec.describe "Game", type: :system do
         game.go_fish.deck.send(:set_cards, [Card.new("10", "H")])
         game.save!
         take_turn(session, "Michael Example", "4 of Diamonds")
-        expect(session.body).to(have_content("took 1 card(s)"))
+        expect(session.body).to(have_content("took 1"))
         session2.click_on("Try To Take Turn")
-        expect(session2.body).to(have_content("took 1 card(s)"))
+        expect(session2.body).to(have_content("took 1"))
+      end
+
+      it("only displays the hidden message if the player is the same as the round result's recieving player") do
+        session.click_on("Try To Start Game")
+        game.go_fish.deck.send(:set_cards, [Card.new("10", "H")])
+        game.save!
+        take_turn(session, "Michael Example", "4 of Diamonds")
+        expect(session.body).to(have_content("took 1 10(s) from the deck"))
+        session2.click_on("Try To Take Turn")
+        expect(session2.body).to_not(have_content("took 1 10(s)"))
       end
 
     end
