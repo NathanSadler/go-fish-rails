@@ -60,8 +60,8 @@ RSpec.describe "GoFish", type: :system do
       before(:each) do
         game.go_fish.players[0].set_hand([Card.new("7", "S"), Card.new("Q", "D")])
         game.go_fish.players[1].set_hand([Card.new("7", "C"), Card.new("4", "S")])
-        game.save!
         game.go_fish.deck.send(:set_cards, [Card.new("4", "H")])
+        game.save!
         session.visit(session.current_path)
         take_turn(session, "Michael Example", "7 of Spades")
       end
@@ -76,6 +76,7 @@ RSpec.describe "GoFish", type: :system do
         expect(updated_game.go_fish.players[0].hand.include?(Card.new("4", "H"))).to(be(true))
         expect(updated_game.go_fish.deck.empty?).to(be(true))
       end
+      
 
       it("lets one user ask for and take card(s) from another") do
         expect(game.players[0].hand.include?(Card.new("7", "C"))).to(be(false))
