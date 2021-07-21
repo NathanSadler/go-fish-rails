@@ -5,7 +5,7 @@ module GamesHelper
       # game = Game.find(game.id)
       game.shuffle
       game.deal_cards
-      game.started_at = DateTime.now
+      game.started_at = DateTime.current
     end
   end
 end
