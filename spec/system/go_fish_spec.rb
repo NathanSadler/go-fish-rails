@@ -76,6 +76,12 @@ RSpec.describe "GoFish", type: :system do
         expect(updated_game.go_fish.players[0].hand.include?(Card.new("4", "H"))).to(be(true))
         expect(updated_game.go_fish.deck.empty?).to(be(true))
       end
+
+      it("won't try to draw a card if the deck is empty") do
+        take_turn(session, "Michael Example", "Queen of Diamonds")
+        expect(Game.last.go_fish.players[0].hand.length).to(eq(4))
+        expect(Game.last.turn_player.name).to(eq("Michael Example"))
+      end
       
 
       it("lets one user ask for and take card(s) from another") do
