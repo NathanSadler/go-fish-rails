@@ -104,7 +104,7 @@ RSpec.describe RoundResult do
   context('#message_start') do
     it("returns the portion of the message that will be the same no matter who views it") do
       round_result = RoundResult.new(cards: Card.new("7", "H"),
-      recieving_player: Player.new, expected_rank: "7", source: Player.new("Pain"))
+      recieving_player: Player.new, expected_rank: "7", source: Player.new("Pain"), asked_player: Player.new("Pain"))
       expect(round_result.message_start).to(eq("Player asked Pain for 7s"))
     end
   end
@@ -128,16 +128,16 @@ RSpec.describe RoundResult do
     it("displays the recieved cards if the card rank matches the requested "+
     "rank") do
       round_result = RoundResult.new(cards: Card.new("3", "S"), expected_rank: "3",
-        recieving_player: Player.new("Bert"), source: Player.new("Ernie"))
-      expected_message = "Bert took 1 3(s) from Ernie"
+        recieving_player: Player.new("Bert"), source: Player.new("Ernie"), asked_player: Player.new("Ernie"))
+      expected_message = "Bert asked Ernie for 3s and took 1 3(s)"
       expect(round_result.public_message).to(eq(expected_message))
     end
 
     it("hides the rank of the recieved cards if the card rank doesn't match "+
     "the requested rank") do
       round_result = RoundResult.new(cards: Card.new("3", "S"), expected_rank: "9",
-        recieving_player: Player.new("Bert"), source: Player.new("Ernie"))
-      expected_message = "Bert took 1 card(s) from Ernie"
+        recieving_player: Player.new("Bert"), source: Player.new("Ernie"), asked_player: Player.new("Ernie"))
+      expected_message = "Bert asked Ernie for 9s and took 1 card(s)"
       expect(round_result.public_message).to(eq(expected_message))
     end
   end

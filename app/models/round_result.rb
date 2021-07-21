@@ -42,13 +42,13 @@ class RoundResult
   end
 
   def message_start
-    return "#{recieving_player.name} asked #{source_name} for #{expected_rank}s"
+    return "#{recieving_player.name} asked #{asked_player.name} for #{expected_rank}s"
   end
 
   def public_message
-    return "#{asked_player.name} took no cards from #{source_name}" if cards.empty?
-    ("#{recieving_player.name} took #{cards.length} #{matched_rank? ? cards[0].rank : "card"}(s) " +
-    "from #{source_name}")
+    return "#{message_start} and took no cards" if cards.empty?
+    return "#{message_start} and took #{cards.length} #{matched_rank? ? cards[0].rank : "card"}(s)" if source.is_a?(Player)
+    "#{message_start} and took #{cards.length} #{matched_rank? ? cards[0].rank : "card"}(s) from #{source_name}"
   end
 
   def source_name
