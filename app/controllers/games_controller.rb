@@ -1,5 +1,6 @@
 require 'date'
 class GamesController < ApplicationController
+
   def index
   end
 

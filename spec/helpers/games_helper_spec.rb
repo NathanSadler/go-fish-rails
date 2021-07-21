@@ -15,12 +15,7 @@ RSpec.describe GamesHelper, type: :helper do
   let(:session1) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:last_game) {Game.create}
 
-  describe("turn_player_id") do
-    it("returns the user_id of the player whose turn it is") do
-      last_game.add_player(Player.new("Test Dummy", 14))
-      expect(turn_player_id(last_game.id)).to(eq(14))
-    end
-  end
+
 
   describe("try_to_start") do
     before(:each) do
