@@ -288,6 +288,7 @@ RSpec.describe GoFish do
 
     it("increments the current_player_index") do
       go_fish.add_player(Player.new)
+      go_fish.players[-1].add_card_to_hand(Card.new("7", "D"))
       go_fish.take_turn(go_fish.turn_player, requested_player: go_fish.players[0])
       expect(go_fish.current_player_index).to(eq(2))
     end

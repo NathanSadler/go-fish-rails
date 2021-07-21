@@ -39,7 +39,7 @@ class GoFish
 
   def finish_turn(round_result, player)
     save_round_result(round_result)
-    increment_current_player_index if !round_results[0].matched_rank?
+    next_player if !round_results[0].matched_rank?
     player.lay_down_books
   end
 
