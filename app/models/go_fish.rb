@@ -68,8 +68,8 @@ class GoFish
 
   def next_player
     increment_current_player_index
-    until (!turn_player.hand.empty?) || (!deck.empty?)
-      increment_current_player_index
+    until (!turn_player.hand.empty?)
+      deck.empty? ? increment_current_player_index : turn_player.add_card_to_hand(deck.draw_card)  
     end
   end
 

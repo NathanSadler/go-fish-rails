@@ -227,6 +227,14 @@ RSpec.describe GoFish do
       go_fish.next_player
       expect(go_fish.turn_player).to(eq(go_fish.players[1]))
     end
+
+    it("gives a player a card from the deck if the player doesn't have any cards "+
+    "and the deck isn't empty") do
+      go_fish.players[1].set_hand([])
+      go_fish.deck.send(:set_cards, [Card.new("2", "D")])
+      go_fish.next_player
+      expect(go_fish.players[1].hand).to(eq([Card.new("2", "D")]))
+    end
   end
 
   context('#over?') do
