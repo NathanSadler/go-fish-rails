@@ -1,3 +1,5 @@
+require 'date'
+
 class Game < ApplicationRecord
   has_many :game_users
   has_many :users, through: :game_users
@@ -41,6 +43,15 @@ class Game < ApplicationRecord
     go_fish.take_turn(player, requested_player: requested_player,
       requested_rank: requested_rank)
     save!
+  end
+
+  def try_to_start
+    if (GameUser.where(game_id: id).length >= minimum_player_count)
+      go_fish.deck.shuffle
+      go_fish.deal_cards
+      update(started_at: DateTime.current)
+      save!
+    end
   end
 
   # used in games_controller and games_helper

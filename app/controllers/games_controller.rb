@@ -28,7 +28,7 @@ class GamesController < ApplicationController
     @game_user = GameUser.new
     @player_id = current_user.id
     if (GameUser.where(game_id: @game.id).length == @game.minimum_player_count)
-      @game.update(started_at: DateTime.now)
+      @game.update(started_at: DateTime.current)
     end
     choose_show_page(@game)
   end
@@ -55,7 +55,7 @@ class GamesController < ApplicationController
 
   def start_game
     @game = Game.find(params[:game])
-    try_to_start(@game)
+    @game.try_to_start
     redirect_to @game
   end
 
