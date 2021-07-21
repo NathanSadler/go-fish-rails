@@ -283,8 +283,6 @@ RSpec.describe GoFish do
       game.go_fish.players[1].set_hand([Card.new("Q", "D")])
       game.save!
       game.take_turn(game.players[0], requested_player: game.players[1], requested_rank: "Q")
-      round_result = RoundResult.new(cards: Card.new("Q", "D"),
-        expected_rank: "Q", recieving_player: game.players[0], source: game.players[1])
       expect(game.go_fish.round_results[0].hidden_message).to(eq("You took 1 Q(s) from John Don't"))
     end
   end

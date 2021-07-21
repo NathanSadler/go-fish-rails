@@ -3,8 +3,9 @@ require 'rails_helper'
 RSpec.describe RoundResult do
   let(:test_card) {Card.new("7", "H")}
   let(:test_player) {Player.new}
+  let(:test_asked_player) {Player.new("Test Asked Player")}
   let(:test_round_result) {RoundResult.new(cards: test_card,
-    recieving_player: test_player)}
+    recieving_player: test_player, asked_player: test_asked_player)}
 
   context("initialize") do
     it("defaults to using 'none given' as the expected_rank") do
@@ -21,7 +22,7 @@ RSpec.describe RoundResult do
 
     it("automatically converts expected_rank into a string") do
       test_round_result = RoundResult.new(cards: test_card,
-        recieving_player: test_player, expected_rank: 8)
+        recieving_player: test_player, expected_rank: 8, asked_player: test_asked_player)
       expect(test_round_result.expected_rank).to(eq("8"))
     end
   end
@@ -29,7 +30,7 @@ RSpec.describe RoundResult do
   context('#as_json') do
     let(:test_round_result) {RoundResult.new(cards: test_card,
       recieving_player: Player.new("Tim Emerald"), source: Player.new("John Ruby"),
-      expected_rank: "6")}
+      expected_rank: "6", asked_player: test_asked_player)}
     let(:json_round_result) {test_round_result.as_json}
 
     it("returns a hash with the cards") do
@@ -53,7 +54,7 @@ RSpec.describe RoundResult do
   context('#from_json') do
     let(:test_round_result) {RoundResult.new(cards: test_card,
       recieving_player: Player.new("Tim Emerald"), source: Player.new("John Ruby"),
-      expected_rank: "6")}
+      expected_rank: "6", asked_player: Player.new("John Ruby"))}
     let(:json_round_result) {test_round_result.as_json}
 
     it("makes a round result from a json hash") do
@@ -67,7 +68,7 @@ RSpec.describe RoundResult do
 
   context('#source_name') do
     let(:test_round_result) {RoundResult.new(cards: test_card,
-      recieving_player: test_player, source: Player.new("Joe"))}
+      recieving_player: test_player, source: Player.new("Joe"), asked_player: Player.new("Joe"))}
 
     it("returns the name of a player if it is the source") do
       expect(test_round_result.source_name).to(eq("Joe"))
@@ -75,7 +76,7 @@ RSpec.describe RoundResult do
 
     it("returns 'the deck' if the source is a deck") do
       test_round_result = RoundResult.new(cards: test_card,
-        recieving_player: test_player, source: Deck.new)
+        recieving_player: test_player, source: Deck.new, asked_player: test_asked_player)
       expect(test_round_result.source_name).to(eq("the deck"))
     end
   end

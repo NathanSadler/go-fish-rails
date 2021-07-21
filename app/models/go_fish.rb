@@ -82,7 +82,7 @@ class GoFish
     else
       won_cards, card_source = [player.draw_card(deck), "the deck"]
     end
-    save_round_result(RoundResult.new(cards: won_cards, recieving_player: player, expected_rank: requested_rank, source: card_source))
+    save_round_result(RoundResult.new(cards: won_cards, recieving_player: player, expected_rank: requested_rank, source: card_source, asked_player: requested_player))
     increment_current_player_index if !round_results[0].matched_rank?
   end
 
