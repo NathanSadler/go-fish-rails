@@ -33,7 +33,6 @@ RSpec.describe Game, type: :model do
       end
 
       it("sets started_at") do
-        binding.pry
         expect(game.started_at).to be_present
       end
     end

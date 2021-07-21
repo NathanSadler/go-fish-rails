@@ -281,9 +281,29 @@ RSpec.describe GoFish do
 
     it("stores the results of a round") do
       game.go_fish.players[1].set_hand([Card.new("Q", "D")])
+      game.go_fish.take_turn(game.players[0], requested_player: game.players[1], requested_rank: "Q")
       game.save!
-      game.take_turn(game.players[0], requested_player: game.players[1], requested_rank: "Q")
       expect(game.go_fish.round_results[0].hidden_message).to(eq("You took 1 Q(s) from John Don't"))
+    end
+
+    context("has players lay down books at the end of their turn") do
+      before(:each) do
+        cards_to_add = [Card.new("Q", "H"), Card.new("Q", "S")]
+        game.go_fish.players[0].add_card_to_hand(cards_to_add)
+        game.go_fish.players[1].add_card_to_hand(Card.new("Q", "D"))
+        game.save!
+        game.go_fish.take_turn(game.go_fish.players[0], requested_player: game.go_fish.players[1],
+          requested_rank: "Q")
+        game.save!
+      end
+
+      it("removes the cards a players lays down from their hand") do
+        expect(game.go_fish.players[0].hand).to(eq([]))
+      end
+
+      it("increases the score of a player when they lay down a book") do
+        expect(game.go_fish.players[0].score).to(eq(1))
+      end
     end
   end
 

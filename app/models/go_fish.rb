@@ -37,6 +37,12 @@ class GoFish
     return nil
   end
 
+  def finish_turn(round_result, player)
+    save_round_result(round_result)
+    increment_current_player_index if !round_results[0].matched_rank?
+    player.lay_down_books
+  end
+
   def self.from_json(json)
     restored_players = json['players'].map {|json_player| Player.from_json(json_player)}
     restored_deck = Deck.from_json(json['deck'])
@@ -82,8 +88,8 @@ class GoFish
     else
       won_cards, card_source = [player.draw_card(deck), "the deck"]
     end
-    save_round_result(RoundResult.new(cards: won_cards, recieving_player: player, expected_rank: requested_rank, source: card_source, asked_player: requested_player))
-    increment_current_player_index if !round_results[0].matched_rank?
+    round_result = RoundResult.new(cards: won_cards, recieving_player: player, expected_rank: requested_rank, source: card_source, asked_player: requested_player)
+    finish_turn(round_result, player)
   end
 
   def turn_player
