@@ -39,6 +39,10 @@ class RoundResult
     expected_rank == cards[0].rank
   end
 
+  def message_start
+    return "#{recieving_player.name} asked #{source_name} for #{expected_rank}s"
+  end
+
   def public_message
     return "#{recieving_player.name} took no cards from #{source_name}" if cards.empty?
     ("#{recieving_player.name} took #{cards.length} #{matched_rank? ? cards[0].rank : "card"}(s) " +

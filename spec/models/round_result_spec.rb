@@ -100,6 +100,14 @@ RSpec.describe RoundResult do
     end
   end
 
+  context('#message_start') do
+    it("returns the portion of the message that will be the same no matter who views it") do
+      round_result = RoundResult.new(cards: Card.new("7", "H"),
+      recieving_player: Player.new, expected_rank: "7", source: Player.new("Pain"))
+      expect(round_result.message_start).to(eq("Player asked Pain for 7s"))
+    end
+  end
+
   context('#hidden_message') do
     it("returns a message in the form 'you took <x> <y>(s) from <z>'") do
       round_result = RoundResult.new(cards: test_card,
