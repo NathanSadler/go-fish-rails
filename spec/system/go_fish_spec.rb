@@ -46,13 +46,26 @@ RSpec.describe "GoFish", type: :system do
       session.visit current_path
     end
 
-    it("gives a player a card from the deck if there are cards in the deck and the player doesn't have any cards") do
-      game.go_fish.players[0].set_hand([])
-      game.go_fish.deck.send(:set_cards, [Card.new("8", "D")])
-      game.save!
-      session.visit current_path
-      expect(session.has_field?("8 of Diamonds", type: 'radio')).to(eq(true))
+    describe("giving a player a card at the start of a turn") do
+      it("if there are cards in the deck and the player doesn't have any cards") do
+        game.go_fish.players[0].set_hand([])
+        game.go_fish.deck.send(:set_cards, [Card.new("8", "D")])
+        game.save!
+        session.visit current_path
+        expect(session.has_field?("8 of Diamonds", type: 'radio')).to(eq(true))
+      end
+
+      it("doesn't happen if the player does have any cards") do
+        game.go_fish.players[0].set_hand([Card.new("9", "D")])
+        game.go_fish.deck.send(:set_cards, [Card.new("10", "D")])
+        game.save!
+        session.visit current_path
+        expect(session.has_field?("10 of Diamonds", type: 'radio')).to(eq(false))
+      end
+
     end
+
+
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
