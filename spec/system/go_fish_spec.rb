@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "GoFish", type: :system do
-
   let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:session2) {Capybara::Session.new(:rack_test, Rails.application)}
 
@@ -15,6 +14,8 @@ RSpec.describe "GoFish", type: :system do
   after(:each) do
     User.destroy_all
   end
+  
+  let(:game) {Game.last}
 
   describe("showing a game") do
     before(:each) do
@@ -24,9 +25,7 @@ RSpec.describe "GoFish", type: :system do
       session2.click_on "Join Game"
       session.visit current_path
     end
-
-    let(:game) {Game.last}
-
+    
     it("displays the cards that the player has") do
       game.go_fish.players[0].set_hand([Card.new("3", "H")])
       game.go_fish.players[1].set_hand([Card.new("A", "D")])
@@ -46,8 +45,6 @@ RSpec.describe "GoFish", type: :system do
       session2.click_on "Join Game"
       session.visit current_path
     end
-
-    let(:game) {Game.last}
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
@@ -69,19 +66,20 @@ RSpec.describe "GoFish", type: :system do
         take_turn(session, "Michael Example", "7 of Spades")
       end
 
-      let(:game) {Game.last}
-
       it("takes a card from the deck and adds it to the user's hand when their" +
       " turn is over") do
         game.go_fish.deck.send(:set_cards, [Card.new("4", "H")])
+        game.save!
         take_turn(session, "Michael Example", "7 of Spades")
-        expect(game.players[1].hand.include?(Card.new("4", "H"))).to(be(true))
-        expect(game.go_fish.deck.empty?).to(be(true))
+
+        updated_game = Game.last
+        expect(updated_game.go_fish.players[0].hand.include?(Card.new("4", "H"))).to(be(true))
+        expect(updated_game.go_fish.deck.empty?).to(be(true))
       end
 
       it("lets one user ask for and take card(s) from another") do
-        expect(game.players[0].hand.include?(Card.new("7", "C"))).to(be(true))
-        expect(game.players[1].hand.include?(Card.new("7", "C"))).to(be(false))
+        expect(game.players[0].hand.include?(Card.new("7", "C"))).to(be(false))
+        expect(game.players[1].hand.include?(Card.new("7", "C"))).to(be(true))
       end
 
       it("will still be the player's turn if they get a card from another player") do
