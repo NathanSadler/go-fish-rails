@@ -17,7 +17,7 @@ class GoFish
     { 'players' => players.map(&:as_json),
       'deck' => deck.as_json,
       'current_player_index' => current_player_index,
-      'game_id' => game_id
+      'game_id' => game_id, 'round_results' => round_results.map(&:as_json)
     }
   end
 

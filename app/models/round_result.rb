@@ -7,7 +7,6 @@ class RoundResult
     @recieving_player = recieving_player
     @expected_rank = expected_rank.to_s
     @source = source
-    @round_results = []
   end
 
   def as_json
@@ -21,6 +20,13 @@ class RoundResult
   def card_to_array(card)
     return card if card.is_a?(Array)
     [card]
+  end
+
+  def self.from_json(json)
+    restored_cards = json["cards"].map{|json_card| Card.from_json(json_card)}
+    restored_reciever = Player.from_json(json["recieving_player"])
+    RoundResult.new(cards: restored_cards, expected_rank: json["expected_rank"],
+    recieving_player: restored_reciever, source: json["source"])
   end
 
   def hidden_message

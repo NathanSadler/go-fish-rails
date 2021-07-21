@@ -65,7 +65,7 @@ RSpec.describe GoFish do
     end
 
     xit("returns a hash with the go_fish's round results") do
-
+      #expect(serialized_game['round_results'].private_messages)
     end
   end
 
@@ -119,16 +119,22 @@ RSpec.describe GoFish do
     end
   end
 
-  context('.from_json') do
+  describe('.from_json') do
+    before(:each) {
+      go_fish.send(:set_round_results, [RoundResult.new(cards: Card.new("4", "C"),
+      recieving_player: go_fish.players[0], expected_rank: "7", source: "the deck")])
+    }
+
     let(:json_go_fish) {go_fish.as_json}
     let(:restored_go_fish) {GoFish.from_json(json_go_fish)}
 
     it("builds a go_fish game from a json hash") do
       expect(restored_go_fish.players.map(&:name)).to(eq(go_fish.players.map(&:name)))
       expect(restored_go_fish.deck.cards).to(eq(go_fish.deck.cards))
-      #binding.pry
       expect(restored_go_fish.current_player_index).to(eq(go_fish.current_player_index))
       expect(restored_go_fish.game_id).to(eq(go_fish.game_id))
+      expect(restored_go_fish.round_results[0].hidden_message).to(eq("You took "+
+        "1 4(s) from the deck"))
     end
   end
 
@@ -277,7 +283,6 @@ RSpec.describe GoFish do
       game.go_fish.players[1].set_hand([Card.new("Q", "D")])
       game.save!
       game.take_turn(game.players[0], requested_player: game.players[1], requested_rank: "Q")
-      binding.pry
       round_result = RoundResult.new(cards: Card.new("Q", "D"),
         expected_rank: "Q", recieving_player: game.players[0], source: game.players[1])
       expect(game.go_fish.round_results[0].hidden_message).to(eq("You took 1 Q(s) from John Don't"))

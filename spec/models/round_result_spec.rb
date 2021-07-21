@@ -50,6 +50,21 @@ RSpec.describe RoundResult do
     end
   end
 
+  context('#from_json') do
+    let(:test_round_result) {RoundResult.new(cards: test_card,
+      recieving_player: Player.new("Tim Emerald"), source: Player.new("John Ruby"),
+      expected_rank: "6")}
+    let(:json_round_result) {test_round_result.as_json}
+
+    it("makes a round result from a json hash") do
+      restored_round_result = RoundResult.from_json(json_round_result)
+      expect(restored_round_result.cards).to(eq([test_card]))
+      expect(restored_round_result.expected_rank).to(eq("6"))
+      expect(restored_round_result.recieving_player.name).to(eq("Tim Emerald"))
+      expect(restored_round_result.source).to(eq("John Ruby"))
+    end
+  end
+
   context('#source_name') do
     let(:test_round_result) {RoundResult.new(cards: test_card,
       recieving_player: test_player, source: Player.new("Joe"))}
