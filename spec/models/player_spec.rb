@@ -56,6 +56,11 @@ RSpec.describe Player do
       added_cards = player.add_card_to_hand(cards_to_add)
       expect(added_cards).to(eq(cards_to_add))
     end
+
+    it("doesn't add a card if it receives nil") do
+      player.add_card_to_hand(nil)
+      expect(player.hand).to(eq([]))
+    end
   end
 
   context('#remove_card_from_hand') do

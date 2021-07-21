@@ -20,7 +20,7 @@ class Player
     if(card.is_a?(Array))
       set_hand(hand.concat(card))
       card
-    else
+    elsif !card.nil?
       set_hand(hand.push(card))
       [card]
     end

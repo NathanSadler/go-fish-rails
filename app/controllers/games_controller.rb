@@ -32,7 +32,6 @@ class GamesController < ApplicationController
     if (GameUser.where(game_id: @game.id).length == @game.minimum_player_count)
       @game.update(started_at: DateTime.current)
     end
-    
     choose_show_page(@game)
   end
 
