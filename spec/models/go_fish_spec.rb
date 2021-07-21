@@ -122,7 +122,7 @@ RSpec.describe GoFish do
   describe('.from_json') do
     before(:each) {
       go_fish.send(:set_round_results, [RoundResult.new(cards: Card.new("4", "C"),
-      recieving_player: go_fish.players[0], expected_rank: "7", source: "the deck")])
+      recieving_player: go_fish.players[0], expected_rank: "7", source: "the deck", asked_player: go_fish.players[1])])
     }
 
     let(:json_go_fish) {go_fish.as_json}
@@ -224,7 +224,7 @@ RSpec.describe GoFish do
     it("saves a round result") do
       round_result = RoundResult.new(cards: Card.new("4", "D"),
         recieving_player: go_fish.players[0], expected_rank: "8",
-        source: go_fish.players[1])
+        source: go_fish.players[1], asked_player: go_fish.players[1])
       go_fish.save_round_result(round_result)
       expect(go_fish.round_results[0].hidden_message).to(eq("You took 1 4(s) "+
       "from John Don't"))
