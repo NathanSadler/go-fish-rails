@@ -62,7 +62,6 @@ RSpec.describe "GoFish", type: :system do
         session.visit current_path
         expect(session.has_field?("10 of Diamonds", type: 'radio')).to(eq(false))
       end
-
     end
 
 
