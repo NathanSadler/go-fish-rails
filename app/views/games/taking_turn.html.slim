@@ -12,3 +12,5 @@ h1 Take Your Turn
   = f.input :requested_player, as: :radio_buttons, collection: players_array, checked: players_array[0]
   = f.input :requested_rank, as: :radio_buttons, collection: cards_array, checked: cards_array[0]
   = f.submit "Take Turn"
+
+= render partial: 'round_results', locals: {round_results: @game.round_results}
