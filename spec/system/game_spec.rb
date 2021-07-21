@@ -102,6 +102,29 @@ RSpec.describe "Game", type: :system do
       session.click_on "Join Game"
       expect(session.body).to(have_content("Take Your Turn"))
     end
+
+    describe("displaying round results") do
+      let(:game) {Game.last} 
+      before(:each) do
+        create_game(session, "Ah! Toe Test!", 2)
+        session2.visit("/games/#{Game.last.id}")
+        [session, session2].each {|user_session| user_session.click_on("Join Game")}
+        game.go_fish.players[0].set_hand([Card.new("4", "D")])
+        game.go_fish.players[1].set_hand([Card.new("9", "S"), Card.new("8", "C")])
+        game.save!
+      end
+
+      it("displays round results on the waiting_to_take_turn and taking_turn pages") do
+        session.click_on("Try To Start Game")
+        game.go_fish.deck.send(:set_cards, [Card.new("10", "H")])
+        game.save!
+        take_turn(session, "Michael Example", "4 of Diamonds")
+        expect(session.body).to(have_content("took 1 card(s)"))
+        session2.click_on("Try To Take Turn")
+        expect(session2.body).to(have_content("took 1 card(s)"))
+      end
+
+    end
   end
 
 end
