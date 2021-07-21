@@ -40,8 +40,10 @@ class GoFish
   def self.from_json(json)
     restored_players = json['players'].map {|json_player| Player.from_json(json_player)}
     restored_deck = Deck.from_json(json['deck'])
-    GoFish.new(restored_players, restored_deck, json['current_player_index'],
+    restored_go_fish = GoFish.new(restored_players, restored_deck, json['current_player_index'],
       game_id: json['game_id'])
+    restored_go_fish.send(:set_round_results, json["round_results"].map {|round_result| RoundResult.from_json(round_result)})
+    restored_go_fish
   end
 
   def increment_current_player_index
