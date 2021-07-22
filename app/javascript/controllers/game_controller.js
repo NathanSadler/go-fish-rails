@@ -5,6 +5,7 @@ export default class extends Controller {
   static targets = ["status"]; // See data-target "game.status" in view template
 
   connect() {
+    console.log("Hello?", this.element)
     this.subscription = consumer.subscriptions.create(
       {
         channel: "ScanChannel", // ActionCable channel Used
