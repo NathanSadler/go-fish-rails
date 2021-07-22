@@ -35,6 +35,7 @@ RSpec.describe "Game", type: :system do
       session.click_on("Join Game")
       session2.visit("/games/#{Game.last.id}")
       session2.click_on("Join Game")
+      session.click_on("Try To Start Game")
     end
 
     it("creates a timestamp for when the game was started") do
@@ -42,7 +43,6 @@ RSpec.describe "Game", type: :system do
     end
 
     it("deals the deck of cards") do
-      session.click_on "Try To Start Game"
       game = Game.last
       comparison_deck = Deck.new
       expect(game.go_fish.deck.cards_in_deck).to(eq(
