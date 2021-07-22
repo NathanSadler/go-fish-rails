@@ -7,4 +7,7 @@ ul
   - @game.list_cards_of_player_with_user_id(current_user.id).each do |card|
     li = card.description
 
-= render partial: 'round_results', locals: {round_results: @game.round_results}
+.game data-controller="game" data-game-id=@game.id
+  .status data-target="game.status"
+    = render partial: 'round_results', locals: {round_results: @game.round_results}
+    
