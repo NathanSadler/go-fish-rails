@@ -105,6 +105,11 @@ class GoFish
     players[current_player_index]
   end
 
+  def winning_players
+    highest_score = players.map(&:score).max
+    players.select {|player| player.score == highest_score}
+  end
+
   private
     def set_current_player_index(new_value)
       @current_player_index = new_value % players.length
