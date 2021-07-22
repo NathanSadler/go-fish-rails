@@ -1,14 +1,14 @@
-import { Controller } from "@stimulus";
+import { Controller } from "stimulus";
 import consumer from "channels/consumer";
 
 export default class extends Controller {
   static targets = ["status"]; // See data-target "game.status" in view template
 
   connect() {
-    console.log("Hello?", this.element)
+    console.log("hi there!")
     this.subscription = consumer.subscriptions.create(
       {
-        channel: "ScanChannel", // ActionCable channel Used
+        channel: "GameChannel", // ActionCable channel Used
         id: this.data.get("id"), //See data-game-id=@game.id in the view template
       },
       {
@@ -19,12 +19,17 @@ export default class extends Controller {
     );
   }
 
-  _connected() {}
+  _connected() {
+    console.log("yooooooo chaos got drip")
+  }
 
-  _disconnected() {}
+  _disconnected() {
+    console.log("where you going you big drip?")
+  }
 
     //Updates target when data is received on the channel
   _received(data) {
+    console.log("This is getting called...")
     const element = this.statusTarget
     element.innerHTML = data
   }
