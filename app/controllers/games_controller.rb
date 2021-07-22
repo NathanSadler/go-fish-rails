@@ -14,8 +14,7 @@ class GamesController < ApplicationController
   end
 
   def choose_game_show(game)
-    # TODO: move check into Game model
-    if (GameUser.where(game_id: game.id).length < game.minimum_player_count)
+    if (!game.ready_to_start?)
       render 'waiting_room'
     elsif (game.turn_player.user_id != current_user.id)
       render 'waiting_to_take_turn'

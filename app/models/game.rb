@@ -17,9 +17,6 @@ class Game < ApplicationRecord
     save!
   end
 
-  def enough_players_to_start?
-  end
-
   # used in games controller and taking_turn
   def find_player_with_user_id(user_id)
     go_fish.find_player_with_user_id(user_id)
@@ -33,6 +30,10 @@ class Game < ApplicationRecord
   # used in taking_turn, but only once
   def players
     go_fish.players
+  end
+
+  def ready_to_start?
+    GameUser.where(game_id: id).length >= minimum_player_count
   end
 
   # used once in games_helper, but you could probably merge game#deal and
