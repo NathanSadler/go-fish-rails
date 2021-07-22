@@ -17,6 +17,9 @@ class Game < ApplicationRecord
     save!
   end
 
+  def enough_players_to_start?
+  end
+
   # used in games controller and taking_turn
   def find_player_with_user_id(user_id)
     go_fish.find_player_with_user_id(user_id)

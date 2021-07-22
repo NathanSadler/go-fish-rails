@@ -4,9 +4,22 @@ RSpec.describe Game, type: :model do
   let(:session1) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:last_game) {Game.create}
 
+  describe("#ready_to_start?") do
+    before(:each) do
+      last_game.update(minimum_player_count: 1)
+    end
 
+    it("is true when the number of GameUser objects associated with the game is at least the minimum_players") do
+      GameUser.create(game_id: last_game.id, user_id: User.last.id)
+      expect(last_game.ready_to_start?).to(be(true))
+    end
 
-  describe("try_to_start") do
+    it("is false when the number of GameUser objects associated with the game is less than the minimum_players") do
+      expect(last_game.ready_to_start?).to(be(false))
+    end
+  end
+
+  describe("#try_to_start") do
     before(:each) do
       GameUser.create(game_id: last_game.id, user_id: User.last.id)
       game = Game.last
@@ -57,4 +70,5 @@ RSpec.describe Game, type: :model do
       end
     end
   end
+
 end
