@@ -112,12 +112,13 @@ RSpec.describe "Game", type: :system do
         game.go_fish.players[0].set_hand([Card.new("4", "D")])
         game.go_fish.players[1].set_hand([Card.new("9", "S"), Card.new("8", "C")])
         game.save!
+        session.click_on("Try To Start Game")
       end
 
       it("displays round results on the waiting_to_take_turn and taking_turn pages") do
-        session.click_on("Try To Start Game")
         game.go_fish.deck.send(:set_cards, [Card.new("10", "H")])
         game.save!
+        session.visit(current_path)
         take_turn(session, "Michael Example", "4 of Diamonds")
         expect(session.body).to(have_content("took 1"))
         session2.click_on("Try To Take Turn")
@@ -125,9 +126,9 @@ RSpec.describe "Game", type: :system do
       end
 
       it("only displays the hidden message if the player is the same as the round result's recieving player") do
-        session.click_on("Try To Start Game")
         game.go_fish.deck.send(:set_cards, [Card.new("10", "H")])
         game.save!
+        session.visit(current_path)
         take_turn(session, "Michael Example", "4 of Diamonds")
         expect(session.body).to(have_content("took 1 10(s) from the deck"))
         session2.click_on("Try To Take Turn")
