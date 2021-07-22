@@ -25,6 +25,26 @@ RSpec.describe "GoFish", type: :system do
       session2.click_on "Join Game"
       session.visit current_path
     end
+
+    describe("showing the game over screen") do
+      before(:each) do
+        game.go_fish.players[0].set_hand([Card.new("2", "C"), Card.new("2", "S")])
+        game.go_fish.players[1].set_hand([Card.new("2", "D"), Card.new("2", "H")])
+        game.go_fish.deck.send(:set_cards, [])
+        game.save!
+        session.visit(current_path)
+        take_turn(session, "Michael Example", "2 of Clubs")
+      end
+
+      it("is displayed when the game is finished") do
+        expect(session.body).to(have_content("Game Over"))
+      end
+
+      it("says who the winner is") do
+        expect(session.body).to(have_content("foobar wins"))
+      end
+      
+    end
     
     it("displays the cards that the player has") do
       game.go_fish.players[0].set_hand([Card.new("3", "H")])
