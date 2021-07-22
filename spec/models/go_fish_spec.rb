@@ -348,4 +348,20 @@ RSpec.describe GoFish do
       expect(go_fish.turn_player).to(eq(test_players[1]))
     end
   end
+
+  context('#winning_players') do
+    before(:each) do
+      game.add_player("Dummy Player")
+      game.players[1].send(:set_score, 1)
+    end
+
+    it("returns an array containing the winning player") do
+      expect(game.winning_players).to(eq(game.players[1]))
+    end
+
+    it("returns all players with the highest score if there is a tie for first place") do
+      game.players[0].send(:set_score, 1)
+      [game.players[0], game.players[1]].each {|player| expect(game.winning_players.include?(player)).to(eq(true))}
+    end
+  end
 end
