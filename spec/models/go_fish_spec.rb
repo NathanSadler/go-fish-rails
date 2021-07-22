@@ -64,8 +64,12 @@ RSpec.describe GoFish do
       expect(serialized_game['game_id']).to(eq(0))
     end
 
-    xit("returns a hash with the go_fish's round results") do
-      #expect(serialized_game['round_results'].private_messages)
+    it("returns a hash with the go_fish's round results") do
+      result_to_save = RoundResult.new(cards: Card.new("4", "H"), expected_rank: "8", 
+      recieving_player: test_players[0], source: test_players[1], asked_player: test_players[1])
+      go_fish.save_round_result(result_to_save)
+      serialized_game = go_fish.as_json
+      expect(serialized_game['round_results'][0]['expected_rank']).to(eq("8"))
     end
   end
 
