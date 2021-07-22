@@ -27,6 +27,11 @@ class Game < ApplicationRecord
     go_fish.list_cards_of_player_with_user_id(user_id)
   end
 
+  # used in game controller
+  def over?
+    go_fish.over?
+  end
+
   # used in taking_turn, but only once
   def players
     go_fish.players

@@ -5,8 +5,9 @@ class GamesController < ApplicationController
   end
 
   def choose_show_page(game)
-    # TODO: Give a clearer name...
-    if (!game.has_user?(current_user))
+    if (game.over?)
+      render 'game_results'
+    elsif (!game.has_user?(current_user))
       render 'show'
     else
       choose_game_show(game)
@@ -16,7 +17,6 @@ class GamesController < ApplicationController
   def choose_game_show(game)
     if (!game.ready_to_start?)
       render 'waiting_room'
-    # Add method game#player_turn?
     elsif (!game.users_turn?(current_user))
       render 'waiting_to_take_turn'
     else
