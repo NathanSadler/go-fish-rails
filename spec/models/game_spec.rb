@@ -19,6 +19,26 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe("#users_turn?") do
+    before(:each) do
+      User.create(name: "Test User", email: "screaming@thevoid.com",
+      password: "workingpastmidnight", password_confirmation: "workingpastmidnight")
+      [User.first, User.last].each do |user|
+        GameUser.create(game_id: last_game.id, user_id: user.id)
+        last_game.go_fish.add_player(Player.new(user.name, user.id))
+        last_game.save!
+      end
+    end
+
+    it("is true if the provided user has the same id as the game's turn_player's user_id") do
+      expect(last_game.users_turn?(User.first)).to(be(true))
+    end
+
+    it("is false if the provided user doesn't have the same ID as the game's turn player's user_id") do
+      expect(last_game.users_turn?(User.last)).to(be(false))
+    end
+  end
+
   describe("#try_to_start") do
     before(:each) do
       GameUser.create(game_id: last_game.id, user_id: User.last.id)

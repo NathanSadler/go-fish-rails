@@ -5,8 +5,8 @@ class GamesController < ApplicationController
   end
 
   def choose_show_page(game)
-    # Replace with a scope when you understand them better
-    if (!game.user_with_id_in_game?(current_user.id))
+    # TODO: Give a clearer name...
+    if (!game.has_user?(current_user))
       render 'show'
     else
       choose_game_show(game)
@@ -16,7 +16,8 @@ class GamesController < ApplicationController
   def choose_game_show(game)
     if (!game.ready_to_start?)
       render 'waiting_room'
-    elsif (game.turn_player.user_id != current_user.id)
+    # Add method game#player_turn?
+    elsif (!game.users_turn?(current_user))
       render 'waiting_to_take_turn'
     else
       render 'taking_turn'

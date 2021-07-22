@@ -63,8 +63,12 @@ class Game < ApplicationRecord
     go_fish.turn_player
   end
 
-  def user_with_id_in_game?(user_id)
-    GameUser.where(game_id: id, user_id: user_id).length > 0
+  def users_turn?(user)
+    user.id == go_fish.turn_player.user_id
+  end
+
+  def has_user?(user)
+    GameUser.where(game_id: id, user_id: user.id).length > 0
   end
 
   def round_results
