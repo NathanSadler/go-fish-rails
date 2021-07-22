@@ -6,7 +6,7 @@ class GamesController < ApplicationController
 
   def choose_show_page(game)
     # Replace with a scope when you understand them better
-    if (GameUser.where(game_id: game.id, user_id: current_user.id).length == 0)
+    if (!game.user_with_id_in_game?(current_user.id))
       render 'show'
     else
       choose_game_show(game)
