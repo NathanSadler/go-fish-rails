@@ -330,15 +330,15 @@ RSpec.describe GoFish do
       before(:each) do
         cards_to_add = [Card.new("Q", "H"), Card.new("Q", "S")]
         game.go_fish.players[0].add_card_to_hand(cards_to_add)
-        game.go_fish.players[1].add_card_to_hand(Card.new("Q", "D"))
+        game.go_fish.players[1].add_card_to_hand([Card.new("Q", "D"), Card.new("8", "D")])
+        game.go_fish.deck.send(:set_cards, [Card.new("7", "D")])
         game.save!
         game.go_fish.take_turn(game.go_fish.players[0], requested_player: game.go_fish.players[1],
           requested_rank: "Q")
-        game.save!
       end
 
       it("removes the cards a players lays down from their hand") do
-        expect(game.go_fish.players[0].hand).to(eq([]))
+        expect(game.go_fish.players[0].hand).to(eq([Card.new("7", "D")]))
       end
 
       it("increases the score of a player when they lay down a book") do

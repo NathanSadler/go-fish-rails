@@ -37,12 +37,12 @@ RSpec.describe "GoFish", type: :system do
       end
 
       it("automatically draws a card from the deck") do
-        expect(game.go_fish.players[0].has_card?(Card.new("4", "H"))).to(be(true))
-        expect(game.go_fish.deck.empty?).to(be(true))
+        expect(Game.last.go_fish.players[0].has_card?(Card.new("4", "H"))).to(be(true))
+        expect(Game.last.go_fish.deck.empty?).to(be(true))
       end
 
       it("moves to the next player's turn") do
-        expect(game.go_fish.turn_player.name).to(eq("Michael Example"))
+        expect(Game.last.go_fish.turn_player.name).to(eq("Michael Example"))
         expect(session.body).to(have_content("Wait Your Turn"))
       end
     end
