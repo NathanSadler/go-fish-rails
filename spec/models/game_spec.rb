@@ -39,6 +39,17 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe('#users') do
+    before(:each) do
+      foo = User.create(name: "blank", email: "bl@nk.com", password: "blankk", password_confirmation: "blankk")
+      bar = GameUser.create(game_id: Game.last.id, user_id: User.last.id)
+    end
+
+    it("returns an array containing the user that have joined the game") do
+      expect(Game.last.users.map(&:name)).to(eq(["blank"]))
+    end
+  end
+
   describe("#try_to_start") do
     before(:each) do
       GameUser.create(game_id: last_game.id, user_id: User.last.id)
