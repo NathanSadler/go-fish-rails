@@ -12,7 +12,7 @@ ul
 // data-game-id=@game.id gets used by both Stimulus and ActionController
 .round data-controller="round" data-round-id=@game.id
   // tells Stimulus which DOM element to update
-  .round data-target="round.status"
+  .round data-round-target="status"
     
 = render partial: 'round_results', locals: {round_results: @game.round_results}
 
