@@ -26,9 +26,8 @@ RSpec.describe "GoFish", type: :system do
       session.click_on "Try To Start Game"
     end
 
-    xit("deals cards to all players in the game") do
-
-      # expect(Game.last.go_fish)
+    it("deals cards to all players in the game") do
+      Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end
   end
 
