@@ -15,6 +15,7 @@ class GamesController < ApplicationController
   end
 
   def choose_game_show(game)
+    ActionCable.server.broadcast("lobby_#{game.id}", "But I will never let go")
     if (!game.ready_to_start?)
       render 'waiting_room'
     elsif (!game.users_turn?(current_user))
