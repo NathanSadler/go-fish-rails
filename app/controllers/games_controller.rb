@@ -5,7 +5,6 @@ class GamesController < ApplicationController
   end
 
   def choose_show_page(game)
-    ActionCable.server.broadcast("game_#{@game.id}", "Can't hold on much longer")
     if (game.over?)
       render 'game_results'
     elsif (!game.has_user?(current_user))
@@ -44,7 +43,7 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
-    ActionCable.server.broadcast("game_#{@game.id}", "Can't hold on much longer")
+    ActionCable.server.broadcast("round_#{@game.id}", "Can't hold on much longer")
     requested_player = @game.find_player_with_user_id(params[:game][:requested_player].to_i)
     requested_rank = Card.from_str(params[:game][:requested_rank]).rank
     @game.take_turn(@game.find_player_with_user_id(current_user.id),
