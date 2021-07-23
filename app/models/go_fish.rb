@@ -40,6 +40,7 @@ class GoFish
   def finish_turn(round_result, player)
     save_round_result(round_result)
     next_player if (!round_result.matched_rank?)
+    # if player.hand
     player.lay_down_books
   end
 

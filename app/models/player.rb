@@ -47,6 +47,10 @@ class Player
     occurences.keys.select {|rank| occurences[rank] == 4}
   end
 
+  def has_any_cards?
+    hand.length > 0
+  end
+
   def has_card?(card)
     hand.include?(card)
   end

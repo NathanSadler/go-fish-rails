@@ -251,4 +251,16 @@ RSpec.describe Player do
     end
   end
 
+  context('#has_any_cards?') do
+    it("is true if the player has at least one card in their hand") do
+      player.set_hand([Card.new("A", "S")])
+      expect(player.has_any_cards?).to(be(true))
+    end
+
+    it("is false if the player doesn't have any cards in their hand") do
+      player.set_hand([])
+      expect(player.has_any_cards?).to(be(false))
+    end
+  end
+
 end
