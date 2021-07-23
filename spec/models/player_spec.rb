@@ -243,6 +243,13 @@ RSpec.describe Player do
     end
   end
 
+  context('#number_of_cards') do
+    it("returns the number of cards in the player's hand") do
+      player.set_hand([Card.new("7", "H"), Card.new("8", "H")])
+      expect(player.number_of_cards).to(eq(2))
+    end
+  end
+
   context('.set_user_id') do
     it("changes the player's user_id") do
       expected_id = 420

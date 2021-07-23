@@ -17,13 +17,28 @@ RSpec.describe "GoFish", type: :system do
   
   let(:game) {Game.last}
 
+  describe("starting a game") do
+    before(:each) do
+      create_game(session, "Ah, Toe Test", 2)
+      session.click_on "Join Game"
+      session2.visit("/games/#{Game.last.id}")
+      session2.click_on "Join Game"
+      session.click_on "Try To Start Game"
+    end
+
+    xit("deals cards to all players in the game") do
+
+      # expect(Game.last.go_fish)
+    end
+  end
+
   describe("showing a game") do
     before(:each) do
       create_game(session, "Ah, Toe Test", 2)
       session.click_on "Join Game"
       session2.visit("/games/#{Game.last.id}")
       session2.click_on "Join Game"
-      session.visit current_path
+      session.click_on "Try To Start Game"
     end
 
     describe("running out of cards during a turn") do
@@ -85,6 +100,8 @@ RSpec.describe "GoFish", type: :system do
       session2.click_on "Join Game"
       session.visit current_path
     end
+
+   
 
     describe("giving a player a card at the start of a turn") do
       it("if there are cards in the deck and the player doesn't have any cards") do

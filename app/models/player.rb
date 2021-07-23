@@ -72,6 +72,10 @@ class Player
     end
   end
 
+  def number_of_cards
+    hand.length
+  end
+
   def remove_card_from_hand(card)
     if self.hand.include?(card)
       set_hand(self.hand.reject {|hand_card| hand_card == card})
