@@ -3,9 +3,8 @@ h1 Wait Your Turn
 = link_to "Try To Take Turn", game_path(@game.id)
 
 p Your Cards:
-ul
-  // Get the cards of the current player and list them all
-  = render partial: 'cards_in_hand', locals: {cards: @game.list_cards_of_player_with_user_id(current_user.id)}
+// Get the cards of the current player and list them all
+= render partial: 'cards_in_hand', locals: {cards: @game.list_cards_of_player_with_user_id(current_user.id)}
 
     // data-controller="game" tells Stimulus which controller to use
 // data-game-id=@game.id gets used by both Stimulus and ActionController
