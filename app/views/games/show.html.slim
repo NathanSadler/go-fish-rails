@@ -1,3 +1,9 @@
+// data-controller="game" tells Stimulus which controller to use
+// data-game-id=@game.id gets used by both Stimulus and ActionController
+.game data-controller="game" data-game-id=@game.id
+  // tells Stimulus which DOM element to update
+  .status data-target="game.status"
+  
 h1 Games#Show
 p = "This is the show page for the #{@game.title} game."
 = simple_form_for GameUser.new do |f|
@@ -5,3 +11,4 @@ p = "This is the show page for the #{@game.title} game."
     = f.input :game_id, input_html: {value: "#{@game.id}"}
     = f.input :user_id, input_html: {value: "#{current_user.id}"}
   = f.submit "Join Game"
+

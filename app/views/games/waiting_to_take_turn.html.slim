@@ -1,4 +1,12 @@
+// data-controller="game" tells Stimulus which controller to use
+// data-game-id=@game.id gets used by both Stimulus and ActionController
+.game data-controller="game" data-game-id=@game.id
+  // tells Stimulus which DOM element to update
+  .status data-target="status"
+
+
 h1 Wait Your Turn
+
 = link_to "Try To Take Turn", game_path(@game.id)
 
 p Your Cards:
@@ -6,12 +14,6 @@ ul
   // Get the cards of the current player and list them all
   - @game.list_cards_of_player_with_user_id(current_user.id).each do |card|
     li = card.description
-
-
-// data-controller="game" tells Stimulus which controller to use
-// data-game-id=@game.id gets used by both Stimulus and ActionController
-.game data-controller="game" data-game-id=@game.id
-  // tells Stimulus which DOM element to update
-  .status data-target="game.status"
-    = render partial: 'round_results', locals: {round_results: @game.round_results}
+    
+= render partial: 'round_results', locals: {round_results: @game.round_results}
 

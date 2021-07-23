@@ -5,11 +5,12 @@ export default class extends Controller {
   static targets = ["status"]; // See data-target "game.status" in view template
 
   connect() {
-    console.log("hi there!")
     this.subscription = consumer.subscriptions.create(
       {
-        channel: "GameChannel", // ActionCable channel Used
-        id: this.data.get("id"), //See data-game-id=@game.id in the view template
+        // ActionCable channel Used
+        channel: "GameChannel", 
+        //See data-game-id=@game.id in the view template
+        id: this.data.get("id"), 
       },
       {
         connected: this._connected.bind(this),
@@ -20,11 +21,11 @@ export default class extends Controller {
   }
 
   _connected() {
-    console.log("yooooooo chaos got drip")
+    console.log("_connected")
   }
 
   _disconnected() {
-    console.log("where you going you big drip?")
+    console.log("_disconnected")
   }
 
     //Updates target when data is received on the channel
