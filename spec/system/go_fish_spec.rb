@@ -178,7 +178,7 @@ RSpec.describe "GoFish (auto updating pages)", type: :system do
   let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
   let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
 
-  xcontext("updating the round results without reloading"), js: => true do
+  xcontext("updating the round results without reloading") do
     before(:each) do
       User.create(name:"foobar", email:"foo@bar.com", password:"foobar", password_confirmation:"foobar")
       login(session1)
@@ -187,10 +187,6 @@ RSpec.describe "GoFish (auto updating pages)", type: :system do
       session2.visit("/games/#{Game.last.id}")
       [session, session2].each {|session| session.click_on "Join Game"}
       session.visit current_path
-    end
-
-    it("is a test") do
-      expect(1).to(eq(2))
     end
   end
 end
