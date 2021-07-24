@@ -30,7 +30,7 @@ RSpec.describe "GoFish", type: :system do
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end
 
-    it("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
+    xit("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
       session.visit(current_path)
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end
@@ -193,7 +193,7 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
   let(:session1) {Capybara::Session.new(:selenium_chrome, Rails.application)}
   let(:session2) {Capybara::Session.new(:selenium_chrome, Rails.application)}
 
-  context("updating the round results without reloading") do
+  xcontext("updating the round results without reloading") do
     before(:each) do
       User.create(name:"foobar", email:"foo@bar.com", password:"foobar", password_confirmation:"foobar")
       login(session1)
@@ -207,7 +207,7 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
       expect(session1.body).to(have_content("Michael Example"))
     end
 
-    context("automatically updating card lists and round results") do
+    xcontext("automatically updating card lists and round results") do
       before(:each) do
         session1.click_on("Try To Start Game")
         game = Game.last

@@ -114,7 +114,4 @@ RSpec.describe Game, type: :model do
       expect(Game.last.users.map(&:name)).to(eq(["blank"]))
     end
   end
-
-
-
 end
