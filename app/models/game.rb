@@ -41,6 +41,10 @@ class Game < ApplicationRecord
     GameUser.where(game_id: id).length >= minimum_player_count
   end
 
+  def started?
+    !started_at.nil?
+  end
+
   # used once in games_helper, but you could probably merge game#deal and
   # game#shuffle, letting you get rid of the two individual game methods
   def shuffle

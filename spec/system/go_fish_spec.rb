@@ -23,10 +23,15 @@ RSpec.describe "GoFish", type: :system do
       session.click_on "Join Game"
       session2.visit("/games/#{Game.last.id}")
       session2.click_on "Join Game"
-      session.click_on "Try To Start Game"
     end
 
     it("deals cards to all players in the game") do
+      session.click_on "Try To Start Game"
+      Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
+    end
+
+    it("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
+      session.visit(current_path)
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end
   end
@@ -209,12 +214,15 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
         game.go_fish.players[0].set_hand([Card.new("7", "H"), Card.new("8", "H")])
         game.go_fish.players[1].set_hand([Card.new("7", "S"), Card.new("9", "S")])
         game.save!
-        [session1, session2].each {|session| session.visit(session.current_path)}
+        # [session1, session2].each {|session| session.visit(session.current_path)}
         take_turn(session1, "Michael Example", "7 of Hearts")
       end
 
       it("updates the round results") do
-        expect(session2.body.include?("foobar asked Michael Example for 7s and took 1 7(s)")).to(be(false))
+        expect(session2.body.include?("foobar asked Michael Example for 7s and took 1 7(s)")).to(be(true))
+        binding.pry
+        expect(session2.body.include?("4")).to(be(false))
+        expect(session2.body.include?("3")).to(be(false))
       end
 
       it("updates the list of cards") do
