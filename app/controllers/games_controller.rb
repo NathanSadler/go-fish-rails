@@ -4,6 +4,14 @@ class GamesController < ApplicationController
   def index
   end
 
+  def update_card_and_result_partials(game)
+    @game.users.each do |user|
+      result_partial = partial = ApplicationController.render(partial: "../views/games/round_results", 
+        locals: {round_results: game.round_results, current_user: User.find(user.id)})
+      ActionCable.server.broadcast("round_#{game.id}", partial)
+    end  
+  end
+
   def choose_show_page(game)
     if (game.over?)
       render 'game_results'
@@ -26,10 +34,7 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    @game.users.each do |user|
-      partial = ApplicationController.render(partial: "../views/games/round_results", locals: {round_results: @game.round_results, current_user: User.find(user.id)})
-      ActionCable.server.broadcast("round_#{@game.id}", partial)
-    end
+    update_card_and_result_partials(@game)
     @game_user = GameUser.new
     @player_id = current_user.id
     choose_show_page(@game)
