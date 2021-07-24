@@ -184,25 +184,43 @@ RSpec.describe "GoFish", type: :system do
   end
 end
 
-RSpec.describe "GoFish (auto updating pages)", type: :system do
-  include Capybara::DSL
-  before(:all) do
-    Capybara.app = Server.new
-    Capybara.server = :webrick
-  end
+RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
+  let(:session1) {Capybara::Session.new(:selenium_chrome, Rails.application)}
+  let(:session2) {Capybara::Session.new(:selenium_chrome, Rails.application)}
 
-  let(:session1) {Capybara::Session.new(:rack_test, Server.new)}
-  let(:session2) {Capybara::Session.new(:rack_test, Server.new)}
-
-  xcontext("updating the round results without reloading") do
+  context("updating the round results without reloading") do
     before(:each) do
       User.create(name:"foobar", email:"foo@bar.com", password:"foobar", password_confirmation:"foobar")
       login(session1)
       login(session2, "michael@example.com", "password")
       create_game(session1, "not headless test", 2)
       session2.visit("/games/#{Game.last.id}")
-      [session, session2].each {|session| session.click_on "Join Game"}
-      session.visit current_path
+      [session1, session2].each {|session| session.click_on "Join Game"}
+    end
+
+    it("automatically adds players to the list of players in the lobby when they join") do
+      expect(session1.body).to(have_content("Michael Example"))
+    end
+
+    context("automatically updating card lists and round results") do
+      before(:each) do
+        session1.click_on("Try To Start Game")
+        game = Game.last
+        game.go_fish.players[0].set_hand([Card.new("7", "H"), Card.new("8", "H")])
+        game.go_fish.players[1].set_hand([Card.new("7", "S"), Card.new("9", "S")])
+        game.save!
+        [session1, session2].each {|session| session.visit(session.current_path)}
+        take_turn(session1, "Michael Example", "7 of Hearts")
+      end
+
+      it("updates the round results") do
+        expect(session2.body.include?("foobar asked Michael Example for 7s and took 1 7(s)")).to(be(false))
+      end
+
+      it("updates the list of cards") do
+        expect(session2.body.include?("7 of Spades")).to(be(false))
+      end
+
     end
   end
 end

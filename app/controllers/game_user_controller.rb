@@ -8,7 +8,8 @@ class GameUserController < ApplicationController
       @game_user.user_id.to_i))
     #game.save
 
-
+    partial = ApplicationController.render(partial: '../views/games/players_in_lobby', locals: {users: game.users})
+    ActionCable.server.broadcast("lobby_#{game.id}", partial)
     redirect_to Game.find(game_id_params[:game_id].to_i)
   end
 
