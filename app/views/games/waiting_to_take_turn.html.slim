@@ -6,12 +6,11 @@ p Your Cards:
 // Get the cards of the current player and list them all
 = render partial: 'cards_in_hand', locals: {cards: @game.list_cards_of_player_with_user_id(current_user.id)}
 
-    // data-controller="game" tells Stimulus which controller to use
+// data-controller="game" tells Stimulus which controller to use
 // data-game-id=@game.id gets used by both Stimulus and ActionController
 .round data-controller="round" data-round-id=@game.id
   // tells Stimulus which DOM element to update
   .round data-target="round.status"
-    
-= render partial: 'round_results', locals: {round_results: @game.round_results}
+    = render partial: 'round_results', locals: {round_results: @game.round_results}
 
 

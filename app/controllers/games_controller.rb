@@ -27,6 +27,10 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
+    @game.users.each do |user|
+      partial = ApplicationController.render(partial: "../views/games/round_results", locals: {round_results: @game.round_results, current_user: User.find(user.id)})
+      ActionCable.server.broadcast("round_#{@game.id}", partial)
+    end
     @game_user = GameUser.new
     @player_id = current_user.id
     choose_show_page(@game)
@@ -44,11 +48,9 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
-    ActionCable.server.broadcast("round_#{@game.id}", "Can't hold on much longer")
     requested_player = @game.find_player_with_user_id(params[:game][:requested_player].to_i)
     requested_rank = Card.from_str(params[:game][:requested_rank]).rank
-    @game.take_turn(@game.find_player_with_user_id(current_user.id),
-      requested_player: requested_player, requested_rank: requested_rank)
+    @game.take_turn(@game.find_player_with_user_id(current_user.id), requested_player: requested_player, requested_rank: requested_rank)
     redirect_to game_path(@game.id)
   end
 

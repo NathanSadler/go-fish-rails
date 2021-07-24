@@ -28,8 +28,8 @@ export default class extends Controller {
 
   _received(data) {
     console.log("Yeah this got called")
-    window.location.reload()
-    // const element = this.statusTarget
-    // element.innerHTML = data
+    // window.location.reload()
+    const element = this.statusTarget
+    element.innerHTML = data
   }
 }
