@@ -11,7 +11,7 @@ class GamesController < ApplicationController
       ActionCable.server.broadcast("round_#{game.id}", result_partial)
       card_partial = ApplicationController.render(partial: "../views/games/cards_in_hand",
       locals: {cards: game.find_player_with_user_id(user.id).hand})
-      ActionCable.server.broadcast("")
+      ActionCable.server.broadcast("card_#{game.id}", card_partial)
     end  
   end
 

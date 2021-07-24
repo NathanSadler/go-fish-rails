@@ -7,7 +7,7 @@ export default class extends Controller {
   connect() {
     this.subscription = consumer.subscriptions.create(
       {
-        channel: "RoundChannel",
+        channel: "CardChannel",
         id: this.data.get("id"),
       },
       {
@@ -27,8 +27,8 @@ export default class extends Controller {
   }
 
   _received(data) {
-    console.log("Yeah this got called")
-    window.location.reload()
+    console.log("card controller _received!")
+    // window.location.reload()
     const element = this.statusTarget
     element.innerHTML = data
   }
