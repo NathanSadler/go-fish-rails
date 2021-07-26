@@ -62,7 +62,6 @@ class GamesController < ApplicationController
 
   def join_game(game)
     @game = Game.find(params[:id])
-
   end
 
   def start_game
