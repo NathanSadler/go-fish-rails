@@ -9,8 +9,7 @@ class GamesController < ApplicationController
       result_partial = ApplicationController.render(partial: "../views/games/round_results", 
         locals: {round_results: game.round_results, current_user: User.find(user.id)})
       ActionCable.server.broadcast("round_#{game.id}", result_partial)
-      card_partial = ApplicationController.render(partial: "../views/games/cards_in_hand",
-      locals: {cards: game.find_player_with_user_id(user.id).hand})
+      card_partial = ApplicationController.render(partial: "../views/games/cards_in_hand", locals: {cards: game.find_player_with_user_id(user.id).hand})
       ActionCable.server.broadcast("card_#{game.id}", card_partial)
     end  
   end
