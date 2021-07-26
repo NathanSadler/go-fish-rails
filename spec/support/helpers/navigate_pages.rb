@@ -8,6 +8,10 @@ module NavigatePages
     session.click_on("Join Game")
   end
 
+  def logout(session)
+    session.click_on("Log Out")
+  end
+
   def start_game(session)
     session.click_on("Try To Start Game")
   end
