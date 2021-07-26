@@ -31,6 +31,11 @@ RSpec.describe "GoFish", type: :system do
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end
 
+    it("doesn't send people into the game if they refresh in the waiting room") do
+      session.visit(session.current_path)
+      expect(session.body).to(have_content("Waiting for game to start..."))
+    end
+
     context("with more than 2 players") do
       before(:each) do
         new_user = User.create(name: "hyperfoobar", email: "hyper@foobar.com", password: "hyperfoobar", password_confirmation: "hyperfoobar")
@@ -47,7 +52,7 @@ RSpec.describe "GoFish", type: :system do
       end
     end
 
-    xit("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
+    it("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
       session.visit(current_path)
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end

@@ -25,7 +25,7 @@ class GamesController < ApplicationController
   end
 
   def choose_game_show(game)
-    if (!game.ready_to_start?)
+    if (!game.started?)
       render 'waiting_room'
     elsif (!game.users_turn?(current_user))
       render 'waiting_to_take_turn'
