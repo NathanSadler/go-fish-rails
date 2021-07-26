@@ -7,4 +7,5 @@ RSpec.configure do |c|
   # c.include LoginHelpers, type: :system
   c.include FillInForms, type: :system
   c.include InitialCardsPerPlayer
+  c.include NavigatePages, type: :system
 end
