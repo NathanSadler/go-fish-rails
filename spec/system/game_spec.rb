@@ -76,6 +76,7 @@ RSpec.describe "Game", type: :system do
       create_game(session)
       session.click_on "Join Game"
       expect(session.body).to(have_content("Waiting for game to start"))
+      binding.pry
       session.click_on("Try To Start Game")
       expect(session.body).to(have_content("Waiting for game to start"))
     end
@@ -99,7 +100,8 @@ RSpec.describe "Game", type: :system do
 
     it("displays the take_turn page when it is the user's turn") do
       create_game(session, "Otto Test", 1)
-      session.click_on "Join Game"
+      join_game_from_info_page(session)
+      start_game(session)
       expect(session.body).to(have_content("Take Your Turn"))
     end
 

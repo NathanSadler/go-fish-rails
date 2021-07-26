@@ -42,7 +42,7 @@ class Game < ApplicationRecord
   end
 
   def started?
-    !started_at.nil?
+    started_at.present?
   end
 
   # used once in games_helper, but you could probably merge game#deal and
@@ -59,7 +59,7 @@ class Game < ApplicationRecord
   end
 
   def try_to_start
-    if (started_at.nil?)
+    if (!started? && ready_to_start?)
       go_fish.deck.shuffle
       go_fish.deal_cards
       update(started_at: DateTime.current)
