@@ -14,6 +14,13 @@ class GamesController < ApplicationController
     end  
   end
 
+  def display_waiting_room(game)
+    player_list_partial = ApplicationController.render(partial: "../views/games/players_in_lobby",
+      locals: {users: game.users})
+    ActionCable.server.broadcast("lobby_#{game.id}", player_list_partial)
+    render 'waiting_room'
+  end
+
   def choose_show_page(game)
     if (game.over?)
       render 'game_results'
@@ -26,7 +33,7 @@ class GamesController < ApplicationController
 
   def choose_game_show(game)
     if (!game.started?)
-      render 'waiting_room'
+      display_waiting_room(game)
     elsif (!game.users_turn?(current_user))
       render 'waiting_to_take_turn'
     else

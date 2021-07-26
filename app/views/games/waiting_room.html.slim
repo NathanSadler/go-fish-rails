@@ -1,10 +1,9 @@
-// data-controller="game" tells Stimulus which controller to use
-// data-game-id=@game.id gets used by both Stimulus and ActionController
-.lobby data-controller="lobby" data-lobby-id=@game.id
-  // tells Stimulus which DOM element to update
-  .status data-target="lobby.status"
 h1 = @game.title
 = link_to "Try To Start Game", try_to_start_game_path(@game)
 p Waiting for game to start...
 p Users in game:
-= render partial: 'players_in_lobby', locals: {users: @game.users}
+// data-controller="game" tells Stimulus which controller to use
+// data-game-id=@game.id gets used by both Stimulus and ActionController
+.lobby data-controller="lobby" data-lobby-id=@game.id
+  // tells Stimulus which DOM element to update
+  .status data-target="lobby.status" = render partial: 'players_in_lobby', locals: {users: @game.users}

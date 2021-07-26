@@ -28,8 +28,8 @@ export default class extends Controller {
 
   _received(data) {
     // window.location.reload()
-    console.log("Tried and failed to reloaded Page")
-    // const element = this.statusTarget
-    // element.innerHTML = data
+    // console.log("Tried and failed to reloaded Page")
+    const element = this.statusTarget
+    element.innerHTML = data
   }
 }

@@ -215,8 +215,7 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
     before(:each) do
       user = User.create(name:"whatisgoingon", email: "whatis@goingon.com", password: "seriouslywhat", password_confirmation: "seriouslywhat")
       user3 = User.create(name:"superfoobar", email:"superfoo@bar.com", password:"superbarfoo", password_confirmation:"superbarfoo")
-      login(session1, "whatis@goingon.com", "seriouslywhat")
-      login(session2, "michael@example.com", "password")
+      [[session1, "whatis@goingon.com", "seriouslywhat"], [session2, "michael@example.com", "password"]].each {|info| login(info[0], info[1], info[2])}
       login(session3, user3.email, user3.password)
       create_game(session1, "not headless test", 3)
       [session2, session3].each {|session| session.visit("/games/#{Game.last.id}")}
@@ -225,13 +224,14 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
 
     it("automatically adds players to the list of players in the lobby when they join") do
       expect(session1.body).to(have_content("whatisgoingon"))
+      expect(session1.body).to(have_content("superfoobar"))
     end
 
     context("automatically updating card lists and round results") do
       let(:last_game) { Game.last }
       
       before(:each) do
-        [session1, session2].each {|session| session.click_on("Try To Start Game")}
+        [session1, session2, session3].each {|session| session.click_on("Try To Start Game")}
         go_fish = Game.last.go_fish
         go_fish.players[0].set_hand([Card.new("7", "H"), Card.new("8", "H")])
         go_fish.players[1].set_hand([Card.new("7", "S"), Card.new("9", "S")])
