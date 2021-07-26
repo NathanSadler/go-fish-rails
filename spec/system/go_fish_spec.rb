@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "GoFish", type: :system do
   let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:session2) {Capybara::Session.new(:rack_test, Rails.application)}
+  let(:session3) {Capybara::Session.new(:rack_test, Rails.application)}
 
   before(:each) do
     User.create(name:"foobar", email:"foo@bar.com", password:"foobar",
@@ -30,8 +31,20 @@ RSpec.describe "GoFish", type: :system do
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end
 
-    it("doesn't deal cards multiple times if more than 2 players join a game") do
-  
+    context("with more than 2 players") do
+      before(:each) do
+        new_user = User.create(name: "hyperfoobar", email: "hyper@foobar.com", password: "hyperfoobar", password_confirmation: "hyperfoobar")
+        login(session3, new_user.email, new_user.password)
+        create_game(session, "Hope This Works!", 3)
+        [session2, session3].each {|user| user.visit("/games/#{Game.last.id}")}
+        [session, session2, session3].each {|user| user.click_on("Join Game")}
+        [session, session2].each {|user| user.click_on("Try To Start Game")}
+      end
+
+      it("doesn't deal cards more than once") do
+        go_fish_players = Game.last.go_fish.players
+        go_fish_players.each {|player| expect(player.hand.length).to(eq(7))}
+      end
     end
 
     xit("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
@@ -225,7 +238,6 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
         go_fish.players[1].set_hand([Card.new("7", "S"), Card.new("9", "S")])
         go_fish.players[2].set_hand([Card.new("10", "H"), Card.new("J", "H")])
         Game.last.update(go_fish: go_fish)
-        binding.pry
         session1.refresh
         take_turn(session1, "Michael Example", "7 of Hearts")
       end

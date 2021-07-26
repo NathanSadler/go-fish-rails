@@ -38,7 +38,7 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
     update_card_and_result_partials(@game)
     @game_user = GameUser.new
-    @player_id = current_user.id
+    @player_id = session[:user_id]
     choose_show_page(@game)
   end
 
