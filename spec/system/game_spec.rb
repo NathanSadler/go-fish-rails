@@ -91,9 +91,9 @@ RSpec.describe "Game", type: :system do
     it("displays the main game view when the game has enough players and the "+
     "user has joined the game") do
       create_game(session, "Auto Test", 2)
-      session.click_on "Join Game"
-      session2.visit("/games/#{Game.last.id}")
-      session2.click_on("Join Game")
+      join_game_from_info_page(session)
+      join_game(session2, Game.last.id)
+      [session, session2].each {|user_session| start_game(user_session)}
       expect(session2.body).to(have_content("Wait Your Turn"))
     end
 
@@ -113,7 +113,7 @@ RSpec.describe "Game", type: :system do
         game.go_fish.players[0].set_hand([Card.new("4", "D")])
         game.go_fish.players[1].set_hand([Card.new("9", "S"), Card.new("8", "C")])
         game.save!
-        session.click_on("Try To Start Game")
+        [session, session2].each {|user_session| start_game(user_session)}
       end
 
       it("displays round results on the waiting_to_take_turn and taking_turn pages") do
