@@ -9,6 +9,8 @@ export default class extends Controller {
       {
         channel: "RoundChannel",
         id: this.data.get("id"),
+        //might need to use CamelCase if you want to rename it to user_id
+        user_id: this.data.get("user")
       },
       {
         connected: this._connected.bind(this),

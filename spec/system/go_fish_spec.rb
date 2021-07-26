@@ -30,6 +30,10 @@ RSpec.describe "GoFish", type: :system do
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
     end
 
+    it("doesn't deal cards multiple times if more than 2 players join a game") do
+  
+    end
+
     xit("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
       session.visit(current_path)
       Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
@@ -192,41 +196,53 @@ end
 RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
   let(:session1) {Capybara::Session.new(:selenium_chrome, Rails.application)}
   let(:session2) {Capybara::Session.new(:selenium_chrome, Rails.application)}
+  let(:session3) {Capybara::Session.new(:selenium_chrome, Rails.application)}
 
-  xcontext("updating the round results without reloading") do
+  context("updating the round results without reloading") do
     before(:each) do
-      User.create(name:"foobar", email:"foo@bar.com", password:"foobar", password_confirmation:"foobar")
-      login(session1)
+      user = User.create(name:"whatisgoingon", email: "whatis@goingon.com", password: "seriouslywhat", password_confirmation: "seriouslywhat")
+      user3 = User.create(name:"superfoobar", email:"superfoo@bar.com", password:"superbarfoo", password_confirmation:"superbarfoo")
+      login(session1, "whatis@goingon.com", "seriouslywhat")
       login(session2, "michael@example.com", "password")
-      create_game(session1, "not headless test", 2)
-      session2.visit("/games/#{Game.last.id}")
-      [session1, session2].each {|session| session.click_on "Join Game"}
+      login(session3, user3.email, user3.password)
+      create_game(session1, "not headless test", 3)
+      [session2, session3].each {|session| session.visit("/games/#{Game.last.id}")}
+      [session1, session2, session3].each {|session| session.click_on "Join Game"}
     end
 
     it("automatically adds players to the list of players in the lobby when they join") do
-      expect(session1.body).to(have_content("Michael Example"))
+      expect(session1.body).to(have_content("whatisgoingon"))
     end
 
-    xcontext("automatically updating card lists and round results") do
+    context("automatically updating card lists and round results") do
+      let(:last_game) { Game.last }
+      
       before(:each) do
-        session1.click_on("Try To Start Game")
-        game = Game.last
-        game.go_fish.players[0].set_hand([Card.new("7", "H"), Card.new("8", "H")])
-        game.go_fish.players[1].set_hand([Card.new("7", "S"), Card.new("9", "S")])
-        game.save!
-        # [session1, session2].each {|session| session.visit(session.current_path)}
+        [session1, session2].each {|session| session.click_on("Try To Start Game")}
+        # binding.pry
+        go_fish = Game.last.go_fish
+        go_fish.players[0].set_hand([Card.new("7", "H"), Card.new("8", "H")])
+        go_fish.players[1].set_hand([Card.new("7", "S"), Card.new("9", "S")])
+        go_fish.players[2].set_hand([Card.new("10", "H"), Card.new("J", "H")])
+        Game.last.update(go_fish: go_fish)
+        binding.pry
+        session1.refresh
         take_turn(session1, "Michael Example", "7 of Hearts")
       end
 
       it("updates the round results") do
         expect(session2.body.include?("foobar asked Michael Example for 7s and took 1 7(s)")).to(be(true))
-        binding.pry
         expect(session2.body.include?("4")).to(be(false))
         expect(session2.body.include?("3")).to(be(false))
       end
 
       it("updates the list of cards") do
         expect(session2.body.include?("7 of Spades")).to(be(false))
+      end
+
+      it("won't show a player a different player's hand or cards") do
+        expect(session3.body.include?("9 of Spades")).to(be(false))
+        expect(session2.body.include?("10 of Hearts")).to(be(false))
       end
 
     end
