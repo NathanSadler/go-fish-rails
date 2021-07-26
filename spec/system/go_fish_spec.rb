@@ -207,9 +207,9 @@ RSpec.describe "GoFish", type: :system do
 end
 
 RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
-  let(:session1) {Capybara::Session.new(:selenium_chrome, Rails.application)}
-  let(:session2) {Capybara::Session.new(:selenium_chrome, Rails.application)}
-  let(:session3) {Capybara::Session.new(:selenium_chrome, Rails.application)}
+  let(:session1) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
+  let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
+  let(:session3) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
 
   context("updating the round results without reloading") do
     before(:each) do
@@ -232,7 +232,6 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
       
       before(:each) do
         [session1, session2].each {|session| session.click_on("Try To Start Game")}
-        # binding.pry
         go_fish = Game.last.go_fish
         go_fish.players[0].set_hand([Card.new("7", "H"), Card.new("8", "H")])
         go_fish.players[1].set_hand([Card.new("7", "S"), Card.new("9", "S")])
@@ -242,20 +241,20 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
         take_turn(session1, "Michael Example", "7 of Hearts")
       end
 
+      # This fails every so often, but it works in the browser. No idea what the problem is.
       it("updates the round results") do
-        expect(session2.body.include?("whatisgoingon asked Michael Example for 7s and took 1 7(s)")).to(be(true))
-        binding.pry
-        expect(session2.body.include?("4")).to(be(false))
-        expect(session2.body.include?("3")).to(be(false))
+        expect(session2.has_content?("whatisgoingon asked Michael Example for 7s and took 1 7(s)")).to(be(true))
+        expect(session2.has_content?("4")).to(be(false))
+        expect(session2.has_content?("3")).to(be(false))
       end
 
       it("updates the list of cards") do
-        expect(session2.body.include?("7 of Spades")).to(be(false))
+        expect(session2.has_content?("7 of Spades")).to(be(false))
       end
 
       it("won't show a player a different player's hand or cards") do
-        expect(session3.body.include?("9 of Spades")).to(be(false))
-        expect(session2.body.include?("10 of Hearts")).to(be(false))
+        expect(session3.has_content?("9 of Spades")).to(be(false))
+        expect(session2.has_content?("10 of Hearts")).to(be(false))
       end
 
     end
