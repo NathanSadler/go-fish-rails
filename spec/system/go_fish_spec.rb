@@ -51,11 +51,6 @@ RSpec.describe "GoFish", type: :system do
         go_fish_players.each {|player| expect(player.hand.length).to(eq(7))}
       end
     end
-
-    it("still deals cards if everyone refreshes in the waiting room instead of clicking the link") do
-      session.visit(current_path)
-      Game.last.go_fish.players.each {|player| expect(player.number_of_cards).to(eq(7))}
-    end
   end
 
   describe("showing a game") do
