@@ -119,7 +119,7 @@ RSpec.describe "GoFish", type: :system do
       session.click_on "Join Game"
       session2.visit("/games/#{Game.last.id}")
       session2.click_on "Join Game"
-      session.visit current_path
+      start_game(session)
     end
 
    
