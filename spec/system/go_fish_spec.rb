@@ -243,7 +243,7 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
       end
 
       it("updates the round results") do
-        expect(session2.body.include?("foobar asked Michael Example for 7s and took 1 7(s)")).to(be(true))
+        expect(session2.body.include?("whatisgoingon asked Michael Example for 7s and took 1 7(s)")).to(be(true))
         expect(session2.body.include?("4")).to(be(false))
         expect(session2.body.include?("3")).to(be(false))
       end
