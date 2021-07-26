@@ -9,6 +9,7 @@ export default class extends Controller {
       {
         channel: "CardChannel",
         id: this.data.get("id"),
+        user: this.data.get("user")
       },
       {
         connected: this._connected.bind(this),

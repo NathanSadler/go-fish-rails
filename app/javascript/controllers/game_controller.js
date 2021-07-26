@@ -10,6 +10,7 @@ export default class extends Controller {
         channel: "GameChannel", 
         //See data-game-id=@game.id in the view template
         id: this.data.get("id"), 
+        user: this.data.get("user")
       },
       {
         connected: this._connected.bind(this),

@@ -4,7 +4,7 @@ h1 Wait Your Turn
 
 p Your Cards:
 // Get the cards of the current player and list them all
-.card data-controller="card" data-card-id=@game.id
+.card data-controller="card" data-card-id=@game.id data-card-user=current_user.id
   .card data-target="card.status"
     = render partial: 'cards_in_hand', locals: {cards: @game.list_cards_of_player_with_user_id(current_user.id)}
 
