@@ -38,9 +38,10 @@ RSpec.describe Game, type: :model do
       game = Game.last
       game.add_player(Player.new)
       game.started_at = nil
+      game.save!
     end
 
-    let(:game) {Game.last}
+    let!(:game) {Game.last}
 
     context("the game hasn't started yet and there are enough players") do
       before(:each) do
@@ -75,11 +76,11 @@ RSpec.describe Game, type: :model do
       end
 
       it("doesn't deal the cards") do
-        expect(game.players[0].hand.length).to(eq(0))
+        expect(game.go_fish.players[0].hand.length).to(eq(0))
       end
 
       it("doesn't set started_at") do
-        expect(last_game.started_at.nil?).to(be(true))
+        expect(game.started?).to(be(false))
       end
     end
   end

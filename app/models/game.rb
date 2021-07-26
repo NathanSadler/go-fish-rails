@@ -59,7 +59,7 @@ class Game < ApplicationRecord
   end
 
   def try_to_start
-    if (GameUser.where(game_id: id).length >= minimum_player_count)
+    if (started_at.nil?)
       go_fish.deck.shuffle
       go_fish.deal_cards
       update(started_at: DateTime.current)
