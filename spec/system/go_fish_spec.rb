@@ -152,7 +152,7 @@ RSpec.describe "GoFish", type: :system do
     end
 
     it("doesn't let a player ask themself for a card") do
-      
+      expect(session.has_field?("foobar", type: "radio")).to(be(false))
     end
 
     it("increments the go_fish's current_player_index after pressing the take "+

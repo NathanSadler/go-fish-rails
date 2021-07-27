@@ -2,7 +2,7 @@ h1 Take Your Turn
 
 - players_array = []
 - @game.players.each do |player|
-  - players_array.push([player.name, player.user_id])
+  - players_array.push([player.name, player.user_id]) if player.user_id != @player_id
 
 - cards_array = []
 - @game.find_player_with_user_id(@player_id).hand.each do |card|
