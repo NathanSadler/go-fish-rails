@@ -19,7 +19,7 @@ class Game < ApplicationRecord
     save!
   end
 
-  def end
+  def finish
     update(finished_at: DateTime.current)
     winners_ids = go_fish.winning_players.map(&:user_id)
     winners_ids.each {|winner_id| GameUser.where(user_id: winner_id, game_id: id).update(is_game_winner: true)}
@@ -64,7 +64,7 @@ class Game < ApplicationRecord
     go_fish.take_turn(player, requested_player: requested_player,
       requested_rank: requested_rank) 
     save!
-    update(finished_at: DateTime.current) if go_fish.over?
+    finish if go_fish.over?
   end
 
   def try_to_start

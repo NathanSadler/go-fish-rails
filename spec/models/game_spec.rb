@@ -12,7 +12,7 @@ RSpec.describe Game, type: :model do
 
     it("sets the finished_at column") do
       game = Game.last
-      game.end
+      game.finish
       expect(game.finished?).to(be(true))
     end
 
@@ -29,7 +29,7 @@ RSpec.describe Game, type: :model do
 
       it("sets the is_game_winner column to true for players who came in 1st") do
         game = Game.last
-        game.end
+        game.finish
         game_winners_ids = game.go_fish.winning_players.map(&:user_id)
         game_winners_ids.each {|winner_id| expect(GameUser.find_by(user_id: winner_id).is_game_winner).to(eq(true))}
       end
