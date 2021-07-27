@@ -19,6 +19,12 @@ class Game < ApplicationRecord
     save!
   end
 
+  def end
+    update(finished_at: DateTime.current)
+    winners_ids = go_fish.winning_players.map(&:user_id)
+    winners_ids.each {|winner_id| GameUser.where(user_id: winner_id, game_id: id).update(is_game_winner: true)}
+  end
+
   # used in games controller and taking_turn
   def find_player_with_user_id(user_id)
     go_fish.find_player_with_user_id(user_id)

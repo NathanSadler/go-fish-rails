@@ -5,6 +5,41 @@ RSpec.describe Game, type: :model do
   let(:session1) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:last_game) {Game.create}
 
+  describe('.end') do
+    before(:each) do
+      Game.create
+    end
+
+    it("sets the finished_at column") do
+      game = Game.last
+      game.end
+      expect(game.finished?).to(be(true))
+    end
+
+    describe("setting the is_game_winner column for the GameUsers") do
+      before(:each) do
+        game = Game.last
+        go_fish = GoFish.new
+        ["dododo", "reireirei", "mimimi"].each {|username| User.create(name: username, email: "#{username}@gmail.com", password: username, password_confirmation: username)}
+        User.last(3).each {|user| GameUser.create(game_id: game.id, user_id: user.id)}
+        User.last(3).each {|user| go_fish.add_player(Player.new(user.name, user.id))}
+        go_fish.players[0..1].each {|player| player.send(:set_score, 24)}
+        game.update(go_fish: go_fish)
+      end
+
+      it("sets the is_game_winner column to true for players who came in 1st") do
+        game = Game.last
+        game.end
+        game_winners_ids = game.go_fish.winning_players.map(&:user_id)
+        game_winners_ids.each {|winner_id| expect(GameUser.find_by(user_id: winner_id).is_game_winner).to(eq(true))}
+      end
+
+      xit("sets the is_game_winner column to false for players who didn't come in 1st") do
+        
+      end
+    end
+  end
+
   describe('.finished') do
     it("returns games that have their finished_at set") do
       last_game.update(finished_at: DateTime.current)
@@ -48,7 +83,7 @@ RSpec.describe Game, type: :model do
     before(:each) do
       Game.create
     end
-    
+
     it("sets finished_at if the game is over at the end of a turn") do
       go_fish = GoFish.new([Player.new("Test Player 1", 1), Player.new("Test Player 2", 2)])
       game = Game.last
