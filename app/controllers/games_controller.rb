@@ -24,7 +24,7 @@ class GamesController < ApplicationController
   def choose_show_page(game)
     if (game.over?)
       render 'game_results'
-    elsif (!game.has_user?(current_user))
+    elsif (current_user.nil? || !game.has_user?(current_user))
       render 'show'
     else
       choose_game_show(game)

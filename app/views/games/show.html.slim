@@ -5,6 +5,9 @@ p = "This is the show page for the #{@game.title} game."
 = simple_form_for GameUser.new do |f|
   .hidden
     = f.input :game_id, input_html: {value: "#{@game.id}"}
-    = f.input :user_id, input_html: {value: "#{current_user.id}"}
+    - if !current_user.nil?
+      = f.input :user_id, input_html: {value: "#{current_user.id}"}
+    - else
+      = f.input :user_id, input_html: {value: ""}
   = f.submit "Join Game"
 

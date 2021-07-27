@@ -72,6 +72,12 @@ RSpec.describe "Game", type: :system do
       game = Game.last
       expect(game.players.map(&:user_id).include?(last_gameuser.user_id)).to(eq(true))
     end
+
+    it("doesn't let a user join a game if they aren't logged in") do
+      game = Game.last
+      join_game(userless_session, game.id)
+      expect(game.players.length).to(eq(1))
+    end
   end
 
   describe("showing a game") do

@@ -4,8 +4,7 @@ class GameUserController < ApplicationController
 
     # Also create a player object
     game = Game.find(game_user_params[:game_id])
-    game.add_player(Player.new(current_user.name,
-      @game_user.user_id.to_i))
+    game.add_player(Player.new(current_user.name, @game_user.user_id.to_i)) if logged_in?
     #game.save
 
     partial = ApplicationController.render(partial: '../views/games/players_in_lobby', locals: {users: game.users})
