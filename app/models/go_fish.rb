@@ -52,7 +52,8 @@ class GoFish
     restored_deck = Deck.from_json(json['deck'])
     restored_go_fish = GoFish.new(restored_players, restored_deck, json['current_player_index'],
       game_id: json['game_id'])
-    restored_go_fish.send(:set_round_results, json["round_results"].map {|round_result| RoundResult.from_json(round_result)})
+    !json["round_results"].nil? ? restored_round_results = json["round_results"].map {|round_result| RoundResult.from_json(round_result)} : restored_round_results = []
+    restored_go_fish.send(:set_round_results, restored_round_results)
     restored_go_fish
   end
 

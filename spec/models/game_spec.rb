@@ -32,6 +32,16 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe("#take_turn") do
+    it("sets finished_at if the game is over at the end of a turn") do
+      go_fish = GoFish.new([Player.new("Test Player 1", 1), Player.new("Test Player 2", 2)])
+      go_fish.players[0].send(:set_hand, [Card.new("2", "H"), Card.new("2", "D")])
+      go_fish.players[1].send(:set_hand, [Card.new("2", "S"), Card.new("2", "C")])
+      go_fish.deck.send(:set_cards, [])
+      Game.last.update(go_fish: go_fish)
+    end
+  end
+
   describe("#try_to_start") do
     before(:each) do
       GameUser.create(game_id: last_game.id, user_id: User.last.id)

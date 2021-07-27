@@ -140,6 +140,11 @@ RSpec.describe GoFish do
       expect(restored_go_fish.round_results[0].hidden_message).to(eq("You took "+
         "1 4(s) from the deck"))
     end
+
+    it("uses an empty array for round results if the json doesn't have any round results") do
+      json_go_fish['round_results'] = nil 
+      expect(GoFish.from_json(json_go_fish).round_results).to(eq([]))
+    end
   end
 
   context('#increment_current_player_index') do
