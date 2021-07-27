@@ -71,6 +71,11 @@ class GoFish
     self.from_json(json)
   end
 
+  def losing_players
+    winners = winning_players
+    players.reject {|player| winners.include?(player)}
+  end
+
   def next_player
     increment_current_player_index
     if !over?

@@ -207,6 +207,23 @@ RSpec.describe GoFish do
     end
   end
 
+  context('#losing_players') do
+    before(:each) do
+      go_fish.add_player(Player.new("Dummy Player"))
+      go_fish.players[1].send(:set_score, 31)
+    end
+
+    let(:losers) {go_fish.losing_players}
+
+    it("returns an array of the players that did not come in 1st") do
+      expect(losers).to(eq([go_fish.players[0], go_fish.players[2]]))
+    end
+
+    it("does not return an array that contains any of the winners") do
+      expect(losers.include?(go_fish.players[1])).to(be(false))
+    end
+  end
+
   context('#next_player') do
     before(:each) do
       go_fish.send(:set_current_player_index, 0)  
