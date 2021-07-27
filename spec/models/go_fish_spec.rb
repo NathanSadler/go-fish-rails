@@ -39,10 +39,6 @@ RSpec.describe GoFish do
       go_fish.add_player(Player.new)
       expect(go_fish.players.length).to(eq(3))
     end
-
-    xit("won't add players once the game starts") do
-
-    end
   end
 
   describe('#as_json') do
