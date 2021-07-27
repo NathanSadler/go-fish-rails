@@ -114,6 +114,10 @@ class GoFish
     players.select {|player| player.score == highest_score}
   end
 
+  def winning_players_str
+    "#{winning_players.map(&:name).to_sentence} won!"
+  end
+
   private
     def set_current_player_index(new_value)
       @current_player_index = new_value % players.length

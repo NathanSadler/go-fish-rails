@@ -369,4 +369,28 @@ RSpec.describe GoFish do
       expect(go_fish.winning_players.include?(go_fish.players[2])).to(be(false))
     end
   end
+
+  context('#winning_players_str') do
+    before(:each) do
+      go_fish.add_player(Player.new("Dummy Player"))
+    end
+
+    it("returns a string in the format <x> won! if there is only one player") do
+      win_message = "John Don't won!"
+      expect(go_fish.winning_players_str).to(eq(win_message))
+    end
+
+    it("returns a string in the format <x> and <y> won! if two players tied for first place") do
+      win_message = "John Doe and John Don't won!"
+      go_fish.players[0].send(:set_score, 2)
+      expect(go_fish.winning_players_str).to(eq(win_message))
+    end
+
+    it("returns a string in the format <n>, <n+1>, <n+2>, ..., and <n+x> won! if three or more players tie for first place") do
+      go_fish.add_player(Player.new("Some Chump"))
+      go_fish.players[0..2].each {|player| player.send(:set_score, 2)}
+      win_message = "John Doe, John Don't, and Dummy Player won!"
+      expect(go_fish.winning_players_str).to(eq(win_message))
+    end
+  end
 end
