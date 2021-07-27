@@ -5,6 +5,18 @@ RSpec.describe Game, type: :model do
   let(:session1) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:last_game) {Game.create}
 
+  describe('.finished') do
+    it("returns games that have their finished_at set") do
+      last_game.update(finished_at: DateTime.current)
+      last_game.save!
+      expect(Game.finished.include?(last_game)).to(be(true))
+    end
+
+    it("doesn't return games that don't have their finished_at set") do
+      expect(Game.finished.include?(last_game)).to(be(false))
+    end
+  end
+
   describe("#ready_to_start?") do
     before(:each) do
       last_game.update(minimum_player_count: 1)

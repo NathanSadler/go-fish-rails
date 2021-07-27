@@ -5,6 +5,8 @@ class Game < ApplicationRecord
   has_many :users, through: :game_users
   serialize :go_fish, GoFish
 
+  scope :finished, -> {where.not(finished_at: nil)}
+
   def add_player(player)
     go_fish.add_player(player)
     save!
