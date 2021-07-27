@@ -35,10 +35,13 @@ RSpec.describe Game, type: :model do
   describe("#take_turn") do
     it("sets finished_at if the game is over at the end of a turn") do
       go_fish = GoFish.new([Player.new("Test Player 1", 1), Player.new("Test Player 2", 2)])
-      go_fish.players[0].send(:set_hand, [Card.new("2", "H"), Card.new("2", "D")])
-      go_fish.players[1].send(:set_hand, [Card.new("2", "S"), Card.new("2", "C")])
+      game = Game.last
+      go_fish.players.each {|player| player.send(:set_hand, [Card.new("2", "H"), Card.new("2", "D")])}
       go_fish.deck.send(:set_cards, [])
-      Game.last.update(go_fish: go_fish)
+      game.update(go_fish: go_fish)
+      game.take_turn(game.players[0], requested_player: game.players[1], requested_rank: "2")
+      game.save!
+      expect(game.finished_at.present?).to(be(true))
     end
   end
 

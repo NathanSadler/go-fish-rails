@@ -54,8 +54,9 @@ class Game < ApplicationRecord
 
   def take_turn(player, requested_player:, requested_rank: "H")
     go_fish.take_turn(player, requested_player: requested_player,
-      requested_rank: requested_rank)
+      requested_rank: requested_rank) 
     save!
+    update(finished_at: DateTime.current) if go_fish.over?
   end
 
   def try_to_start
