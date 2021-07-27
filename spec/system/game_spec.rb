@@ -15,13 +15,22 @@ RSpec.describe "Game", type: :system do
   end
 
   describe("viewing the list of games") do
-    it("doesn't show games that have already started") do
-      create_game(session, "This shouldn't be shown here once it starts", 2)
-      join_game_from_info_page(session)
-      join_game(session2, Game.last.id)
-      [session, session2].each {|user_session| start_game(user_session)}
-      view_game_list(userless_session)
-      expect(userless_session.body).to_not(have_content("This shouldn't be shown here once it starts"))
+    describe("not showing games that have already started") do
+      before(:each) do
+        create_game(session, "This shouldn't be shown here once it starts", 2)
+        join_game_from_info_page(session)
+        join_game(session2, Game.last.id)
+        [session, session2].each {|user_session| start_game(user_session)}
+        view_game_list(userless_session)
+      end
+
+      it("doesn't show games that have already started") do
+        expect(userless_session.body).to_not(have_content("This shouldn't be shown here once it starts"))
+      end
+
+      it("doesn't create an empty list item for games that have already started") do
+        expect(userless_session.has_css?('li', count: 1)).to(be(true))
+      end
     end
   end
 
