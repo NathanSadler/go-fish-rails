@@ -14,6 +14,17 @@ RSpec.describe "Game", type: :system do
     User.destroy_all
   end
 
+  describe("viewing the list of games") do
+    it("doesn't show games that have already started") do
+      create_game(session, "This shouldn't be shown here once it starts", 2)
+      join_game_from_info_page(session)
+      join_game(session2, Game.last.id)
+      [session, session2].each {|user_session| start_game(user_session)}
+      view_game_list(userless_session)
+      expect(userless_session.body).to_not(have_content("This shouldn't be shown here once it starts"))
+    end
+  end
+
   describe("creating a game") do
     it("lets users create new games") do
       session.visit new_game_path
