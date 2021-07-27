@@ -28,8 +28,8 @@ class Game < ApplicationRecord
   end
 
   # used in game controller
-  def over?
-    go_fish.over?
+  def finished?
+    finished_at.present?
   end
 
   # used in taking_turn, but only once
