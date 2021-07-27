@@ -116,13 +116,10 @@ RSpec.describe "GoFish", type: :system do
   describe("edit/updating a game") do
     before(:each) do
       create_game(session, "Aught O Test", 2)
-      session.click_on "Join Game"
-      session2.visit("/games/#{Game.last.id}")
-      session2.click_on "Join Game"
-      start_game(session)
+      join_game_from_info_page(session)
+      join_game(session2, Game.last.id)
+      [session, session2].each {|user_session| start_game(user_session)}
     end
-
-   
 
     describe("giving a player a card at the start of a turn") do
       it("if there are cards in the deck and the player doesn't have any cards") do
@@ -154,7 +151,9 @@ RSpec.describe "GoFish", type: :system do
       expect(session).to(have_content("Take Your Turn"))
     end
 
-
+    it("doesn't let a player ask themself for a card") do
+      
+    end
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
@@ -193,7 +192,6 @@ RSpec.describe "GoFish", type: :system do
         expect(Game.last.turn_player.name).to(eq("Michael Example"))
       end
       
-
       it("lets one user ask for and take card(s) from another") do
         expect(game.players[0].hand.include?(Card.new("7", "C"))).to(be(false))
         expect(game.players[1].hand.include?(Card.new("7", "C"))).to(be(true))
