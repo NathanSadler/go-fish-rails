@@ -29,7 +29,7 @@ RSpec.describe "Game", type: :system do
       end
 
       it("doesn't create an empty list item for games that have already started") do
-        expect(userless_session.has_css?('li', count: 1)).to(be(true))
+        expect(userless_session.has_css?('li', count: 0)).to(be(true))
       end
     end
   end

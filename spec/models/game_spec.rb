@@ -45,6 +45,10 @@ RSpec.describe Game, type: :model do
   end
 
   describe("#take_turn") do
+    before(:each) do
+      Game.create
+    end
+    
     it("sets finished_at if the game is over at the end of a turn") do
       go_fish = GoFish.new([Player.new("Test Player 1", 1), Player.new("Test Player 2", 2)])
       game = Game.last
@@ -133,6 +137,7 @@ RSpec.describe Game, type: :model do
   describe('#users') do
     before(:each) do
       foo = User.create(name: "blank", email: "bl@nk.com", password: "blankk", password_confirmation: "blankk")
+      Game.create
       bar = GameUser.create(game_id: Game.last.id, user_id: User.last.id)
     end
 
