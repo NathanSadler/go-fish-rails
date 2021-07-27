@@ -1,9 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe "Game", type: :system do
-
-  let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
-  let(:session2) {Capybara::Session.new(:rack_test, Rails.application)}
+  [:session, :session2, :userless_session].each {|user_session| let(user_session) {Capybara::Session.new(:rack_test, Rails.application)}}
 
   before(:each) do
     User.create(name:"foobar", email:"foo@bar.com", password:"foobar",
@@ -26,6 +24,12 @@ RSpec.describe "Game", type: :system do
     it("takes users to the show page of the game they just created") do
       create_game(session)
       expect(session.current_path).to(eq("/games/#{Game.last.id}"))
+    end
+
+    it("doesn't let a user create a game if they aren't logged in") do
+      previous_game_count = Game.all.length
+      create_game(userless_session)
+      expect(Game.all.length).to(eq(previous_game_count))
     end
   end
 

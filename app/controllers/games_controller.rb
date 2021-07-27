@@ -54,9 +54,13 @@ class GamesController < ApplicationController
   end
 
   def create
-    @game = Game.new(game_params)
-    @game.save
-    redirect_to @game
+    if logged_in?
+      @game = Game.new(game_params)
+      @game.save
+      redirect_to @game
+    else
+      redirect_to new
+    end
   end
 
   def update
