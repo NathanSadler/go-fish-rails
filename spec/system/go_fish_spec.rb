@@ -98,7 +98,7 @@ RSpec.describe "GoFish", type: :system do
       end
 
       it("says who the winner is") do
-        expect(session.body).to(have_content("foobar wins"))
+        expect(session.body).to(have_content("foobar won!"))
       end
     end
     

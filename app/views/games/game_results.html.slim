@@ -1,2 +1,2 @@
 h1 Game Over
-p = "#{@game.players.sort_by(&:score)[-1].name} wins"
+p = @game.go_fish.winning_players_str
