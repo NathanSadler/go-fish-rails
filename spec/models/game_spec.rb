@@ -31,11 +31,14 @@ RSpec.describe Game, type: :model do
         game = Game.last
         game.finish
         game_winners_ids = game.go_fish.winning_players.map(&:user_id)
-        game_winners_ids.each {|winner_id| expect(GameUser.find_by(user_id: winner_id).is_game_winner).to(eq(true))}
+        game_winners_ids.each {|winner_id| expect(GameUser.find_by(user_id: winner_id, game_id: game.id).is_game_winner).to(eq(true))}
       end
 
-      xit("sets the is_game_winner column to false for players who didn't come in 1st") do
-        
+      it("sets the is_game_winner column to false for players who didn't come in 1st") do
+        game = Game.last
+        game.finish
+        game_losers_ids = game.go_fish.losing_players.map(&:user_id)
+        game_losers_ids.each {|loser_id| expect(GameUser.find_by(user_id: loser_id, game_id: game.id).is_game_winner).to(eq(false))}
       end
     end
   end

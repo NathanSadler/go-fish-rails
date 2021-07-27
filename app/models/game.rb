@@ -23,6 +23,8 @@ class Game < ApplicationRecord
     update(finished_at: DateTime.current)
     winners_ids = go_fish.winning_players.map(&:user_id)
     winners_ids.each {|winner_id| GameUser.where(user_id: winner_id, game_id: id).update(is_game_winner: true)}
+    losers_ids = go_fish.losing_players.map(&:user_id)
+    losers_ids.each {|loser_id| GameUser.where(user_id: loser_id, game_id: id).update(is_game_winner: false)}
   end
 
   # used in games controller and taking_turn
