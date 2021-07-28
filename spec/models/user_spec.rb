@@ -5,17 +5,50 @@ RSpec.describe User, type: :model do
   let(:user) {User.new(name: "Test user", email: "user@example.com",
     password: "foobar", password_confirmation: "foobar")}
 
-  describe("user#win_count") do
+  describe("user#win, loss, and draw count") do
     before(:each) do
       user.save
       5.times {Game.create}
       Game.last(5).each {|game| GameUser.create(user_id: user.id, game_id: game.id)}
     end
 
-    it("returns the number of games the user won") do
-      GameUser.last(3).each {|game_user| game_user.update(is_game_winner: true)}
-      expect(user.win_count).to(eq(3))
+    describe('user#win_count') do
+      before(:each) do
+        GameUser.last(3).each {|game_user| game_user.update(is_game_winner: true)}
+      end
+
+      it("returns the number of games the user won") do
+        expect(user.win_count).to(eq(3))
+      end
+
+      it("doesn't count games where the user tied for first place") do
+        other_user = User.create(name: "fofofo", email: "fofofo@gmail.com", password: "fofofo", password_confirmation: "fofofo")
+        last_game_id = Game.last.id
+        GameUser.create(user_id: other_user.id, game_id: last_game_id)
+        GameUser.last.update(is_game_winner: true)
+        expect(user.win_count).to(eq(2))
+      end
     end
+
+    describe('user#loss_count') do
+      it("returns the number of games the user lost") do
+        GameUser.first(2).each {|game_user| game_user.update(is_game_winner: false)}
+        expect(user.loss_count).to(eq(2))
+      end
+    end
+
+    describe('user#draw_count') do
+      it("returns the number of games where the user tied for first place") do
+        GameUser.last(3).each {|game_user| game_user.update(is_game_winner: true)}
+        other_user = User.create(name: "fofofo", email: "fofofo@gmail.com", password: "fofofo", password_confirmation: "fofofo")
+        last_game_id = Game.last.id
+        other_gameuser = GameUser.create(user_id: other_user.id, game_id: last_game_id)
+        GameUser.create(user_id: other_user.id, game_id: Game.first.id)
+        [other_gameuser, GameUser.last].each {|gameuser| gameuser.update(is_game_winner: true)}
+        expect(user.draw_count).to(eq(1))
+      end
+    end
+
   end
 
   it("requires a name to be present") do

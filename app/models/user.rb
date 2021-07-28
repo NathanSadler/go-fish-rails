@@ -20,6 +20,21 @@ class User < ApplicationRecord
     BCrypt::Password.create(string, cost: cost)
   end
 
+  def draw_count
+    won_gameusers = GameUser.where(user_id: id, is_game_winner: true)
+
+    # Get gameusers where the user did not win
+    other_winner_gameusers = GameUser.where.not(user_id: id).where(is_game_winner: true)
+
+    # Get gamesusers from won_gameusers where the ID of the won_gameuser is in other_winner_gameusers
+    tied_games = won_gameusers.select {|gameuser| other_winner_gameusers.select(&:game_id).include?(gameuser.game_id)}
+    tied_games.length
+  end
+
+  def loss_count
+    GameUser.where(user_id: id, is_game_winner: false).count
+  end
+
   def win_count
     GameUser.where(user_id: id, is_game_winner: true).count
   end
