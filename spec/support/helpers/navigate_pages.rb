@@ -1,4 +1,8 @@
 module NavigatePages
+  def go_to_leaderboard(session)
+    session.visit(leaderboard_path)
+  end
+
   def join_game(session, game_id)
     session.visit("/games/#{game_id}")
     join_game_from_info_page(session)
