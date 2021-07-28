@@ -5,7 +5,7 @@ RSpec.describe User, type: :model do
   let(:user) {User.new(name: "Test user", email: "user@example.com",
     password: "foobar", password_confirmation: "foobar")}
 
-  describe("user#win, loss, and draw count") do
+  describe("user#win, loss, and tie count") do
     before(:each) do
       user.save
       5.times {Game.create}
@@ -37,7 +37,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe('user#draw_count') do
+    describe('user#tie_count') do
       it("returns the number of games where the user tied for first place") do
         GameUser.last(3).each {|game_user| game_user.update(is_game_winner: true)}
         other_user = User.create(name: "fofofo", email: "fofofo@gmail.com", password: "fofofo", password_confirmation: "fofofo")
@@ -45,7 +45,7 @@ RSpec.describe User, type: :model do
         other_gameuser = GameUser.create(user_id: other_user.id, game_id: last_game_id)
         GameUser.create(user_id: other_user.id, game_id: Game.first.id)
         [other_gameuser, GameUser.last].each {|gameuser| gameuser.update(is_game_winner: true)}
-        expect(user.draw_count).to(eq(1))
+        expect(user.tie_count).to(eq(1))
       end
     end
 
