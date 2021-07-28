@@ -5,3 +5,8 @@ table
     th Player
     th Won Games
     th Games Played
+  - @users.each_with_index do |user, index|
+    tr
+      - [index + 1, user.name, user.win_count].each do |table_data|
+        td = table_data
+    
