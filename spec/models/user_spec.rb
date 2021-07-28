@@ -122,6 +122,4 @@ RSpec.describe User, type: :model do
     user.password = user.password_confirmation = "a" * 6
     expect(user.valid?).to(eq(true))
   end
-
-
 end
