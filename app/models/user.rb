@@ -19,4 +19,8 @@ class User < ApplicationRecord
                                                   BCrypt::Engine.cost
     BCrypt::Password.create(string, cost: cost)
   end
+
+  def win_count
+    GameUser.where(user_id: id, is_game_winner: true).count
+  end
 end

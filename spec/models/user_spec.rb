@@ -5,6 +5,19 @@ RSpec.describe User, type: :model do
   let(:user) {User.new(name: "Test user", email: "user@example.com",
     password: "foobar", password_confirmation: "foobar")}
 
+  describe("user#win_count") do
+    before(:each) do
+      user.save
+      5.times {Game.create}
+      Game.last(5).each {|game| GameUser.create(user_id: user.id, game_id: game.id)}
+    end
+
+    it("returns the number of games the user won") do
+      GameUser.last(3).each {|game_user| game_user.update(is_game_winner: true)}
+      expect(user.win_count).to(eq(3))
+    end
+  end
+
   it("requires a name to be present") do
     user.name = " "
     expect(user.valid?).to(eq(false))
