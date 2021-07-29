@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_many :game_users
-  has_many :users, through: :game_users
+  has_many :games, through: :game_users
   before_save {self.email = email.downcase}
 
   validates(:name, {presence: true, length: {maximum:50}})
