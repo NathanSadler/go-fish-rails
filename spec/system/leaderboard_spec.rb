@@ -16,12 +16,13 @@ RSpec.describe "Leaderboard", type: :system do
   let(:test_user_b) {User.all[1]} # sasasa
   let(:test_user_c) {User.all[2]} # teeteetee
 
-  describe("ordering users by games won") do
+  describe("ordering users") do
     it("lists users by number of games won in descending order") do
       GameUser.where(user_id: test_user_b.id).each {|gameuser| gameuser.update(is_game_winner: true)}
       go_to_leaderboard(session)
       user_names = session.all(:css, 'td:nth-child(2)')
       expect(user_names[0].text).to(eq(test_user_b.name))
     end
+
   end
 end
