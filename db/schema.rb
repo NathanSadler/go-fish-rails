@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_27_203109) do
+ActiveRecord::Schema.define(version: 2021_07_29_150910) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,4 +45,27 @@ ActiveRecord::Schema.define(version: 2021_07_27_203109) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+
+  create_view "user_stats", sql_definition: <<-SQL
+      SELECT users.name,
+      count(game_users.*) AS played_games,
+      count(
+          CASE
+              WHEN game_users.is_game_winner THEN 1
+              ELSE NULL::integer
+          END) AS won_games,
+      (count(game_users.*) - count(
+          CASE
+              WHEN game_users.is_game_winner THEN 1
+              ELSE NULL::integer
+          END)) AS lost_games
+     FROM (users
+       JOIN game_users ON ((game_users.user_id = users.id)))
+    GROUP BY users.name, users.id
+    ORDER BY (count(
+          CASE
+              WHEN game_users.is_game_winner THEN 1
+              ELSE NULL::integer
+          END)) DESC;
+  SQL
 end
