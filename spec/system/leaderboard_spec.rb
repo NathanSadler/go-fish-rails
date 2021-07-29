@@ -5,7 +5,7 @@ RSpec.describe "Leaderboard", type: :system do
   let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
 
   before(:each) do
-    # User.first.destroy
+    User.first.destroy
     ["lalala", "sasasa", "teeteetee"].each {|name| User.create(name: name, email: "#{name}@gmail.com", password: name, password_confirmation: name)}
     3.times {Game.create()}
     Game.all.each do |game|
@@ -28,6 +28,7 @@ RSpec.describe "Leaderboard", type: :system do
     end
 
     it("lists the user's name") do
+      binding.pry
       user_names = session.all(:css, 'td:nth-child(2)')
       expect(user_names[0].text).to(eq("sasasa"))
     end
