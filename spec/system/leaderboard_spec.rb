@@ -28,7 +28,6 @@ RSpec.describe "Leaderboard", type: :system do
     end
 
     it("lists the user's name") do
-      binding.pry
       user_names = session.all(:css, 'td:nth-child(2)')
       expect(user_names[0].text).to(eq("sasasa"))
     end
