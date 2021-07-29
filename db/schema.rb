@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_29_153135) do
+ActiveRecord::Schema.define(version: 2021_07_29_175449) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,8 +47,8 @@ ActiveRecord::Schema.define(version: 2021_07_29_153135) do
 
 
   create_view "user_stats", sql_definition: <<-SQL
-      SELECT users.name,
-      users.id AS user_id,
+      SELECT users.id,
+      users.name,
       count(game_users.*) AS played_games,
       count(
           CASE
@@ -59,9 +59,11 @@ ActiveRecord::Schema.define(version: 2021_07_29_153135) do
           CASE
               WHEN game_users.is_game_winner THEN 1
               ELSE NULL::integer
-          END)) AS lost_games
-     FROM (users
+          END)) AS lost_games,
+      sum((games.finished_at - games.started_at)) AS sum
+     FROM ((users
        JOIN game_users ON ((game_users.user_id = users.id)))
+       JOIN games ON ((games.id = game_users.game_id)))
     GROUP BY users.name, users.id
     ORDER BY (count(
           CASE
