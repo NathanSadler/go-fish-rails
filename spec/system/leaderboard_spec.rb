@@ -24,5 +24,11 @@ RSpec.describe "Leaderboard", type: :system do
       expect(user_names[0].text).to(eq(test_user_b.name))
     end
 
+    # it("includes users that haven't won any games") do
+    #   GameUser.where(user_id: test_user_b.id).each {|gameuser| gameuser.update(is_game_winner: true)}
+    #   expect(session).to(have_content("sasasa"))
+    #   expect(session).to(have_content("teeteetee"))
+    # end
+
   end
 end
