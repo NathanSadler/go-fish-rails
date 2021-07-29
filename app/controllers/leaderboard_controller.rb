@@ -1,6 +1,6 @@
 class LeaderboardController < ApplicationController
   def index
-    @users = get_users
+    @users = UserStat.all
   end
 
   def get_users
