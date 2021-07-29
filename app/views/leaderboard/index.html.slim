@@ -9,4 +9,3 @@ table
     tr
       - [index + 1, user.name, user.won_games, user.played_games].each do |table_data|
         td = table_data
-  = @users.to_sql
