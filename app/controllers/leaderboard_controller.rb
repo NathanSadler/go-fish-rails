@@ -4,7 +4,8 @@ class LeaderboardController < ApplicationController
   end
 
   def get_users
-    User.select(:name, "count(case when game_users.is_game_winner then 1 end) as won_games").joins(:games).group(
+    User.select(:name, "count(case when game_users.is_game_winner then 1 end) as won_games",
+  "count(game_users) as played_games").joins(:games).group(
     :name).order(won_games: :desc)
   end
 end

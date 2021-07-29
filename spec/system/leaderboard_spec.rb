@@ -26,17 +26,17 @@ RSpec.describe "Leaderboard", type: :system do
 
     it("lists the user's name") do
       user_names = session.all(:css, 'td:nth-child(2)')
-      expect(user_names[0]).to(eq("sasasa"))
+      expect(user_names[0].text).to(eq("sasasa"))
     end
 
     it("lists the number of games the user won") do
       won_games_count = session.first(:css, 'td:nth-child(3)')
-      expect(won_games_count).to(eq(2))
+      expect(won_games_count.text).to(eq("3"))
     end
 
     it("lists the number of games the user played") do
       played_games_count = session.first(:css, 'td:nth-child(4)')
-      expect(won_games_count).to(eq(3))
+      expect(played_games_count.text).to(eq("4"))
     end
   end
 
