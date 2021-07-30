@@ -51,17 +51,15 @@ RSpec.describe User, type: :model do
   end
 
   describe("name") do
+    it("must be present") do
+      user.name = " "
+      expect(user.valid?).to(eq(false))
+    end
 
-  end
-
-  it("requires a name to be present") do
-    user.name = " "
-    expect(user.valid?).to(eq(false))
-  end
-
-  it("should not have a name longer than 50 chars") do
-    user.name = "A" * 51
-    expect(user.valid?).to(eq(false))
+    it("must not be longer than 50 chars") do
+      user.name = "A" * 51
+      expect(user.valid?).to(eq(false))
+    end
   end
 
   it("should have an email present") do
