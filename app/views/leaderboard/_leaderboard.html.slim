@@ -12,8 +12,6 @@ table
     th Games Played
     th Game Time
   - users.each_with_index do |user, index|
-    - game_time = user.game_time.parts
-    - displayed_time = "#{game_time[:hours].to_i}:#{game_time[:minutes].to_i}:#{game_time[:seconds].to_i}"
     tr
-      - [index + 1, user.name, user.won_games, user.lost_games, user.played_games, displayed_time].each do |table_data|
+      - [index + 1, user.name, user.won_games, user.lost_games, user.played_games, user.formatted_duration].each do |table_data|
         td = table_data
