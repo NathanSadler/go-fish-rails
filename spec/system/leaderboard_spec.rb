@@ -77,7 +77,7 @@ RSpec.describe "Leaderboard", type: :system do
     end
 
     it("lists users by the number of games they played in descending order") do
-      expect(session.first(:css, 'td:nth-child(2').text).to(eq("teeteetee"))
+      expect(session.first(:css, 'td:nth-child(2)').text).to(eq("teeteetee"))
     end
   end
 end
