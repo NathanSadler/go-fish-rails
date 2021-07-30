@@ -60,6 +60,11 @@ RSpec.describe User, type: :model do
       user.name = "A" * 51
       expect(user.valid?).to(eq(false))
     end
+
+    it("cannot use non-ascii characters") do
+      user.name = "AAAA£AAAAAA"
+      expect(user.valid?).to(eq(false))
+    end
   end
 
   it("should have an email present") do
