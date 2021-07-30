@@ -51,10 +51,7 @@ RSpec.describe User, type: :model do
   end
 
   describe("name") do
-    xit("cannot have spaces") do
-      user.name="abcde fghijkl"
-      expect(user.valid?).to(eq(false))
-    end
+
   end
 
   it("requires a name to be present") do
