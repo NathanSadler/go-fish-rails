@@ -1,3 +1,7 @@
 .leaderboard-selection-menu {
-  
+  display: flex;
+  flex-direction: row;
+  a {
+    margin-left: var(--space-sm);
+  }
 }
