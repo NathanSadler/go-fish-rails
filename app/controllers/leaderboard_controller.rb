@@ -5,7 +5,6 @@ class LeaderboardController < ApplicationController
 
   def games_won
     @users = UserStat.all
-    render 'index'
   end
 
   # def get_users
