@@ -1,5 +1,5 @@
 module NavigatePages
-  def go_to_leaderboard(session)
+  def go_to_leaderboard(session, leaderboard_selection = "Games Won")
     view_home_page(session)
     session.click_on("Leaderboards")
   end
