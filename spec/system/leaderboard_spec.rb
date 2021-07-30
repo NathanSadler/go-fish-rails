@@ -3,7 +3,7 @@ require 'date'
 
 RSpec.describe "Leaderboard", type: :system do
   let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
-  
+
   before(:each) do
     User.first.destroy if !User.all.empty?
     ["lalala", "sasasa", "teeteetee"].each {|name| User.create(name: name, email: "#{name}@gmail.com", password: name, password_confirmation: name)}
@@ -53,7 +53,7 @@ RSpec.describe "Leaderboard", type: :system do
     end
   end
 
-  describe("ordering users") do
+  describe("ordering users by number of games won") do
     it("lists users by number of games won in descending order") do
       GameUser.where(user_id: test_user_b.id).each {|gameuser| gameuser.update(is_game_winner: true)}
       go_to_leaderboard(session)
@@ -66,6 +66,18 @@ RSpec.describe "Leaderboard", type: :system do
       go_to_leaderboard(session)
       expect(session).to(have_content("sasasa"))
       expect(session).to(have_content("teeteetee"))
+    end
+  end
+
+  describe("ordering users by number of games played") do
+    before(:each) do
+      6.times {Game.create}
+      Game.last(6).each {|game| GameUser.create(user_id: test_user_c.id, game_id: game.id)}
+      go_to_leaderboard(session, "Games Played")
+    end
+
+    it("lists users by the number of games they played in descending order") do
+      expect(session.first(:css, 'td:nth-child(2').text).to(eq("teeteetee"))
     end
   end
 end
