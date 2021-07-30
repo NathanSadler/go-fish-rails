@@ -82,21 +82,17 @@ RSpec.describe "Leaderboard", type: :system do
   end
 
   describe("ordering users by the time they spend in-game") do
-
     before(:each) do
       6.times {Game.create}
-
       Game.last(6).each do |game| 
         GameUser.create(user_id: test_user_c.id, game_id: game.id)
         game.update(started_at: DateTime.new(2021, 1, 1, 0, 0, 0, (-1/6)), finished_at: DateTime.new(2022, 1, 1, 0, 0, 0, (-1/6)))
       end
-
       go_to_leaderboard(session, "Game Time")
     end
 
     it("lists users by the time they spent in game") do
       expect(session.first(:css, 'td:nth-child(2)').text).to(eq("teeteetee"))
     end
-
   end
 end
