@@ -1,8 +1,4 @@
 class LeaderboardController < ApplicationController
-  def index
-    @users = UserStat.all
-  end
-
   def games_won
     @users = UserStat.all
   end

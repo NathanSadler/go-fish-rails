@@ -1,6 +1,7 @@
 module NavigatePages
   def go_to_leaderboard(session)
-    session.visit(leaderboard_path)
+    view_home_page(session)
+    session.click_on("Leaderboards")
   end
 
   def join_game(session, game_id)

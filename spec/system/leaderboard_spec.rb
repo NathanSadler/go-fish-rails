@@ -3,7 +3,7 @@ require 'date'
 
 RSpec.describe "Leaderboard", type: :system do
   let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
-
+  
   before(:each) do
     User.first.destroy if !User.all.empty?
     ["lalala", "sasasa", "teeteetee"].each {|name| User.create(name: name, email: "#{name}@gmail.com", password: name, password_confirmation: name)}
