@@ -1,3 +1,4 @@
+
 class LeaderboardController < ApplicationController
   def games_won
     @users = UserStat.all.order(won_games: :desc)
@@ -7,7 +8,7 @@ class LeaderboardController < ApplicationController
     @users = UserStat.all.order(played_games: :desc)
   end
 
-  def game_time_leaderboard
+  def game_time
     @users = UserStat.all.order(game_time: :desc)
   end
 
