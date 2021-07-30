@@ -5,7 +5,7 @@ RSpec.describe "Leaderboard", type: :system do
   let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
 
   before(:each) do
-    User.first.destroy
+    User.first.destroy if !User.all.empty?
     ["lalala", "sasasa", "teeteetee"].each {|name| User.create(name: name, email: "#{name}@gmail.com", password: name, password_confirmation: name)}
     3.times {Game.create()}
     Game.all.each do |game|
@@ -37,14 +37,19 @@ RSpec.describe "Leaderboard", type: :system do
       expect(won_games_count.text).to(eq("3"))
     end
 
+    it("lists the number of games the user lost") do
+      lost_games_count = session.first(:css, 'td:nth-child(4)')
+      expect(lost_games_count.text).to(eq('1'))
+    end
+
     it("lists the number of games the user played") do
-      played_games_count = session.first(:css, 'td:nth-child(4)')
+      played_games_count = session.first(:css, 'td:nth-child(5)')
       expect(played_games_count.text).to(eq("4"))
     end
 
-    it("lists the time the user has spend in game with the format days:hours:minutes:seconds") do
-      game_time = session.first(:css, 'td:nth-child(5)')
-      expect(game_time.text).to(eq("0:0:30:0"))
+    it("lists the time the user has spend in game with the format hours:minutes:seconds") do
+      game_time = session.first(:css, 'td:nth-child(6)')
+      expect(game_time.text).to(eq("0:40:0"))
     end
   end
 
@@ -62,6 +67,5 @@ RSpec.describe "Leaderboard", type: :system do
       expect(session).to(have_content("sasasa"))
       expect(session).to(have_content("teeteetee"))
     end
-
   end
 end

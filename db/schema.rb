@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_29_175449) do
+ActiveRecord::Schema.define(version: 2021_07_29_181343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,7 +60,7 @@ ActiveRecord::Schema.define(version: 2021_07_29_175449) do
               WHEN game_users.is_game_winner THEN 1
               ELSE NULL::integer
           END)) AS lost_games,
-      sum((games.finished_at - games.started_at)) AS sum
+      sum((games.finished_at - games.started_at)) AS game_time
      FROM ((users
        JOIN game_users ON ((game_users.user_id = users.id)))
        JOIN games ON ((games.id = game_users.game_id)))
