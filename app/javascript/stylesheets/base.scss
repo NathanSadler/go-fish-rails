@@ -90,3 +90,7 @@ small {
   margin: 0 auto;
   padding: 0 var(--space-lg);
 }
+
+a, a:visited {
+  color: var(--color-primary);
+}
