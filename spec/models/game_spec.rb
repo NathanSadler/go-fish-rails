@@ -82,6 +82,61 @@ RSpec.describe Game, type: :model do
     end
   end
 
+  describe('#state_for') do
+    before(:each) {
+
+      # TODO: add factory bots for these guys
+      User.create(name: "blank", email: "bl@nk.com", password: "blankk", password_confirmation: "blankk")
+      User.create(name: 'blank 2', email: 'colors@dontfeel.com', password: 'soright', password_confirmation: 'soright')
+
+      last_game.update(minimum_player_count: 2)
+
+      User.last(3).each do |user|
+        GameUser.create(game_id: last_game.id, user_id: user.id)
+        last_game.go_fish.add_player(Player.new(user.name, user.id))
+        last_game.save!
+      end
+
+      last_game.try_to_start
+    }
+
+    it('returns stringified json that contains the given player') do
+      last_user_name = JSON.load(Game.last.state_for(User.last))
+      expect(last_user_name['player']['name']).to(eq("blank 2"))
+    end
+
+    describe('the opponents in the stringified json that get returned') do
+      it('can have multiple opponents') do
+        opponents = JSON.load(Game.last.state_for(User.first))['opponents']
+        expect(opponents.length).to(eq(2))
+      end
+    end
+  end
+
+  fdescribe('#opponents_of') do
+    before(:each) do
+      # TODO: add factory bots for these guys
+      User.create(name: "blank", email: "bl@nk.com", password: "blankk", password_confirmation: "blankk")
+      User.create(name: 'blank 2', email: 'colors@dontfeel.com', password: 'soright', password_confirmation: 'soright')
+
+      User.last(3).each do |user|
+        GameUser.create(game_id: last_game.id, user_id: user.id)
+        last_game.go_fish.add_player(Player.new(user.name, user.id))
+        last_game.save!
+      end
+    end
+
+    let(:opponent_ids) {last_game.opponents_of(User.first).map(&:id)}
+
+    it('returns a list of the opponents of the given user in this game') do
+      expect(opponent_ids).to(eq(User.last(2).map(&:id)))
+    end
+
+    it('does not return the given user') do
+      expect(opponent_ids.include?(User.first.id)).to(eq(false))
+    end
+  end
+
   describe("#take_turn") do
     before(:each) do
       Game.create

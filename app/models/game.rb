@@ -55,6 +55,20 @@ class Game < ApplicationRecord
     started_at.present?
   end
 
+  def state_for(user)
+    user_player = find_player_with_user_id(user.id)
+    
+    JSON.dump({
+      'player' => user_player.as_json
+    })
+  end
+
+  def opponents_of(user)
+    users = game_users.map {|game_user| User.find(game_user.user_id)}
+    opponents = users.reject {|u| u.id == user.id}
+    opponents
+  end
+
   # used once in games_helper, but you could probably merge game#deal and
   # game#shuffle, letting you get rid of the two individual game methods
   def shuffle
