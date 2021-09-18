@@ -270,7 +270,7 @@ RSpec.describe Player do
     end
   end
 
-  fdescribe('#json_for_others') do
+  describe('#json_for_others') do
     before(:each) do 
       player.set_hand([Card.new("7", "H"), Card.new("8", "H")])
       player.send(:set_score, 4)
