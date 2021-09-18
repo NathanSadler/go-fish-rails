@@ -270,4 +270,28 @@ RSpec.describe Player do
     end
   end
 
+  fdescribe('#json_for_others') do
+    before(:each) do 
+      player.set_hand([Card.new("7", "H"), Card.new("8", "H")])
+      player.send(:set_score, 4)
+    end
+    let(:json) {player.json_for_others()}
+
+    it('has the name of the player') do
+      expect(json['name']).to(eq('Player'))
+    end
+
+    it("has the number of cards in the player's hand") do
+      expect(json['cards_in_hand']).to(eq(2))
+    end
+
+    it("has the player's score") do
+      expect(json['score']).to(eq(4))
+    end
+
+    it("has the player's user_id") do
+      expect(json['user_id']).to(eq(0))
+    end
+  end
+
 end

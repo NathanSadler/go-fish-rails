@@ -63,6 +63,15 @@ class Player
     set_score(score + points)
   end
 
+  def json_for_others
+    {
+      'name' => name,
+      'cards_in_hand' => hand.length,
+      'score' => score,
+      'user_id' => user_id
+    }
+  end
+
   def lay_down_books
     book_ranks = find_book_ranks
     books = hand.select {|card| book_ranks.include?(card.rank)}
