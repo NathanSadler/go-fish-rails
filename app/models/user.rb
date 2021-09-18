@@ -39,4 +39,6 @@ class User < ApplicationRecord
   def win_count
     GameUser.where(user_id: id, is_game_winner: true).count - tie_count
   end
+
+  
 end

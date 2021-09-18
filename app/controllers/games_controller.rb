@@ -43,10 +43,15 @@ class GamesController < ApplicationController
 
   def show
     @game = Game.find(params[:id])
-    update_card_and_result_partials(@game)
+    
+    # update_card_and_result_partials(@game)
     @game_user = GameUser.new
     @player_id = session[:user_id]
-    choose_show_page(@game)
+
+    respond_to do |format|
+      format.html {choose_show_page(@game)}
+      format.json {render json: @game.state_for(current_user)}
+    end
   end
 
   def new
