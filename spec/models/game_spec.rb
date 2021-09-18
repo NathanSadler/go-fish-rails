@@ -110,7 +110,13 @@ RSpec.describe Game, type: :model do
       expect(state['cards_in_deck']).to(eq(Deck.default_deck.length - (InitialCardsPerPlayer::FEW_PLAYERS * 3)))
     end
 
-    describe('the opponents in the json that get returned') do
+    it("returns json that has each opponents' gameuser id") do
+      # expect(state['opponent_gameuser_ids']).to(include(User.all))
+      User.first(2).each {|user| expect(state['opponent_gameuser_ids']).to(include(
+        GameUser.find_by(game_id: Game.last.id, user_id: user.id).id))}
+    end
+
+    xdescribe('the opponents in the json that get returned') do
       let(:opponents) {state['opponents']}
 
       it('can have multiple opponents') do
