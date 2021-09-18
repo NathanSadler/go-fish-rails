@@ -58,9 +58,11 @@ class Game < ApplicationRecord
   def state_for(user)
     user_player = find_player_with_user_id(user.id)
     
-    JSON.dump({
-      'player' => user_player.as_json
-    })
+    {
+      'cards_in_deck' => go_fish.deck.cards_in_deck,
+      'opponents' => opponents_of(user).map {|opponent| find_player_with_user_id(opponent.id).json_for_others},
+      'player' => user_player.as_json,
+    }
   end
 
   def opponents_of(user)

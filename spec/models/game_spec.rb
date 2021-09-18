@@ -82,7 +82,7 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  describe('#state_for') do
+  fdescribe('#state_for') do
     before(:each) {
 
       # TODO: add factory bots for these guys
@@ -100,20 +100,51 @@ RSpec.describe Game, type: :model do
       last_game.try_to_start
     }
 
-    it('returns stringified json that contains the given player') do
-      last_user_name = JSON.load(Game.last.state_for(User.last))
-      expect(last_user_name['player']['name']).to(eq("blank 2"))
+    let(:state) {Game.last.state_for(User.last)}
+
+    it('returns json that contains the given player') do
+      expect(state['player']['name']).to(eq("blank 2"))
     end
 
-    describe('the opponents in the stringified json that get returned') do
+    it('returns json that has the number of cards in the deck') do
+      expect(state['cards_in_deck']).to(eq(Deck.default_deck.length - (InitialCardsPerPlayer::FEW_PLAYERS * 3)))
+    end
+
+    describe('the opponents in the json that get returned') do
+      let(:opponents) {state['opponents']}
+
       it('can have multiple opponents') do
-        opponents = JSON.load(Game.last.state_for(User.first))['opponents']
         expect(opponents.length).to(eq(2))
       end
+
+      it("has the opponent's name") do
+        expect(opponents.map {|opponent| opponent['name']}).to(include('blank'))
+      end
+
+      it('does not have the given user') do
+        expect(opponents.map {|opponent| opponent['name']}).not_to(include('blank 2'))
+      end
+
+      it('does not have the hand of the opponents') do
+        expect(opponents[0]['hand']).to(eq(nil))
+      end
+
+      it('has the number of cards in the hand of the opponent') do
+        expect(opponents[0]['cards_in_hand']).to(eq(InitialCardsPerPlayer::FEW_PLAYERS))
+      end
+
+      it('has the score of the opponent') do
+        expect(opponents[0]['score']).to(eq(0))
+      end
+
+      it('has the user_id of the opponent') do
+        expect(opponents[0]['user_id']).to(eq(User.first.id))
+      end
+      
     end
   end
 
-  fdescribe('#opponents_of') do
+  describe('#opponents_of') do
     before(:each) do
       # TODO: add factory bots for these guys
       User.create(name: "blank", email: "bl@nk.com", password: "blankk", password_confirmation: "blankk")
