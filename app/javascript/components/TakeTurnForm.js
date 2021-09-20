@@ -59,9 +59,9 @@ class TakeTurnForm extends React.Component {
     return (
       <div>
         <select onChange={this.handleChange} value={this.state.selectedOpponentId}>
-          {this.props.opponents.map((id) => (
-            <option key={id} value={id}>
-              A
+          {this.props.opponents.map((opponent) => (
+            <option key={opponent.user_id} value={opponent.user_id}>
+              {opponent.name}
             </option>
           ))}
         </select>
