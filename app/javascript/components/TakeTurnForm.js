@@ -27,7 +27,7 @@ class TakeTurnForm extends React.Component {
         <form onSubmit={this.onSubmit}>
           {this.cardRankBoxes()}
           {this.playerBoxes()}
-          <input type='submit' value='submit'></input>
+          <input type='submit' value='Take Your Turn'></input>
         </form>
       </React.Fragment>
     );
