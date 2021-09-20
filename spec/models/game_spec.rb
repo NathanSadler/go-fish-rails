@@ -118,7 +118,11 @@ RSpec.describe Game, type: :model do
       expect(Game.last.state_for(User.last)['held_cards']).to(eq(held_cards.map(&:as_json)))
     end
 
-    fdescribe('the opponents that get returned') do
+    it('returns the ID of the game') do
+      expect(state['game_id']).to(eq(Game.last.id))
+    end
+
+    describe('the opponents that get returned') do
       let(:first_opponent) {state['opponents'][0]}
 
       it("has each opponent's name") do
