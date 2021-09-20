@@ -110,12 +110,6 @@ RSpec.describe Game, type: :model do
       expect(state['cards_in_deck']).to(eq(Deck.default_deck.length - (InitialCardsPerPlayer::FEW_PLAYERS * 3)))
     end
 
-    it("returns json that has each opponents' gameuser id") do
-      # expect(state['opponent_gameuser_ids']).to(include(User.all))
-      User.first(2).each {|user| expect(state['opponent_gameuser_ids']).to(include(
-        GameUser.find_by(game_id: Game.last.id, user_id: user.id).id))}
-    end
-
     it("returns an array of the cards in the player's hand") do
       held_cards = [Card.new("2", "H"), Card.new("3", "H")]
       go_fish = Game.last.go_fish
