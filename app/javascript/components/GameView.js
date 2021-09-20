@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Opponent from './Opponent';
+import TakeTurnForm from './TakeTurnForm';
 
 class GameView extends React.Component {
   constructor(props) {
@@ -13,9 +14,10 @@ class GameView extends React.Component {
     return this.state ? (
       <div>
         <div>
-          {this.state.cards_in_deck} <ul>{this.getOpponents()}</ul>
+          {this.state.cards_in_deck} <ul>{this.listOpponents()}</ul>
         </div>
         <div>{this.state.player}</div>
+        <div>{this.takeTurnForm()}</div>
       </div>
     ) : (
       <div>Loading...</div>
@@ -39,12 +41,21 @@ class GameView extends React.Component {
     this.handleServerUpdate(json);
   }
 
-  getOpponents() {
+  listOpponents() {
     return this.state.opponent_gameuser_ids.map((id) => (
       <li key={id}>
         <Opponent gamePlayerPath={`/game_user/${id}`} />
       </li>
     ));
+  }
+
+  takeTurnForm() {
+    return (
+      <TakeTurnForm
+        heldCards={this.state.held_cards}
+        opponentGameuserIds={this.state.opponent_gameuser_ids}
+      />
+    );
   }
 
   handleServerUpdate(json) {

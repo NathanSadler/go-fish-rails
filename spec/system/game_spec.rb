@@ -127,7 +127,7 @@ RSpec.describe "Game", type: :system do
       expect(session2.body).to(have_content("Wait Your Turn"))
     end
 
-    it("displays the take_turn page when it is the user's turn") do
+    it("shows a form for taking a turn to a user when it is their turn") do
       create_game(session, "Otto Test", 1)
       join_game_from_info_page(session)
       start_game(session)
@@ -135,7 +135,7 @@ RSpec.describe "Game", type: :system do
     end
 
     describe("displaying round results") do
-      let(:game) {Game.last} 
+      let(:game) {Game.last}
       before(:each) do
         create_game(session, "Ah! Toe Test!", 2)
         session2.visit("/games/#{Game.last.id}")

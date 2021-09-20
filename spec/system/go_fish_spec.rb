@@ -15,7 +15,7 @@ RSpec.describe "GoFish", type: :system do
   after(:each) do
     User.destroy_all
   end
-  
+
   let(:game) {Game.last}
 
   describe("starting a game") do
@@ -101,7 +101,7 @@ RSpec.describe "GoFish", type: :system do
         expect(session.body).to(have_content("foobar won!"))
       end
     end
-    
+
     it("displays the cards that the player has") do
       game.go_fish.players[0].set_hand([Card.new("3", "H")])
       game.go_fish.players[1].set_hand([Card.new("A", "D")])
@@ -191,7 +191,7 @@ RSpec.describe "GoFish", type: :system do
         expect(Game.last.go_fish.players[0].hand.length).to(eq(4))
         expect(Game.last.turn_player.name).to(eq("Michael Example"))
       end
-      
+
       it("lets one user ask for and take card(s) from another") do
         expect(game.players[0].hand.include?(Card.new("7", "C"))).to(be(false))
         expect(game.players[1].hand.include?(Card.new("7", "C"))).to(be(true))
@@ -227,7 +227,7 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
 
     context("automatically updating card lists and round results") do
       let(:last_game) { Game.last }
-      
+
       before(:each) do
         [session1, session2, session3].each {|session| session.click_on("Try To Start Game")}
         go_fish = Game.last.go_fish
