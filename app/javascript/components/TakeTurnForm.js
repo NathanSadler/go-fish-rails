@@ -24,18 +24,19 @@ class TakeTurnForm extends React.Component {
     const crsf = document.querySelector("meta[name='csrf-token']").getAttribute('content');
     return (
       <React.Fragment>
-        {/* <form onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmit}>
           {this.cardRankBoxes()}
           {this.playerBoxes()}
           <input type='submit' value='Take Your Turn'></input>
-        </form> */}
-        <form action={`/games/${this.props.gameId}`} method='post'>
+        </form>
+
+        {/* <form action={`/games/${this.props.gameId}`} method='post'>
           <input type='hidden' name='_method' value='patch' />
           <input type='hidden' name='authenticity_token' value={crsf} />
           {this.cardRankBoxes()}
           {this.playerBoxes()}
           <input type='submit' value='Take Your Turn'></input>
-        </form>
+        </form> */}
       </React.Fragment>
     );
   }
