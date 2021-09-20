@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete 'logout', to: 'sessions#destroy'
   post 'game_users', to: 'game_user#create'
+  get '/game_user/:id', to: 'game_user#show'
   post 'game_user/create'
 
   get 'try_to_start_game/:game', to: 'games#start_game', as: 'try_to_start_game'

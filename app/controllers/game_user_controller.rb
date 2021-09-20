@@ -12,6 +12,12 @@ class GameUserController < ApplicationController
     redirect_to Game.find(game_id_params[:game_id].to_i)
   end
 
+  def show
+    # binding.pry
+    game_user = GameUser.find(params[:id].to_i)
+    render json: game_user.json_for_others
+  end
+
   private
     def game_user_params
       params.require(:game_user).permit(:user_id, :game_id)
