@@ -18,13 +18,20 @@ class TakeTurnForm extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-    this.logState();
   }
 
   render() {
+    const crsf = document.querySelector("meta[name='csrf-token']").getAttribute('content');
     return (
       <React.Fragment>
-        <form onSubmit={this.onSubmit}>
+        {/* <form onSubmit={this.onSubmit}>
+          {this.cardRankBoxes()}
+          {this.playerBoxes()}
+          <input type='submit' value='Take Your Turn'></input>
+        </form> */}
+        <form action={`/games/${this.props.gameId}`} method='post'>
+          <input type='hidden' name='_method' value='patch' />
+          <input type='hidden' name='authenticity_token' value={crsf} />
           {this.cardRankBoxes()}
           {this.playerBoxes()}
           <input type='submit' value='Take Your Turn'></input>
@@ -72,6 +79,7 @@ class TakeTurnForm extends React.Component {
 
 TakeTurnForm.propTypes = {
   heldCards: PropTypes.array,
-  opponents: PropTypes.array
+  opponents: PropTypes.array,
+  gameId: PropTypes.number
 };
 export default TakeTurnForm;

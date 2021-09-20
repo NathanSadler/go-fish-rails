@@ -18,6 +18,7 @@ class GameView extends React.Component {
         </div>
         <div>{this.state.player}</div>
         <div>{this.takeTurnForm()}</div>
+        {/* <div>{this.props.authenticityToken}</div> */}
       </div>
     ) : (
       <div>Loading...</div>
@@ -50,7 +51,13 @@ class GameView extends React.Component {
   }
 
   takeTurnForm() {
-    return <TakeTurnForm heldCards={this.state.held_cards} opponents={this.state.opponents} />;
+    return (
+      <TakeTurnForm
+        heldCards={this.state.held_cards}
+        gameId={this.state.game_id}
+        opponents={this.state.opponents}
+      />
+    );
   }
 
   handleServerUpdate(json) {
@@ -58,13 +65,15 @@ class GameView extends React.Component {
       cards_in_deck: json['cards_in_deck'],
       opponents: json['opponents'],
       player: json['user_player'],
-      held_cards: json['held_cards']
+      held_cards: json['held_cards'],
+      game_id: json['game_id']
     });
   }
 }
 
 GameView.propTypes = {
   path: PropTypes.string.isRequired
+  // authenticityToken: PropTypes.string
 };
 
 export default GameView;

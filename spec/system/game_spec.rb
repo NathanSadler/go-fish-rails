@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe "Game", type: :system do
+RSpec.describe "Game", type: :system, js: :true do
   [:session, :session2, :userless_session].each {|user_session| let(user_session) {Capybara::Session.new(:rack_test, Rails.application)}}
 
   before(:each) do
@@ -125,6 +125,15 @@ RSpec.describe "Game", type: :system do
       join_game(session2, Game.last.id)
       [session, session2].each {|user_session| start_game(user_session)}
       expect(session2.body).to(have_content("Wait Your Turn"))
+    end
+
+    it("doesn't show a form for taking a turn to a user if it isn't their turn") do
+      create_game(session, "Auto Test", 2)
+      join_game_from_info_page(session)
+      join_game(session2, Game.last.id)
+      [session, session2].each {|user_session| start_game(user_session)}
+      binding.pry
+      expect(session2.body).to_not(have_content("Take Your Turn"))
     end
 
     it("shows a form for taking a turn to a user when it is their turn") do

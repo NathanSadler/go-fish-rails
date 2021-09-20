@@ -16,4 +16,5 @@ p Your Cards:
 /   .round data-target="round.status"
 /     = render partial: 'round_results', locals: {round_results: @game.round_results, current_user: current_user}
 
+
 = react_component('GameView', {path: game_path(@game.id)})

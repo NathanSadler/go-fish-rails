@@ -6,12 +6,12 @@ class GamesController < ApplicationController
 
   def update_card_and_result_partials(game)
     @game.users.each do |user|
-      result_partial = ApplicationController.render(partial: "../views/games/round_results", 
+      result_partial = ApplicationController.render(partial: "../views/games/round_results",
         locals: {round_results: game.round_results, current_user: User.find(user.id)})
       ActionCable.server.broadcast("round_#{game.id}_#{user.id}", result_partial)
       card_partial = ApplicationController.render(partial: "../views/games/cards_in_hand", locals: {cards: game.find_player_with_user_id(user.id).hand})
       ActionCable.server.broadcast("card_#{game.id}_#{user.id}", card_partial)
-    end  
+    end
   end
 
   def display_waiting_room(game)
@@ -34,16 +34,17 @@ class GamesController < ApplicationController
   def choose_game_show(game)
     if (!game.started?)
       display_waiting_room(game)
-    elsif (!game.users_turn?(current_user))
-      render 'waiting_to_take_turn'
     else
-      render 'taking_turn'
+      # (!game.users_turn?(current_user))
+      render 'waiting_to_take_turn'
+    # else
+    #   render 'taking_turn'
     end
   end
 
   def show
     @game = Game.find(params[:id])
-    
+
     # update_card_and_result_partials(@game)
     @game_user = GameUser.new
     @player_id = session[:user_id]
