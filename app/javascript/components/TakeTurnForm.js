@@ -9,7 +9,7 @@ class TakeTurnForm extends React.Component {
 
     this.state = {
       selectedCard: this.props.heldCards[0],
-      selectedOpponentId: this.props.opponentGameuserIds[0]
+      selectedOpponentId: this.props.opponents[0]
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -59,9 +59,9 @@ class TakeTurnForm extends React.Component {
     return (
       <div>
         <select onChange={this.handleChange} value={this.state.selectedOpponentId}>
-          {this.props.opponentGameuserIds.map((id, index) => (
+          {this.props.opponents.map((id) => (
             <option key={id} value={id}>
-              Opponent #{index + 1}
+              A
             </option>
           ))}
         </select>
@@ -72,6 +72,6 @@ class TakeTurnForm extends React.Component {
 
 TakeTurnForm.propTypes = {
   heldCards: PropTypes.array,
-  opponentGameuserIds: PropTypes.array
+  opponents: PropTypes.array
 };
 export default TakeTurnForm;

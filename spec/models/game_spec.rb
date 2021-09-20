@@ -123,6 +123,30 @@ RSpec.describe Game, type: :model do
       Game.last.update(go_fish: go_fish)
       expect(Game.last.state_for(User.last)['held_cards']).to(eq(held_cards.map(&:as_json)))
     end
+
+    fdescribe('the opponents that get returned') do
+      let(:first_opponent) {state['opponents'][0]}
+
+      it("has each opponent's name") do
+        expect(first_opponent['name']).to(eq(User.first.name))
+      end
+
+      it("has each opponent's score") do
+        expect(first_opponent['score']).to(eq(0))
+      end
+
+      it("has each opponent's user ID") do
+        expect(first_opponent['user_id']).to(eq(User.first.id))
+      end
+
+      it("has each opponent's gameuser ID") do
+        expect(first_opponent['gameuser_id']).to(eq(Game.last.game_users.first.id))
+      end
+
+      it("has the number of cards in their hand") do
+        expect(first_opponent['cards_in_hand']).to(eq(InitialCardsPerPlayer::FEW_PLAYERS))
+      end
+    end
   end
 
   describe('#opponents_of') do

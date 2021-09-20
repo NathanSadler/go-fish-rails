@@ -68,7 +68,7 @@ class Player
       'name' => name,
       'cards_in_hand' => hand.length,
       'score' => score,
-      'user_id' => user_id
+      'user_id' => user_id,
     }
   end
 

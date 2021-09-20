@@ -42,26 +42,21 @@ class GameView extends React.Component {
   }
 
   listOpponents() {
-    return this.state.opponent_gameuser_ids.map((id) => (
-      <li key={id}>
-        <Opponent gamePlayerPath={`/game_user/${id}`} />
+    return this.state.opponents.map((opponent) => (
+      <li key={opponent}>
+        <Opponent gamePlayerPath={`/game_user/${opponent.gameuser_id}`} />
       </li>
     ));
   }
 
   takeTurnForm() {
-    return (
-      <TakeTurnForm
-        heldCards={this.state.held_cards}
-        opponentGameuserIds={this.state.opponent_gameuser_ids}
-      />
-    );
+    return <TakeTurnForm heldCards={this.state.held_cards} opponents={this.state.opponents} />;
   }
 
   handleServerUpdate(json) {
     this.setState({
       cards_in_deck: json['cards_in_deck'],
-      opponent_gameuser_ids: json['opponent_gameuser_ids'],
+      opponents: json['opponents'],
       player: json['user_player'],
       held_cards: json['held_cards']
     });
