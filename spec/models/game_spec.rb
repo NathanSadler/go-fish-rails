@@ -122,6 +122,19 @@ RSpec.describe Game, type: :model do
       expect(state['game_id']).to(eq(Game.last.id))
     end
 
+    describe('returning a value to determine if the given player is the turn player') do
+      it('is false if the given player is not the turn player') do
+        expect(state['is_turn_player']).to(eq(false))
+      end
+
+      it('is true if the given player is the turn player') do
+        go_fish = Game.last.go_fish
+        go_fish.send(:set_current_player_index, 2)
+        Game.last.update(go_fish: go_fish)
+        expect(Game.last.state_for(User.last)['is_turn_player']).to(eq(true))
+      end
+    end
+
     describe('the opponents that get returned') do
       let(:first_opponent) {state['opponents'][0]}
 

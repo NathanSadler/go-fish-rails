@@ -51,22 +51,29 @@ class GameView extends React.Component {
   }
 
   takeTurnForm() {
-    return (
-      <TakeTurnForm
-        heldCards={this.state.held_cards}
-        gameId={this.state.game_id}
-        opponents={this.state.opponents}
-      />
-    );
+    if (this.state.isTurnPlayer) {
+      return (
+        <TakeTurnForm
+          heldCards={this.state.held_cards}
+          gameId={this.state.game_id}
+          opponents={this.state.opponents}
+          // pass in onSubmit prop
+        />
+      );
+    }
+
+    return;
   }
 
   handleServerUpdate(json) {
     this.setState({
       cards_in_deck: json['cards_in_deck'],
       opponents: json['opponents'],
+      // put into actual JavaScript models
       player: json['user_player'],
       held_cards: json['held_cards'],
-      game_id: json['game_id']
+      game_id: json['game_id'],
+      isTurnPlayer: json['is_turn_player']
     });
   }
 }

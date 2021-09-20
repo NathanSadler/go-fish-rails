@@ -63,7 +63,8 @@ class Game < ApplicationRecord
       'opponents' => GameUser.where(game_id: id).where.not(user_id: user.id).map {|gameuser| gameuser.json_for_others.merge({"gameuser_id" => gameuser.id})},
       'player' => user_player.as_json,
       'held_cards' => user_player.hand.map(&:as_json),
-      'game_id' => id
+      'game_id' => id,
+      'is_turn_player' => user.id == go_fish.turn_player.user_id
     }
   end
 
