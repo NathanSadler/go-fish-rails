@@ -19,7 +19,7 @@ RSpec.describe "SiteLayouts", type: :request do
       get login_path
       post login_path, params: { session: {email: test_user.email,
         password: test_user.password}}
-      binding.pry
+      # binding.pry
       assert_select "a[href=?]", logout_path
 >>>>>>> game-models
     end
