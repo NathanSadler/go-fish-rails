@@ -116,37 +116,12 @@ RSpec.describe Game, type: :model do
         GameUser.find_by(game_id: Game.last.id, user_id: user.id).id))}
     end
 
-    xdescribe('the opponents in the json that get returned') do
-      let(:opponents) {state['opponents']}
-
-      it('can have multiple opponents') do
-        expect(opponents.length).to(eq(2))
-      end
-
-      it("has the opponent's name") do
-        expect(opponents.map {|opponent| opponent['name']}).to(include('blank'))
-      end
-
-      it('does not have the given user') do
-        expect(opponents.map {|opponent| opponent['name']}).not_to(include('blank 2'))
-      end
-
-      it('does not have the hand of the opponents') do
-        expect(opponents[0]['hand']).to(eq(nil))
-      end
-
-      it('has the number of cards in the hand of the opponent') do
-        expect(opponents[0]['cards_in_hand']).to(eq(InitialCardsPerPlayer::FEW_PLAYERS))
-      end
-
-      it('has the score of the opponent') do
-        expect(opponents[0]['score']).to(eq(0))
-      end
-
-      it('has the user_id of the opponent') do
-        expect(opponents[0]['user_id']).to(eq(User.first.id))
-      end
-      
+    it("returns an array of the cards in the player's hand") do
+      held_cards = [Card.new("2", "H"), Card.new("3", "H")]
+      go_fish = Game.last.go_fish
+      go_fish.players[-1].set_hand(held_cards)
+      Game.last.update(go_fish: go_fish)
+      expect(Game.last.state_for(User.last)['held_cards']).to(eq(held_cards.map(&:as_json)))
     end
   end
 

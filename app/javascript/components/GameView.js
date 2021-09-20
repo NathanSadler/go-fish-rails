@@ -12,7 +12,10 @@ class GameView extends React.Component {
   render() {
     return this.state ? (
       <div>
-        {this.state.cards_in_deck} <ul>{this.getOpponents()}</ul>
+        <div>
+          {this.state.cards_in_deck} <ul>{this.getOpponents()}</ul>
+        </div>
+        <div>{this.state.player}</div>
       </div>
     ) : (
       <div>Loading...</div>
@@ -48,7 +51,8 @@ class GameView extends React.Component {
     this.setState({
       cards_in_deck: json['cards_in_deck'],
       opponent_gameuser_ids: json['opponent_gameuser_ids'],
-      player: json['user_player']
+      player: json['user_player'],
+      held_cards: json['held_cards']
     });
   }
 }

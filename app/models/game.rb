@@ -60,9 +60,9 @@ class Game < ApplicationRecord
     # binding.pry
     {
       'cards_in_deck' => go_fish.deck.cards_in_deck,
-      # 'opponents' => opponents_of(user).map {|opponent| find_player_with_user_id(opponent.id).json_for_others},
       'opponent_gameuser_ids' => GameUser.where(game_id: id).where.not(user_id: user.id).map(&:id),
       'player' => user_player.as_json,
+      'held_cards' => user_player.hand.map(&:as_json)
     }
   end
 
@@ -81,7 +81,7 @@ class Game < ApplicationRecord
 
   def take_turn(player, requested_player:, requested_rank: "H")
     go_fish.take_turn(player, requested_player: requested_player,
-      requested_rank: requested_rank) 
+      requested_rank: requested_rank)
     save!
     finish if go_fish.over?
   end
