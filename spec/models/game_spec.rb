@@ -102,10 +102,6 @@ RSpec.describe Game, type: :model do
 
     let(:state) {Game.last.state_for(User.last)}
 
-    it('returns json that contains the given player') do
-      expect(state['player']['name']).to(eq("blank 2"))
-    end
-
     it('returns json that has the number of cards in the deck') do
       expect(state['cards_in_deck']).to(eq(Deck.default_deck.length - (InitialCardsPerPlayer::FEW_PLAYERS * 3)))
     end
