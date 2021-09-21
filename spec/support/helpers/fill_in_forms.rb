@@ -18,7 +18,7 @@ module FillInForms
 
   def take_turn(session, player, card)
     session.select(player, from: 'PlayerBoxes')
-    session.choose(card)
+    session.select(card, from: 'cardRankBox')
     session.click_on("Take Turn")
   end
 end
