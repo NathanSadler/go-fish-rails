@@ -9,44 +9,38 @@ class TakeTurnForm extends React.Component {
     super(props);
 
     this.state = {
-      selectedCard: 'A',
+      selectedCard: this.props.player.getCards()[0],
       selectedOpponentId: this.props.opponents[0]
     };
-
-    this.handleChange = this.handleChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
   }
 
   onSubmit(event) {
     event.preventDefault();
+    this.props.onSubmit(this.state.selectedOpponentId, this.state.selectedCard);
   }
 
   render() {
-    const crsf = document.querySelector("meta[name='csrf-token']").getAttribute('content');
+    // const crsf = document.querySelector("meta[name='csrf-token']").getAttribute('content');
     return (
       <React.Fragment>
-        <form onSubmit={this.onSubmit}>
+        <form onSubmit={this.onSubmit.bind(this)}>
           {this.cardRankBoxes()}
           {this.playerBoxes()}
           <input type='submit' value='Take Your Turn'></input>
         </form>
-
-        {/* <form action={`/games/${this.props.gameId}`} method='post'>
-          <input type='hidden' name='_method' value='patch' />
-          <input type='hidden' name='authenticity_token' value={crsf} />
-          {this.cardRankBoxes()}
-          {this.playerBoxes()}
-          <input type='submit' value='Take Your Turn'></input>
-        </form> */}
       </React.Fragment>
     );
   }
 
   cardRankBoxes() {
     return (
-      <select value={this.state.selectedCard} onChange={this.handleChange} name='selectedCard'>
+      <select
+        value={this.state.selectedCard}
+        onChange={this.handleChange.bind(this)}
+        name='selectedCard'
+      >
         {this.props.player.getCards().map((card) => (
-          <option key={`${card.rank}-${card.suit}`} value={`${card.rank}-${card.suit}`}>
+          <option key={`${card.rank}-${card.suit}`} value={`${card.suit}`}>
             {card.rank} of {card.suit}
           </option>
         ))}
@@ -67,7 +61,7 @@ class TakeTurnForm extends React.Component {
   playerBoxes() {
     return (
       <div>
-        <select onChange={this.handleChange} value={this.state.selectedOpponentId}>
+        <select onChange={this.handleChange.bind(this)} value={this.state.selectedOpponentId}>
           {this.props.opponents.map((opponent) => (
             <option key={opponent.user_id} value={opponent.user_id}>
               {opponent.name}
@@ -82,7 +76,9 @@ class TakeTurnForm extends React.Component {
 TakeTurnForm.propTypes = {
   player: PropTypes.instanceOf(Player),
   opponents: PropTypes.array,
-  gameId: PropTypes.number
+  gameId: PropTypes.number,
+  path: PropTypes.string,
+  onSubmit: PropTypes.func
 };
 
 export default TakeTurnForm;
