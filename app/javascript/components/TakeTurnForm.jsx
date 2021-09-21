@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Player from './Player';
-// import Card from './Card.js';
+import Card from './Card';
 // import Opponent from './Opponent.js';
 
 class TakeTurnForm extends React.Component {
@@ -35,7 +35,7 @@ class TakeTurnForm extends React.Component {
   cardRankBoxes() {
     return (
       <select
-        id='cardRankBoxes'
+        id='cardRankBox'
         value={this.state.selectedCard}
         onChange={this.handleChange.bind(this)}
         name='selectedCard'
