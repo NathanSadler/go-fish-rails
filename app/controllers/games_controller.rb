@@ -71,8 +71,9 @@ class GamesController < ApplicationController
 
   def update
     @game = Game.find(params[:id])
-    requested_player = @game.find_player_with_user_id(params[:game][:requested_player].to_i)
-    requested_rank = Card.from_str(params[:game][:requested_rank]).rank
+    requested_player = @game.find_player_with_user_id(params[:game][:requested_player][:user_id].to_s.to_i)
+    # requested_rank = Card.from_str(params[:game][:requested_rank].to_s).rank
+    requested_rank = params[:game][:requested_rank].to_s
     @game.take_turn(@game.find_player_with_user_id(current_user.id), requested_player: requested_player, requested_rank: requested_rank)
     redirect_to game_path(@game.id)
   end
