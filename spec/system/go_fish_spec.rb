@@ -158,7 +158,6 @@ RSpec.describe "GoFish", type: :system do
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
-        binding.pry
       game.go_fish.players[0].set_hand([Card.new("3", "D")])
       game.go_fish.players[1].set_hand([Card.new("7", "H")])
       game.save!
