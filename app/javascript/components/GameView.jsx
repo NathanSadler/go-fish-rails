@@ -5,6 +5,7 @@ import TakeTurnForm from './TakeTurnForm';
 import Player from './Player';
 import Card from './Card';
 import Rails from '@rails/ujs';
+import CardView from './CardView';
 
 class GameView extends React.Component {
   constructor(props) {
@@ -17,7 +18,9 @@ class GameView extends React.Component {
   render() {
     return this.state ? (
       <div>
-        <Card rank='4' suit='C'></Card>
+        <ul>
+          {this.state.player.getCards().map((card) => <li key={card.key()}> <CardView card={card} /> </li>)}
+        </ul>
         <br />
         {this.state.cards_in_deck} <ul>{this.listOpponents()}</ul>
         <div>{this.state.player.getName()}</div>

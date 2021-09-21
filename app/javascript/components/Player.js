@@ -1,7 +1,12 @@
+import Card from './Card';
+
 class Player {
   constructor(name, cards, score, userId) {
     this.name = name;
-    this.cards = cards;
+    // debugger;
+    this.cards = cards.map((card_json) => {
+      return new Card(card_json.rank, card_json.suit);
+    });
     this.score = score;
     this.userId = userId;
   }

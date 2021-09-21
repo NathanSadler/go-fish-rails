@@ -1,24 +1,28 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+class Card {
+  constructor(rank, suit) {
+    this._rank = rank;
+    this._suit = suit;
+  }
 
-const images = require.context('../images');
-
-class Card extends React.Component {
-  render() {
-    // debugger;
-    return (
-        <img src={images(`./4_C.png`).default} alt={this.describe()} />
-    );
+  key() {
+    return `${this.getRank()}_${this.getSuit()}`
   }
 
   describe() {
-    return `${this.props.rank} of ${this.props.suit}`;
+    return `${this.getRank()} of ${this.getSuit()}`
+  }
+
+  getPath() {
+    return `./${this.key()}.png`;
+  }
+
+  getRank() {
+    return this._rank;
+  }
+
+  getSuit() {
+    return this._suit;
   }
 }
-
-Card.propTypes = {
-  rank: PropTypes.string,
-  suit: PropTypes.string
-};
 
 export default Card;

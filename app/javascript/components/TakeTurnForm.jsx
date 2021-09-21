@@ -40,8 +40,8 @@ class TakeTurnForm extends React.Component {
         name='selectedCard'
       >
         {this.props.player.getCards().map((card) => (
-          <option key={`${card.rank}-${card.suit}`} value={`${card.suit}`}>
-            {card.rank} of {card.suit}
+          <option key={`${card.key()}`} value={`${card.getRank()}`}>
+            {card.describe()}
           </option>
         ))}
       </select>
