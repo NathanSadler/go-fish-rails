@@ -1,16 +1,15 @@
-import { Controller } from "stimulus";
-import consumer from "channels/consumer";
+import { Controller } from 'stimulus';
+import consumer from 'channels/consumer';
 
 export default class extends Controller {
-
   connect() {
     this.subscription = consumer.subscriptions.create(
       {
         // ActionCable channel Used
-        channel: "GameChannel", 
+        channel: 'GameChannel',
         //See data-game-id=@game.id in the view template
-        id: this.data.get("id"), 
-        user: this.data.get("user")
+        id: this.data.get('id'),
+        user: this.data.get('user')
       },
       {
         connected: this._connected.bind(this),
@@ -21,16 +20,16 @@ export default class extends Controller {
   }
 
   _connected() {
-    console.log("_connected")
+    console.log('_connected');
   }
 
   _disconnected() {
-    console.log("_disconnected")
+    console.log('_disconnected');
   }
 
-    //Updates target when data is received on the channel
+  //Updates target when data is received on the channel
   _received(data) {
-    console.log("This is getting called...")
+    console.log('This is getting called...');
     // const element = this.statusTarget
     // element.innerHTML = data
   }
