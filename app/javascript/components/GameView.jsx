@@ -5,6 +5,7 @@ import TakeTurnForm from './TakeTurnForm';
 import Player from './Player';
 import Rails from '@rails/ujs';
 import CardView from './CardView';
+import consumer from "channels/consumer";
 
 class GameView extends React.Component {
   constructor(props) {
@@ -32,6 +33,19 @@ class GameView extends React.Component {
 
   componentDidMount() {
     this.fetchGame(this.props.path);
+
+    this.subscription = consumer.subscriptions.create(
+      {
+        // ActionCable channel Used
+        channel: "GameChannel",
+        //See data-game-id=@game.id in the view template
+        game_id: this.props.gameId,
+        user_id: this.props.userId
+      },
+      {
+        received: this.handleServerUpdate.bind(this)
+      }
+    );
   }
 
   async fetchGame(path) {
@@ -112,7 +126,9 @@ class GameView extends React.Component {
 }
 
 GameView.propTypes = {
-  path: PropTypes.string.isRequired
+  path: PropTypes.string.isRequired,
+  gameId: PropTypes.number.isRequired,
+  userId: PropTypes.number.isRequired
   // authenticityToken: PropTypes.string
 };
 

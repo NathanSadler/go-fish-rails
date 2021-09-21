@@ -1,7 +1,9 @@
-# If a user is viewing a game with id of 1, then an ActionCable channel of game_1 gets created
-class GameChannel < ApplicationCable::GameChannel
+class GameChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "game_#{params[:id]}"
+    stream_from "game_#{params[:game_id]}_#{params[:user_id]}"
+  end
+
+  def unsubscribed
+    # Any cleanup needed when channel is unsubscribed
   end
 end
-

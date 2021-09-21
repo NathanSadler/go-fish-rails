@@ -69,13 +69,24 @@ class GamesController < ApplicationController
     end
   end
 
+  def broadcast(game)
+    game.users.each do |user|
+      ActionCable.server.broadcast("game_#{game.id}_#{user.id}", game.state_for(user))
+    end
+  end
+
   def update
     @game = Game.find(params[:id])
     requested_player = @game.find_player_with_user_id(params[:game][:requested_player][:user_id].to_s.to_i)
     # requested_rank = Card.from_str(params[:game][:requested_rank].to_s).rank
     requested_rank = params[:game][:requested_rank].to_s
     @game.take_turn(@game.find_player_with_user_id(current_user.id), requested_player: requested_player, requested_rank: requested_rank)
-    # redirect_to game_path(@game.id)
+
+    broadcast(@game)
+    respond_to do |format|
+      format.html {redirect_to game_path(@game.id)}
+      format.json { render json: @game.state_for(current_user)}
+    end
   end
 
   def join_game(game)

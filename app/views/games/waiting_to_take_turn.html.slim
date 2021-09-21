@@ -17,4 +17,4 @@ p Your Cards:
 /     = render partial: 'round_results', locals: {round_results: @game.round_results, current_user: current_user}
 
 
-= react_component('GameView', {path: game_path(@game.id), authenticityToken: form_authenticity_token})
+= react_component('GameView', {path: game_path(@game.id), gameId: @game.id, userId: current_user.id, authenticityToken: form_authenticity_token})
