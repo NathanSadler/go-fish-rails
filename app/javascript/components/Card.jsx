@@ -9,7 +9,10 @@ class Card {
   }
 
   describe() {
-    return `${this.getRank()} of ${this.getSuit()}`
+    const nonNumericalRanks = {'A': 'Ace', 'J': 'Jack', 'Q': 'Queen', 'K': 'King'}
+    const suitNames = {'C': 'Clubs', 'D': 'Diamonds', 'H': 'Hearts', 'S': 'Spades'}
+    const rankDescription = !nonNumericalRanks.hasOwnProperty(this.getRank()) ? this.getRank() : nonNumericalRanks[this.getRank()]
+    return `${rankDescription} of ${suitNames[this.getSuit()]}`
   }
 
   getPath() {
