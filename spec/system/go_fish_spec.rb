@@ -69,7 +69,7 @@ RSpec.describe "GoFish", type: :system do
         game.go_fish.players[1].set_hand([Card.new("2", "D"), Card.new("2", "H"), Card.new("3", "H")])
         game.go_fish.deck.send(:set_cards, [Card.new("4", "H")])
         game.save!
-        session.visit(current_path)
+        session.refresh
         take_turn(session, "Michael Example", "2 of Clubs")
       end
 
@@ -90,7 +90,7 @@ RSpec.describe "GoFish", type: :system do
         game.go_fish.players[1].set_hand([Card.new("2", "D"), Card.new("2", "H")])
         game.go_fish.deck.send(:set_cards, [])
         game.save!
-        session.visit(current_path)
+        session.refresh
         take_turn(session, "Michael Example", "2 of Clubs")
       end
 
