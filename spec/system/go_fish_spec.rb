@@ -210,7 +210,7 @@ RSpec.describe "GoFish (auto updating pages)", type: :system, js: true do
   let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
   let(:session3) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
 
-  context("updating the round results without reloading") do
+  xcontext("updating the round results without reloading") do
     before(:each) do
       user = User.create(name:"whatisgoingon", email: "whatis@goingon.com", password: "seriouslywhat", password_confirmation: "seriouslywhat")
       user3 = User.create(name:"superfoobar", email:"superfoo@bar.com", password:"superbarfoo", password_confirmation:"superbarfoo")
