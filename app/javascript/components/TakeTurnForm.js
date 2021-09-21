@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Player from './Player';
 // import Card from './Card.js';
 // import Opponent from './Opponent.js';
 
@@ -8,7 +9,7 @@ class TakeTurnForm extends React.Component {
     super(props);
 
     this.state = {
-      selectedCard: this.props.heldCards[0],
+      selectedCard: 'A',
       selectedOpponentId: this.props.opponents[0]
     };
 
@@ -44,7 +45,7 @@ class TakeTurnForm extends React.Component {
   cardRankBoxes() {
     return (
       <select value={this.state.selectedCard} onChange={this.handleChange} name='selectedCard'>
-        {this.props.heldCards.map((card) => (
+        {this.props.player.getCards().map((card) => (
           <option key={`${card.rank}-${card.suit}`} value={`${card.rank}-${card.suit}`}>
             {card.rank} of {card.suit}
           </option>
@@ -79,8 +80,9 @@ class TakeTurnForm extends React.Component {
 }
 
 TakeTurnForm.propTypes = {
-  heldCards: PropTypes.array,
+  player: PropTypes.instanceOf(Player),
   opponents: PropTypes.array,
   gameId: PropTypes.number
 };
+
 export default TakeTurnForm;

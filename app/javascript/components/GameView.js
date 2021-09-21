@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Opponent from './Opponent';
 import TakeTurnForm from './TakeTurnForm';
+import Player from './Player';
 
 class GameView extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class GameView extends React.Component {
         <div>
           {this.state.cards_in_deck} <ul>{this.listOpponents()}</ul>
         </div>
-        <div>{this.state.player}</div>
+        <div>{this.state.player.getName()}</div>
         <div>{this.takeTurnForm()}</div>
         {/* <div>{this.props.authenticityToken}</div> */}
       </div>
@@ -54,7 +55,7 @@ class GameView extends React.Component {
     if (this.state.isTurnPlayer) {
       return (
         <TakeTurnForm
-          heldCards={this.state.held_cards}
+          player={this.state.player}
           gameId={this.state.game_id}
           opponents={this.state.opponents}
           // pass in onSubmit prop
@@ -66,12 +67,19 @@ class GameView extends React.Component {
   }
 
   handleServerUpdate(json) {
+    const foo = new Player(
+      json['player_name'],
+      json['held_cards'],
+      json['player_score'],
+      json['user_id']
+    );
+
     this.setState({
       cards_in_deck: json['cards_in_deck'],
       opponents: json['opponents'],
       // put into actual JavaScript models
-      player: json['user_player'],
-      held_cards: json['held_cards'],
+      // player: json['user_player'],
+      player: foo,
       game_id: json['game_id'],
       isTurnPlayer: json['is_turn_player']
     });
