@@ -82,7 +82,7 @@ RSpec.describe Game, type: :model do
     end
   end
 
-  fdescribe('#state_for') do
+  describe('#state_for') do
     before(:each) {
 
       # TODO: add factory bots for these guys

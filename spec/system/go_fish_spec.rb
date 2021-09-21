@@ -1,7 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "GoFish", type: :system do
-  let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
+  # let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
+  let(:session) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
   let(:session2) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:session3) {Capybara::Session.new(:rack_test, Rails.application)}
 
@@ -157,10 +158,11 @@ RSpec.describe "GoFish", type: :system do
 
     it("increments the go_fish's current_player_index after pressing the take "+
       "turn button") do
+        binding.pry
       game.go_fish.players[0].set_hand([Card.new("3", "D")])
       game.go_fish.players[1].set_hand([Card.new("7", "H")])
       game.save!
-      session.visit current_path
+      session.refresh
       take_turn(session, "Michael Example", "3 of Diamonds")
       expect(game.turn_player.name).to(eq(game.players[0].name))
     end

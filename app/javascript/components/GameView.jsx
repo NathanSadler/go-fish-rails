@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Opponent from './Opponent';
 import TakeTurnForm from './TakeTurnForm';
 import Player from './Player';
-import Card from './Card';
 import Rails from '@rails/ujs';
 import CardView from './CardView';
 

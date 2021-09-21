@@ -35,6 +35,7 @@ class TakeTurnForm extends React.Component {
   cardRankBoxes() {
     return (
       <select
+        id='cardRankBoxes'
         value={this.state.selectedCard}
         onChange={this.handleChange.bind(this)}
         name='selectedCard'
@@ -61,7 +62,7 @@ class TakeTurnForm extends React.Component {
   playerBoxes() {
     return (
       <div>
-        <select onChange={this.handleChange.bind(this)} value={this.state.selectedOpponentId}>
+        <select id='PlayerBoxes' onChange={this.handleChange.bind(this)} value={this.state.selectedOpponentId}>
           {this.props.opponents.map((opponent) => (
             <option key={opponent.user_id} value={opponent.user_id}>
               {opponent.name}

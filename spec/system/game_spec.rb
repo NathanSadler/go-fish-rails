@@ -132,7 +132,6 @@ RSpec.describe "Game", type: :system, js: :true do
       join_game_from_info_page(session)
       join_game(session2, Game.last.id)
       [session, session2].each {|user_session| start_game(user_session)}
-      binding.pry
       expect(session2.body).to_not(have_content("Take Your Turn"))
     end
 

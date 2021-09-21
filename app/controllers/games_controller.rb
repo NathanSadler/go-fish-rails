@@ -75,7 +75,7 @@ class GamesController < ApplicationController
     # requested_rank = Card.from_str(params[:game][:requested_rank].to_s).rank
     requested_rank = params[:game][:requested_rank].to_s
     @game.take_turn(@game.find_player_with_user_id(current_user.id), requested_player: requested_player, requested_rank: requested_rank)
-    redirect_to game_path(@game.id)
+    # redirect_to game_path(@game.id)
   end
 
   def join_game(game)
