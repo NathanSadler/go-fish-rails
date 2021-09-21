@@ -18,9 +18,9 @@ class GameView extends React.Component {
   render() {
     return this.state ? (
       <div>
-        <ul>
-          {this.state.player.getCards().map((card) => <li key={card.key()}> <CardView card={card} /> </li>)}
-        </ul>
+        <div className="playing-card">
+          {this.state.player.getCards().map((card) => <span key={card.key()}> <CardView card={card} /> </span>)}
+        </div>
         <br />
         {this.state.cards_in_deck} <ul>{this.listOpponents()}</ul>
         <div>{this.state.player.getName()}</div>
