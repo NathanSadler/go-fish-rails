@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe "GoFish", type: :system do
   # let(:session) {Capybara::Session.new(:rack_test, Rails.application)}
   let(:session) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
-  let(:session2) {Capybara::Session.new(:rack_test, Rails.application)}
-  let(:session3) {Capybara::Session.new(:rack_test, Rails.application)}
+  let(:session2) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
+  let(:session3) {Capybara::Session.new(:selenium_chrome_headless, Rails.application)}
 
   before(:each) do
     User.create(name:"foobar", email:"foo@bar.com", password:"foobar",
