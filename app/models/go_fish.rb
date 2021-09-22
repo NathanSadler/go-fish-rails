@@ -28,6 +28,7 @@ class GoFish
     end
   end
 
+
   def self.dump(obj)
     obj.as_json
   end
@@ -80,7 +81,7 @@ class GoFish
     increment_current_player_index
     if !over?
       until (!turn_player.hand.empty?)
-        deck.empty? ? increment_current_player_index : turn_player.add_card_to_hand(deck.draw_card)  
+        deck.empty? ? increment_current_player_index : turn_player.add_card_to_hand(deck.draw_card)
       end
     end
   end
