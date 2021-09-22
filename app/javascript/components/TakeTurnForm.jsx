@@ -83,7 +83,7 @@ class TakeTurnForm extends React.Component {
     /*
      * Does the deck still have our selected card?
      */
-    if (!nextCards.find((card) => card.getRank() === this.state.selectedCard)) {
+    if (!nextCards.find((card) => card.getRank() === this.state.selectedCard) && nextCards.length > 0) {
       this.setState({
         selectedCard: nextCards[0].getRank()
       });

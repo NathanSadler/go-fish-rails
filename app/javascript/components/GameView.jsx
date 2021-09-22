@@ -16,20 +16,34 @@ class GameView extends React.Component {
   }
 
   render() {
-    return this.state ? (
-      <div>
-        <div className="playing-card">
+    // Render the main display if there is a game and it is not over. If it is over, reload the page to got to game results
+    // If there is no game, just display a loading message
+
+    if(this.state) {
+      if(!this.state.IsFinished) {
+        return(this.mainDisplay())
+      } else {
+        window.location.reload(true)
+      }
+    } else {
+      return(<div>Loading...</div>)
+    }
+  }
+
+  mainDisplay() {
+    return(
+    <div>
+      <div className="playing-card">
           {this.state.player.getCards().map((card) => <span key={card.key()}> <CardView card={card} /> </span>)}
         </div>
         <br />
         {this.state.cards_in_deck} <ul>{this.listOpponents()}</ul>
         <div>{this.state.player.getName()}</div>
-        <div>{this.takeTurnForm()}</div>
-      </div>
-    ) : (
-      <div>Loading...</div>
-    );
+      <div>{this.takeTurnForm()}</div>
+    </div>
+    )
   }
+
 
   componentDidMount() {
     this.fetchGame(this.props.path);
@@ -120,7 +134,8 @@ class GameView extends React.Component {
       // player: json['user_player'],
       player: foo,
       game_id: json['game_id'],
-      isTurnPlayer: json['is_turn_player']
+      isTurnPlayer: json['is_turn_player'],
+      IsFinished: json['finished']
     });
   }
 }

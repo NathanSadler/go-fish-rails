@@ -39,7 +39,7 @@ class Game < ApplicationRecord
 
   # used in game controller
   def finished?
-    finished_at.present?
+    go_fish.over?
   end
 
   # used in taking_turn, but only once
@@ -66,6 +66,7 @@ class Game < ApplicationRecord
       'held_cards' => user_player.hand.map(&:as_json),
       'user_id' => user.id,
       'game_id' => id,
+      'finished' => finished?,
       'is_turn_player' => user.id == go_fish.turn_player.user_id
     }
   end
