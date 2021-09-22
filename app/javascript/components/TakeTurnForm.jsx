@@ -9,14 +9,17 @@ class TakeTurnForm extends React.Component {
     super(props);
 
     this.state = {
-      selectedCard: this.props.player.getCards()[0],
-      selectedOpponentId: this.props.opponents[0]
+      selectedCard: this.props.player.getCards()[0].getRank()
     };
+  }
+
+  get selectedOpponentId() {
+    return this.props.opponents[0];
   }
 
   onSubmit(event) {
     event.preventDefault();
-    this.props.onSubmit(this.state.selectedOpponentId, this.state.selectedCard);
+    this.props.onSubmit(this.selectedOpponentId, this.state.selectedCard);
   }
 
   render() {
@@ -33,6 +36,7 @@ class TakeTurnForm extends React.Component {
   }
 
   cardRankBoxes() {
+
     return (
       <select
         id='cardRankBox'
@@ -62,7 +66,7 @@ class TakeTurnForm extends React.Component {
   playerBoxes() {
     return (
       <div>
-        <select id='PlayerBoxes' onChange={this.handleChange.bind(this)} value={this.state.selectedOpponentId}>
+        <select id='PlayerBoxes' onChange={this.handleChange.bind(this)} value={this.selectedOpponentId}>
           {this.props.opponents.map((opponent) => (
             <option key={opponent.user_id} value={opponent.user_id}>
               {opponent.name}
@@ -71,6 +75,19 @@ class TakeTurnForm extends React.Component {
         </select>
       </div>
     );
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const nextCards = nextProps.player.getCards();
+
+    /*
+     * Does the deck still have our selected card?
+     */
+    if (!nextCards.find((card) => card.getRank() === this.state.selectedCard)) {
+      this.setState({
+        selectedCard: nextCards[0].getRank()
+      });
+    }
   }
 }
 
